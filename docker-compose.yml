@@ -1,46 +1,8 @@
-# Hecate-Nautilus: Manifesto de Orquestração v1.0
-version: '3.8'
-
 services:
   unbound:
-    build: ./unbound
-    image: hecate/unbound:latest
-    container_name: hecate-unbound
-    restart: unless-stopped
-    network_mode: "host"
-    volumes:
-      - ./unbound/config/unbound.conf:/usr/local/etc/unbound/unbound.conf:ro
-      - ./unbound/config/root.key:/var/lib/unbound/root.key:ro
-    # !! IMPORTANTE: Ajuste o cpuset para os núcleos do seu CPU Xeon !!
-    # Ex: Para um Xeon de 14 núcleos (0-13), usamos 2-13.
-    cpuset: "2-13"
-    mem_limit: 10g
-    cap_add:
-      - NET_ADMIN
-
-  adguard:
-    image: adguard/adguardhome:latest
-    container_name: hecate-adguard
-    restart: unless-stopped
-    network_mode: "host"
-    volumes:
-      - ./adguard/work:/opt/adguardhome/work
-      - ./adguard/config:/opt/adguardhome/conf
-    # !! IMPORTANTE: Ajuste o cpuset !!
-    # Ex: 2 núcleos para o Adguard
-    cpuset: "0-1"
-    mem_limit: 2g
-
-  redis:
-    image: redis:7-alpine
-    container_name: hecate-redis
+    build: .
+    container_name: hecate-nautilus
     restart: unless-stopped
     ports:
-      - "127.0.0.1:6379:6379"
-    volumes:
-      - ./redis/data:/data
-      - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf:ro
-    # !! IMPORTANTE: Ajuste o cpuset !!
-    # Dê um núcleo para o Redis. Ex: 14
-    cpuset: "14"
-    mem_limit: 2g
+      - "53:53/udp"
+      - "53:53/tcp"
