@@ -1,5 +1,3 @@
-* text=auto
+# Garante que scripts shell sempre usem o final de linha do Linux (LF)
+# para evitar problemas de compatibilidade entre Windows e Linux.
 *.sh text eol=lf
-*.conf text eol=lf
-*.yml text eol=lf
-Dockerfile text eol=lf
