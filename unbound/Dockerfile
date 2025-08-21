@@ -19,7 +19,10 @@ WORKDIR /tmp
 # Download and verify Unbound source
 RUN wget -O unbound.tar.gz "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz"
 RUN wget -O unbound.asc "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz.asc"
-RUN gpg --keyserver hkps://keys.openpgp.org --recv-keys 0x18242B289DE62956D22A74536A912239719DE6E3
+
+# CORREÇÃO: Trocado o keyserver para um mais confiável
+RUN gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 0x18242B289DE62956D22A74536A912239719DE6E3
+
 RUN gpg --verify unbound.asc unbound.tar.gz
 
 RUN tar xzf unbound.tar.gz
