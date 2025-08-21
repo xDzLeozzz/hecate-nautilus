@@ -1,0 +1,117 @@
+[*] Gerando root.key no volume do serviço...
+open C:\c\Users\Admin\hecate-nautilus\docker-compose.yml: O sistema não pode encontrar o caminho especificado.
+#1 [internal] load local bake definitions
+#1 reading from stdin 558B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 2.79kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 0.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [builder 1/7] FROM docker.io/library/debian:bookworm-slim@sha256:b1a741487078b369e78119849663d7f1a5341ef2768798f7b7406c4240f86aef
+#5 resolve docker.io/library/debian:bookworm-slim@sha256:b1a741487078b369e78119849663d7f1a5341ef2768798f7b7406c4240f86aef 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 5/9] COPY --from=builder /usr/sbin/unbound-anchor /usr/sbin/unbound-anchor
+#6 CACHED
+
+#7 [stage-1 7/9] COPY --from=builder /usr/sbin/unbound-checkconf /usr/sbin/unbound-checkconf
+#7 CACHED
+
+#8 [stage-1 4/9] COPY --from=builder /usr/sbin/unbound /usr/sbin/unbound
+#8 CACHED
+
+#9 [stage-1 2/9] RUN apt-get update && apt-get install -y --no-install-recommends   libssl3 libexpat1 libevent-2.1-7 libhiredis0.14 ca-certificates  && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [builder 4/7] RUN set -eux; base="https://nlnetlabs.nl/downloads/unbound";   wget -O "unbound-1.19.3.tar.gz"        "${base}/unbound-1.19.3.tar.gz";   wget -O "unbound-1.19.3.tar.gz.sha256" "${base}/unbound-1.19.3.tar.gz.sha256";   wget -O "unbound-1.19.3.tar.gz.asc"    "${base}/unbound-1.19.3.tar.gz.asc"
+#10 CACHED
+
+#11 [builder 2/7] RUN apt-get update && apt-get install -y --no-install-recommends   build-essential libssl-dev libexpat1-dev libevent-dev   libhiredis-dev wget gnupg dirmngr ca-certificates  && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [builder 5/7] RUN set -eux; echo "$(cat unbound-1.19.3.tar.gz.sha256)  unbound-1.19.3.tar.gz" | sha256sum -c -
+#12 CACHED
+
+#13 [stage-1 3/9] RUN groupadd -r unbound && useradd -r -g unbound -s /usr/sbin/nologin -d /var/lib/unbound -M unbound  && mkdir -p /var/lib/unbound /var/run/unbound /etc/unbound  && chown -R unbound:unbound /var/lib/unbound /var/run/unbound
+#13 CACHED
+
+#14 [builder 7/7] RUN tar xzf "unbound-1.19.3.tar.gz"  && cd "unbound-1.19.3"  && ./configure --prefix=/usr --sysconfdir=/etc --disable-static --with-libevent --with-ssl  && make -j"$(nproc)" && make install
+#14 CACHED
+
+#15 [builder 6/7] RUN set -eux; for ks in hkps://keys.openpgp.org hkps://keyserver.ubuntu.com hkps://pgp.surfnet.nl; do       gpg --keyserver "$ks" --recv-keys 9F6F1C2D7E045F8D && break || true; done;   gpg --batch --verify "unbound-1.19.3.tar.gz.asc" "unbound-1.19.3.tar.gz" || true
+#15 CACHED
+
+#16 [stage-1 8/9] COPY --from=builder /usr/lib/libunbound.so* /usr/lib/
+#16 CACHED
+
+#17 [stage-1 6/9] COPY --from=builder /usr/sbin/unbound-host /usr/sbin/unbound-host
+#17 CACHED
+
+#18 [builder 3/7] WORKDIR /tmp
+#18 CACHED
+
+#19 [stage-1 9/9] RUN printf '%s\n' '#!/bin/sh' 'set -e'  'mkdir -p /var/lib/unbound /var/run/unbound'  'chown -R unbound:unbound /var/lib/unbound /var/run/unbound'  'if [ ! -s /var/lib/unbound/root.key ]; then echo "Initializing root trust anchor..."; unbound-anchor -a /var/lib/unbound/root.key -v || true; chown unbound:unbound /var/lib/unbound/root.key || true; fi'  'echo "Refreshing root trust anchor ..."; unbound-anchor -a /var/lib/unbound/root.key -R -v || true'  'exec /usr/sbin/unbound -d -c /etc/unbound/unbound.conf' > /usr/local/bin/entrypoint.sh && chmod +x /usr/local/bin/entrypoint.sh
+#19 CACHED
+
+#20 exporting to image
+#20 exporting layers done
+#20 exporting manifest sha256:ba46b66626fcec270977b3c2ae7da4ec326a18f0113190b873c87c46a2d4b279 done
+#20 exporting config sha256:7713314e96b8f44ebb155e109f1b3d61c274ee16862679a47d718c9446822e91 done
+#20 exporting attestation manifest sha256:85ddb6a9bc4a240ae3bc0a23c66d1a4cc8ba330852bf5410e9c9a6b1b3337955 done
+#20 exporting manifest list sha256:d8276538fbc8e7ea9b16c48bcdc31dd517fb5cafc3aef50ba26bf43f3ef29829 done
+#20 naming to docker.io/library/hecate-nautilus-unbound:latest done
+#20 unpacking to docker.io/library/hecate-nautilus-unbound:latest done
+#20 DONE 0.0s
+
+#21 resolving provenance for metadata file
+#21 DONE 0.0s
+ hecate-nautilus-unbound  Built
+ Container hecate-adguard  Running
+ Container hecate-unbound  Recreate
+ Container hecate-redis  Running
+ Container hecate-unbound  Recreated
+ Container hecate-unbound  Starting
+ Container hecate-unbound  Started
+== conf dentro do container ==
+1:server:
+3:  directory: "/etc/unbound/"
+4:  auto-trust-anchor-file: "/var/lib/unbound/root.key"
+== root.key dentro do container ==
+-rw-r--r-- 1 unbound unbound 1251 Aug 21 16:18 /var/lib/unbound/root.key
+== DNS ==
+[OK] example.com
+[FAIL] dnssec-failed.org respondeu (era pra dar SERVFAIL)
+== Validação detalhada (unbound-host) ==
+[1755793168] libunbound[39:0] notice: init module 0: validator
+[1755793168] libunbound[39:0] notice: init module 1: iterator
+[1755793168] libunbound[39:0] info: resolving dnssec-failed.org. A IN
+[1755793168] libunbound[39:0] info: priming . IN NS
+[1755793168] libunbound[39:0] info: response for . NS IN
+[1755793168] libunbound[39:0] info: reply from <.> 193.0.14.129#53
+[1755793168] libunbound[39:0] info: query response was ANSWER
+[1755793168] libunbound[39:0] info: priming successful for . NS IN
+[1755793168] libunbound[39:0] info: resolving . DNSKEY IN
+[1755793168] libunbound[39:0] info: response for . DNSKEY IN
+[1755793168] libunbound[39:0] info: reply from <.> 192.5.5.241#53
+[1755793168] libunbound[39:0] info: query response was ANSWER
+== Logs recentes (120s) ==
+[1755793168] unbound[1:0] notice: init module 0: validator
+[1755793168] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755793168] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755793168] unbound[1:0] error: validator: error in trustanchors config
+[1755793168] unbound[1:0] error: validator: could not apply configuration settings.
+[1755793168] unbound[1:0] error: module init for module validator failed
+[1755793168] unbound[1:0] fatal error: failed to setup modules
+Refreshing root trust anchor ...
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+
+FIM. Pressione ENTER para sair...

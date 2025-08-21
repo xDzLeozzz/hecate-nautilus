@@ -8,7 +8,6 @@ services:
     volumes:
       - ./unbound/config/unbound.conf:/etc/unbound/unbound.conf:ro
       - ./unbound/config/root.hints:/etc/unbound/root.hints:ro
-      - unbound_state:/var/lib/unbound
 
   adguard:
     image: adguard/adguardhome:latest
@@ -29,5 +28,4 @@ services:
       - ./redis/data:/data
     command: ["redis-server","--appendonly","no"]
 
-volumes:
-  unbound_state:
+# A seção 'volumes' no nível superior não é mais necessária se nenhum

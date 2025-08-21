@@ -1,0 +1,49 @@
+[*] Removendo trust-anchor explícita do root do unbound/config/unbound.conf (vamos usar só root.key)...
+ Container hecate-unbound  Starting
+ Container hecate-unbound  Started
+[*] Regenerando trust anchor dentro do container...
+Error response from daemon: Container 0e316b288f4c563ebde2f6475b2cee4309ff59bdca9aa2c4882ec1e717582fda is restarting, wait until the container is running
+[*] Reiniciando Unbound para carregar a nova âncora...
+ Container hecate-unbound  Restarting
+ Container hecate-unbound  Started
+== Testes locais ==
+[OK] example.com
+[ERRO] dnssec-failed.org respondeu (era pra falhar)
+== Teste detalhado dentro do container ==
+Error response from daemon: Container 0e316b288f4c563ebde2f6475b2cee4309ff59bdca9aa2c4882ec1e717582fda is restarting, wait until the container is running
+== Logs recentes do Unbound ==
+[1755790784] unbound[1:0] warning: unbound is already running as pid 1.
+[1755790784] unbound[1:0] notice: init module 0: validator
+[1755790784] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755790784] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755790784] unbound[1:0] error: validator: error in trustanchors config
+[1755790784] unbound[1:0] error: validator: could not apply configuration settings.
+[1755790784] unbound[1:0] error: module init for module validator failed
+[1755790784] unbound[1:0] fatal error: failed to setup modules
+[1755790851] unbound[1:0] warning: unbound is already running as pid 1.
+[1755790851] unbound[1:0] notice: init module 0: validator
+[1755790851] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755790851] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755790851] unbound[1:0] error: validator: error in trustanchors config
+[1755790851] unbound[1:0] error: validator: could not apply configuration settings.
+[1755790851] unbound[1:0] error: module init for module validator failed
+[1755790851] unbound[1:0] fatal error: failed to setup modules
+[1755790893] unbound[1:0] warning: unbound is already running as pid 1.
+[1755790893] unbound[1:0] notice: init module 0: validator
+[1755790893] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755790893] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755790893] unbound[1:0] error: validator: error in trustanchors config
+[1755790893] unbound[1:0] error: validator: could not apply configuration settings.
+[1755790893] unbound[1:0] error: module init for module validator failed
+[1755790893] unbound[1:0] fatal error: failed to setup modules
+Refreshing root trust anchor ...
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+Refreshing root trust anchor ...
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+Refreshing root trust anchor ...
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+
+FIM. Pressione ENTER para sair...

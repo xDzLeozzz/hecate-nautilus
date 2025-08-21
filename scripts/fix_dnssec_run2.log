@@ -1,0 +1,5 @@
+ Container hecate-unbound  Stopping
+ Container hecate-unbound  Stopped
+/var/lib/unbound/root.key does not exist
+success: the anchor is ok
+

@@ -1,0 +1,111 @@
+[*] Gerando /var/lib/unbound/root.key no volume...
+/var/lib/unbound/root.key does not exist
+success: the anchor is ok
+
+ Container hecate-unbound  Starting
+ Container hecate-unbound  Started
+== nslookup via 127.0.0.1:5335 ==
+[OK] example.com
+[ERRO] dnssec-failed.org respondeu (era pra falhar)
+== unbound-host -v dentro do container ==
+[1755791510] libunbound[19:0] notice: init module 0: validator
+[1755791510] libunbound[19:0] notice: init module 1: iterator
+[1755791510] libunbound[19:0] info: resolving dnssec-failed.org. A IN
+[1755791510] libunbound[19:0] info: priming . IN NS
+[1755791511] libunbound[19:0] info: response for . NS IN
+[1755791511] libunbound[19:0] info: reply from <.> 192.58.128.30#53
+[1755791511] libunbound[19:0] info: query response was ANSWER
+[1755791511] libunbound[19:0] info: priming successful for . NS IN
+[1755791511] libunbound[19:0] info: resolving . DNSKEY IN
+[1755791511] libunbound[19:0] info: response for dnssec-failed.org. A IN
+[1755791511] libunbound[19:0] info: reply from <.> 192.203.230.10#53
+[1755791511] libunbound[19:0] info: query response was REFERRAL
+[1755791511] libunbound[19:0] info: resolving org. DNSKEY IN
+[1755791511] libunbound[19:0] info: response for . DNSKEY IN
+[1755791511] libunbound[19:0] info: reply from <.> 198.97.190.53#53
+[1755791511] libunbound[19:0] info: query response was ANSWER
+[1755791512] libunbound[19:0] info: response for org. DNSKEY IN
+[1755791512] libunbound[19:0] info: reply from <org.> 199.249.120.1#53
+[1755791512] libunbound[19:0] info: query response was ANSWER
+[1755791512] libunbound[19:0] info: response for org. DNSKEY IN
+[1755791512] libunbound[19:0] info: reply from <org.> 199.249.120.1#53
+[1755791512] libunbound[19:0] info: query response was ANSWER
+== Logs recentes do Unbound ==
+[1755791390] unbound[1:0] warning: unbound is already running as pid 1.
+[1755791390] unbound[1:0] notice: init module 0: validator
+[1755791390] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755791390] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755791390] unbound[1:0] error: validator: error in trustanchors config
+[1755791390] unbound[1:0] error: validator: could not apply configuration settings.
+[1755791390] unbound[1:0] error: module init for module validator failed
+[1755791390] unbound[1:0] fatal error: failed to setup modules
+[1755791402] unbound[1:0] warning: unbound is already running as pid 1.
+[1755791402] unbound[1:0] notice: init module 0: validator
+[1755791402] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755791402] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755791402] unbound[1:0] error: validator: error in trustanchors config
+[1755791402] unbound[1:0] error: validator: could not apply configuration settings.
+[1755791402] unbound[1:0] error: module init for module validator failed
+[1755791402] unbound[1:0] fatal error: failed to setup modules
+[1755791415] unbound[1:0] warning: unbound is already running as pid 1.
+[1755791415] unbound[1:0] notice: init module 0: validator
+[1755791415] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755791415] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755791415] unbound[1:0] error: validator: error in trustanchors config
+[1755791415] unbound[1:0] error: validator: could not apply configuration settings.
+[1755791415] unbound[1:0] error: module init for module validator failed
+[1755791415] unbound[1:0] fatal error: failed to setup modules
+[1755791443] unbound[1:0] warning: unbound is already running as pid 1.
+[1755791443] unbound[1:0] notice: init module 0: validator
+[1755791443] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755791443] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755791443] unbound[1:0] error: validator: error in trustanchors config
+[1755791443] unbound[1:0] error: validator: could not apply configuration settings.
+[1755791443] unbound[1:0] error: module init for module validator failed
+[1755791443] unbound[1:0] fatal error: failed to setup modules
+[1755791503] unbound[1:0] warning: unbound is already running as pid 1.
+[1755791503] unbound[1:0] notice: init module 0: validator
+[1755791503] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755791503] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755791503] unbound[1:0] error: validator: error in trustanchors config
+[1755791503] unbound[1:0] error: validator: could not apply configuration settings.
+[1755791503] unbound[1:0] error: module init for module validator failed
+[1755791503] unbound[1:0] fatal error: failed to setup modules
+[1755791509] unbound[1:0] warning: unbound is already running as pid 1.
+[1755791509] unbound[1:0] notice: init module 0: validator
+[1755791509] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755791509] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755791509] unbound[1:0] error: validator: error in trustanchors config
+[1755791509] unbound[1:0] error: validator: could not apply configuration settings.
+[1755791509] unbound[1:0] error: module init for module validator failed
+[1755791509] unbound[1:0] fatal error: failed to setup modules
+[1755791512] unbound[1:0] warning: unbound is already running as pid 1.
+[1755791512] unbound[1:0] notice: init module 0: validator
+[1755791512] unbound[1:0] error: unable to open /var/lib/unbound/root.key for reading: No such file or directory
+[1755791512] unbound[1:0] error: error reading auto-trust-anchor-file: /var/lib/unbound/root.key
+[1755791512] unbound[1:0] error: validator: error in trustanchors config
+[1755791512] unbound[1:0] error: validator: could not apply configuration settings.
+[1755791512] unbound[1:0] error: module init for module validator failed
+[1755791512] unbound[1:0] fatal error: failed to setup modules
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+Refreshing root trust anchor ...
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+Refreshing root trust anchor ...
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+Refreshing root trust anchor ...
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+Refreshing root trust anchor ...
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+Refreshing root trust anchor ...
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+Refreshing root trust anchor ...
+/var/lib/unbound/root.key has content
+success: the anchor is ok
+
+FIM. Pressione ENTER para sair...
