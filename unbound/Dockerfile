@@ -8,9 +8,10 @@ FROM debian:bookworm-slim AS builder
 ARG UNBOUND_VERSION
 ARG DEBIAN_FRONTEND
 
+# CORREÇÃO: Adicionado 'ca-certificates' à lista de instalação
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential libssl-dev libexpat1-dev libevent-dev \
-    libhiredis-dev wget gnupg dirmngr && \
+    libhiredis-dev wget gnupg dirmngr ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
