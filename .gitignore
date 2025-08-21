@@ -6,3 +6,5 @@ redis/data/
 # Ignorar arquivos de build do Docker
 .dockerignore
 unbound/config/*.bak
+
+unbound/config/*.bak
