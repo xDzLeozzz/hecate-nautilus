@@ -1,4 +1,4 @@
-# Hecate-Nautilus: Unbound "WarSpec" Build v5 (Correção Final)
+# Hecate-Nautilus: Unbound "WarSpec" Build v6 (Checksum Fix)
 # ---------- BUILDER ----------
 FROM debian:bookworm-slim AS builder
 
@@ -7,7 +7,7 @@ ARG UNBOUND_VERSION=1.19.3
 # Dependências de build
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential libssl-dev libexpat1-dev libevent-dev \
-    libhiredis-dev wget gnupg dirmngr ca-certificates \
+    libhiredis-dev wget ca-certificates \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
@@ -16,7 +16,9 @@ WORKDIR /tmp
 RUN set -eux; \
   wget -O "unbound-${UNBOUND_VERSION}.tar.gz"        "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz"; \
   wget -O "unbound-${UNBOUND_VERSION}.tar.gz.sha256" "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz.sha256";
-RUN sha256sum -c "unbound-${UNBOUND_VERSION}.tar.gz.sha256"
+
+# CORREÇÃO CRÍTICA: Faz a verificação do checksum de forma robusta
+RUN [ "$(sha256sum "unbound-${UNBOUND_VERSION}.tar.gz" | awk '{print $1}')" = "$(cat "unbound-${UNBOUND_VERSION}.tar.gz.sha256")" ]
 
 # Compila e instala
 RUN tar xzf "unbound-${UNBOUND_VERSION}.tar.gz" \
@@ -37,7 +39,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN useradd -r -s /usr/sbin/nologin unbound
 
 # Copia os binários, bibliotecas e configurações do builder
-# CORREÇÃO CRÍTICA: Copia TODOS os executáveis do Unbound, não apenas um.
 COPY --from=builder /usr/sbin/unbound* /usr/sbin/
 COPY --from=builder /usr/lib/libunbound.so* /usr/lib/
 COPY --from=builder /etc/unbound /etc/unbound
