@@ -32,7 +32,7 @@ RUN set -eux; \
 # Compila e instala
 RUN tar xzf "unbound-${UNBOUND_VERSION}.tar.gz" \
  && cd "unbound-${UNBOUND_VERSION}" \
- && ./configure --prefix=/usr --sysconfdir=/etc --disable-static \
+ && ./configure --prefix=/usr --sysconfdir=/etc --disable-static --with-libevent \
  && make -j"$(nproc)" \
  && make install
 
