@@ -1,1 +1,1566 @@
 [11:59:56] Iniciando DNSSEC FIX
+[main fdc1dd1] chore: checkpoint local antes do dnssec-fix
+ 2 files changed, 6 insertions(+), 7 deletions(-)
+ create mode 100644 scripts/dnssec_fix.log
+Already up to date.
+[OK] Dockerfile escrito
+[OK] unbound.conf escrito
+warning: in the working copy of '.gitattributes', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/dnssec_fix.log', LF will be replaced by CRLF the next time Git touches it
+[main 6341ecf] dnssec: runtime root + drop via username; entrypoint com unbound-anchor; validator estrito; logs no stderr
+ 4 files changed, 17 insertions(+), 11 deletions(-)
+Already up to date.
+To https://github.com/xDzLeozzz/hecate-nautilus.git
+   fa0ff93..6341ecf  main -> main
+[*] Buildando e subindo Unbound...
+#1 [internal] load local bake definitions
+#1 reading from stdin 582B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 2.75kB done
+#2 DONE 0.0s
+
+#3 [auth] library/debian:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#4 DONE 2.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [builder 1/7] FROM docker.io/library/debian:bookworm-slim@sha256:b1a741487078b369e78119849663d7f1a5341ef2768798f7b7406c4240f86aef
+#6 resolve docker.io/library/debian:bookworm-slim@sha256:b1a741487078b369e78119849663d7f1a5341ef2768798f7b7406c4240f86aef done
+#6 CACHED
+
+#7 [builder 2/7] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential libssl-dev libexpat1-dev libevent-dev     libhiredis-dev wget gnupg dirmngr ca-certificates  && rm -rf /var/lib/apt/lists/*
+#7 0.326 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 0.355 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 0.366 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#7 0.390 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8793 kB]
+#7 0.650 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#7 0.650 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [274 kB]
+#7 1.086 Fetched 9329 kB in 1s (11.5 MB/s)
+#7 1.086 Reading package lists...
+#7 1.286 Reading package lists...
+#7 1.481 Building dependency tree...
+#7 1.520 Reading state information...
+#7 1.574 The following additional packages will be installed:
+#7 1.574   binutils binutils-common binutils-x86-64-linux-gnu bzip2 cpp cpp-12 dpkg-dev
+#7 1.574   g++ g++-12 gcc gcc-12 gnupg-l10n gnupg-utils gpg gpg-agent gpg-wks-client
+#7 1.574   gpg-wks-server gpgconf gpgsm libasan8 libassuan0 libatomic1 libbinutils
+#7 1.574   libc-dev-bin libc6-dev libcc1-0 libcrypt-dev libctf-nobfd0 libctf0
+#7 1.574   libdpkg-perl libevent-2.1-7 libevent-core-2.1-7 libevent-extra-2.1-7
+#7 1.574   libevent-openssl-2.1-7 libevent-pthreads-2.1-7 libexpat1 libgcc-12-dev
+#7 1.574   libgdbm-compat4 libgdbm6 libgomp1 libgprofng0 libgssapi-krb5-2
+#7 1.574   libhiredis0.14 libisl23 libitm1 libjansson4 libk5crypto3 libkeyutils1
+#7 1.574   libkrb5-3 libkrb5support0 libksba8 libldap-2.5-0 liblsan0 libmpc3 libmpfr6
+#7 1.574   libncursesw6 libnpth0 libnsl-dev libnsl2 libperl5.36 libpsl5 libquadmath0
+#7 1.574   libreadline8 libsasl2-2 libsasl2-modules-db libsqlite3-0 libssl3
+#7 1.574   libstdc++-12-dev libtirpc-common libtirpc-dev libtirpc3 libtsan2 libubsan1
+#7 1.574   linux-libc-dev make openssl patch perl perl-modules-5.36 pinentry-curses
+#7 1.574   readline-common rpcsvc-proto xz-utils
+#7 1.575 Suggested packages:
+#7 1.575   binutils-doc bzip2-doc cpp-doc gcc-12-locales cpp-12-doc dbus-user-session
+#7 1.575   libpam-systemd pinentry-gnome3 tor debian-keyring g++-multilib
+#7 1.575   g++-12-multilib gcc-12-doc gcc-multilib manpages-dev autoconf automake
+#7 1.575   libtool flex bison gdb gcc-doc gcc-12-multilib parcimonie xloadimage
+#7 1.575   scdaemon glibc-doc sensible-utils git bzr gdbm-l10n krb5-doc krb5-user
+#7 1.575   libssl-doc libstdc++-12-doc make-doc ed diffutils-doc perl-doc
+#7 1.575   libterm-readline-gnu-perl | libterm-readline-perl-perl
+#7 1.575   libtap-harness-archive-perl pinentry-doc readline-doc
+#7 1.575 Recommended packages:
+#7 1.575   fakeroot libalgorithm-merge-perl manpages manpages-dev libc-devtools
+#7 1.575   libfile-fcntllock-perl liblocale-gettext-perl krb5-locales libldap-common
+#7 1.575   libgpm2 publicsuffix libsasl2-modules netbase
+#7 1.732 The following NEW packages will be installed:
+#7 1.732   binutils binutils-common binutils-x86-64-linux-gnu build-essential bzip2
+#7 1.732   ca-certificates cpp cpp-12 dirmngr dpkg-dev g++ g++-12 gcc gcc-12 gnupg
+#7 1.732   gnupg-l10n gnupg-utils gpg gpg-agent gpg-wks-client gpg-wks-server gpgconf
+#7 1.732   gpgsm libasan8 libassuan0 libatomic1 libbinutils libc-dev-bin libc6-dev
+#7 1.732   libcc1-0 libcrypt-dev libctf-nobfd0 libctf0 libdpkg-perl libevent-2.1-7
+#7 1.732   libevent-core-2.1-7 libevent-dev libevent-extra-2.1-7 libevent-openssl-2.1-7
+#7 1.732   libevent-pthreads-2.1-7 libexpat1 libexpat1-dev libgcc-12-dev
+#7 1.732   libgdbm-compat4 libgdbm6 libgomp1 libgprofng0 libgssapi-krb5-2
+#7 1.732   libhiredis-dev libhiredis0.14 libisl23 libitm1 libjansson4 libk5crypto3
+#7 1.732   libkeyutils1 libkrb5-3 libkrb5support0 libksba8 libldap-2.5-0 liblsan0
+#7 1.732   libmpc3 libmpfr6 libncursesw6 libnpth0 libnsl-dev libnsl2 libperl5.36
+#7 1.732   libpsl5 libquadmath0 libreadline8 libsasl2-2 libsasl2-modules-db
+#7 1.732   libsqlite3-0 libssl-dev libssl3 libstdc++-12-dev libtirpc-common
+#7 1.732   libtirpc-dev libtirpc3 libtsan2 libubsan1 linux-libc-dev make openssl patch
+#7 1.732   perl perl-modules-5.36 pinentry-curses readline-common rpcsvc-proto wget
+#7 1.732   xz-utils
+#7 1.761 0 upgraded, 92 newly installed, 0 to remove and 0 not upgraded.
+#7 1.761 Need to get 92.0 MB of archives.
+#7 1.761 After this operation, 366 MB of additional disk space will be used.
+#7 1.761 Get:1 http://deb.debian.org/debian bookworm/main amd64 perl-modules-5.36 all 5.36.0-7+deb12u2 [2815 kB]
+#7 1.864 Get:2 http://deb.debian.org/debian bookworm/main amd64 libgdbm6 amd64 1.23-3 [72.2 kB]
+#7 1.866 Get:3 http://deb.debian.org/debian bookworm/main amd64 libgdbm-compat4 amd64 1.23-3 [48.2 kB]
+#7 1.866 Get:4 http://deb.debian.org/debian bookworm/main amd64 libperl5.36 amd64 5.36.0-7+deb12u2 [4207 kB]
+#7 1.942 Get:5 http://deb.debian.org/debian bookworm/main amd64 perl amd64 5.36.0-7+deb12u2 [239 kB]
+#7 1.945 Get:6 http://deb.debian.org/debian bookworm/main amd64 readline-common all 8.2-1.3 [69.0 kB]
+#7 1.946 Get:7 http://deb.debian.org/debian bookworm/main amd64 bzip2 amd64 1.0.8-5+b1 [49.8 kB]
+#7 1.948 Get:8 http://deb.debian.org/debian bookworm-updates/main amd64 libssl3 amd64 3.0.17-1~deb12u2 [2027 kB]
+#7 1.979 Get:9 http://deb.debian.org/debian bookworm-updates/main amd64 openssl amd64 3.0.17-1~deb12u2 [1430 kB]
+#7 2.002 Get:10 http://deb.debian.org/debian bookworm-updates/main amd64 ca-certificates all 20230311+deb12u1 [155 kB]
+#7 2.005 Get:11 http://deb.debian.org/debian bookworm/main amd64 libpsl5 amd64 0.21.2-1 [58.7 kB]
+#7 2.006 Get:12 http://deb.debian.org/debian bookworm/main amd64 wget amd64 1.21.3-1+deb12u1 [937 kB]
+#7 2.021 Get:13 http://deb.debian.org/debian bookworm/main amd64 xz-utils amd64 5.4.1-1 [471 kB]
+#7 2.029 Get:14 http://deb.debian.org/debian bookworm/main amd64 binutils-common amd64 2.40-2 [2487 kB]
+#7 2.068 Get:15 http://deb.debian.org/debian bookworm/main amd64 libbinutils amd64 2.40-2 [572 kB]
+#7 2.077 Get:16 http://deb.debian.org/debian bookworm/main amd64 libctf-nobfd0 amd64 2.40-2 [153 kB]
+#7 2.081 Get:17 http://deb.debian.org/debian bookworm/main amd64 libctf0 amd64 2.40-2 [89.8 kB]
+#7 2.082 Get:18 http://deb.debian.org/debian bookworm/main amd64 libgprofng0 amd64 2.40-2 [812 kB]
+#7 2.095 Get:19 http://deb.debian.org/debian bookworm/main amd64 libjansson4 amd64 2.14-2 [40.8 kB]
+#7 2.096 Get:20 http://deb.debian.org/debian bookworm/main amd64 binutils-x86-64-linux-gnu amd64 2.40-2 [2246 kB]
+#7 2.133 Get:21 http://deb.debian.org/debian bookworm/main amd64 binutils amd64 2.40-2 [65.0 kB]
+#7 2.134 Get:22 http://deb.debian.org/debian bookworm/main amd64 libc-dev-bin amd64 2.36-9+deb12u10 [47.1 kB]
+#7 2.135 Get:23 http://deb.debian.org/debian-security bookworm-security/main amd64 linux-libc-dev amd64 6.1.147-1 [2171 kB]
+#7 2.169 Get:24 http://deb.debian.org/debian bookworm/main amd64 libcrypt-dev amd64 1:4.4.33-2 [118 kB]
+#7 2.171 Get:25 http://deb.debian.org/debian bookworm/main amd64 libkrb5support0 amd64 1.20.1-2+deb12u3 [32.8 kB]
+#7 2.172 Get:26 http://deb.debian.org/debian bookworm/main amd64 libk5crypto3 amd64 1.20.1-2+deb12u3 [78.9 kB]
+#7 2.174 Get:27 http://deb.debian.org/debian bookworm/main amd64 libkeyutils1 amd64 1.6.3-2 [8808 B]
+#7 2.174 Get:28 http://deb.debian.org/debian bookworm/main amd64 libkrb5-3 amd64 1.20.1-2+deb12u3 [332 kB]
+#7 2.179 Get:29 http://deb.debian.org/debian bookworm/main amd64 libgssapi-krb5-2 amd64 1.20.1-2+deb12u3 [135 kB]
+#7 2.181 Get:30 http://deb.debian.org/debian bookworm/main amd64 libtirpc-common all 1.3.3+ds-1 [14.0 kB]
+#7 2.182 Get:31 http://deb.debian.org/debian bookworm/main amd64 libtirpc3 amd64 1.3.3+ds-1 [85.2 kB]
+#7 2.183 Get:32 http://deb.debian.org/debian bookworm/main amd64 libnsl2 amd64 1.3.0-2 [39.5 kB]
+#7 2.184 Get:33 http://deb.debian.org/debian bookworm/main amd64 libtirpc-dev amd64 1.3.3+ds-1 [191 kB]
+#7 2.188 Get:34 http://deb.debian.org/debian bookworm/main amd64 libnsl-dev amd64 1.3.0-2 [66.4 kB]
+#7 2.189 Get:35 http://deb.debian.org/debian bookworm/main amd64 rpcsvc-proto amd64 1.4.3-1 [63.3 kB]
+#7 2.191 Get:36 http://deb.debian.org/debian bookworm/main amd64 libc6-dev amd64 2.36-9+deb12u10 [1903 kB]
+#7 2.224 Get:37 http://deb.debian.org/debian bookworm/main amd64 libisl23 amd64 0.25-1.1 [683 kB]
+#7 2.237 Get:38 http://deb.debian.org/debian bookworm/main amd64 libmpfr6 amd64 4.2.0-1 [701 kB]
+#7 2.246 Get:39 http://deb.debian.org/debian bookworm/main amd64 libmpc3 amd64 1.3.1-1 [51.5 kB]
+#7 2.247 Get:40 http://deb.debian.org/debian bookworm/main amd64 cpp-12 amd64 12.2.0-14+deb12u1 [9768 kB]
+#7 2.389 Get:41 http://deb.debian.org/debian bookworm/main amd64 cpp amd64 4:12.2.0-3 [6836 B]
+#7 2.389 Get:42 http://deb.debian.org/debian bookworm/main amd64 libcc1-0 amd64 12.2.0-14+deb12u1 [41.7 kB]
+#7 2.389 Get:43 http://deb.debian.org/debian bookworm/main amd64 libgomp1 amd64 12.2.0-14+deb12u1 [116 kB]
+#7 2.391 Get:44 http://deb.debian.org/debian bookworm/main amd64 libitm1 amd64 12.2.0-14+deb12u1 [26.1 kB]
+#7 2.392 Get:45 http://deb.debian.org/debian bookworm/main amd64 libatomic1 amd64 12.2.0-14+deb12u1 [9376 B]
+#7 2.392 Get:46 http://deb.debian.org/debian bookworm/main amd64 libasan8 amd64 12.2.0-14+deb12u1 [2193 kB]
+#7 2.424 Get:47 http://deb.debian.org/debian bookworm/main amd64 liblsan0 amd64 12.2.0-14+deb12u1 [969 kB]
+#7 2.438 Get:48 http://deb.debian.org/debian bookworm/main amd64 libtsan2 amd64 12.2.0-14+deb12u1 [2197 kB]
+#7 2.466 Get:49 http://deb.debian.org/debian bookworm/main amd64 libubsan1 amd64 12.2.0-14+deb12u1 [883 kB]
+#7 2.477 Get:50 http://deb.debian.org/debian bookworm/main amd64 libquadmath0 amd64 12.2.0-14+deb12u1 [145 kB]
+#7 2.480 Get:51 http://deb.debian.org/debian bookworm/main amd64 libgcc-12-dev amd64 12.2.0-14+deb12u1 [2437 kB]
+#7 2.513 Get:52 http://deb.debian.org/debian bookworm/main amd64 gcc-12 amd64 12.2.0-14+deb12u1 [19.3 MB]
+#7 2.778 Get:53 http://deb.debian.org/debian bookworm/main amd64 gcc amd64 4:12.2.0-3 [5216 B]
+#7 2.779 Get:54 http://deb.debian.org/debian bookworm/main amd64 libstdc++-12-dev amd64 12.2.0-14+deb12u1 [2047 kB]
+#7 2.804 Get:55 http://deb.debian.org/debian bookworm/main amd64 g++-12 amd64 12.2.0-14+deb12u1 [10.7 MB]
+#7 2.999 Get:56 http://deb.debian.org/debian bookworm/main amd64 g++ amd64 4:12.2.0-3 [1356 B]
+#7 2.999 Get:57 http://deb.debian.org/debian bookworm/main amd64 make amd64 4.3-4.1 [396 kB]
+#7 3.004 Get:58 http://deb.debian.org/debian bookworm/main amd64 libdpkg-perl all 1.21.22 [603 kB]
+#7 3.015 Get:59 http://deb.debian.org/debian bookworm/main amd64 patch amd64 2.7.6-7 [128 kB]
+#7 3.018 Get:60 http://deb.debian.org/debian bookworm/main amd64 dpkg-dev all 1.21.22 [1353 kB]
+#7 3.041 Get:61 http://deb.debian.org/debian bookworm/main amd64 build-essential amd64 12.9 [7704 B]
+#7 3.042 Get:62 http://deb.debian.org/debian bookworm/main amd64 libassuan0 amd64 2.5.5-5 [48.5 kB]
+#7 3.043 Get:63 http://deb.debian.org/debian bookworm/main amd64 libreadline8 amd64 8.2-1.3 [166 kB]
+#7 3.045 Get:64 http://deb.debian.org/debian bookworm/main amd64 gpgconf amd64 2.2.40-1.1 [564 kB]
+#7 3.055 Get:65 http://deb.debian.org/debian bookworm/main amd64 libksba8 amd64 1.6.3-2 [128 kB]
+#7 3.058 Get:66 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10 [20.3 kB]
+#7 3.058 Get:67 http://deb.debian.org/debian bookworm/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10 [59.7 kB]
+#7 3.060 Get:68 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#7 3.063 Get:69 http://deb.debian.org/debian bookworm/main amd64 libnpth0 amd64 1.6-3 [19.0 kB]
+#7 3.063 Get:70 http://deb.debian.org/debian bookworm/main amd64 dirmngr amd64 2.2.40-1.1 [792 kB]
+#7 3.077 Get:71 http://deb.debian.org/debian bookworm/main amd64 gnupg-l10n all 2.2.40-1.1 [1093 kB]
+#7 3.096 Get:72 http://deb.debian.org/debian bookworm/main amd64 gnupg-utils amd64 2.2.40-1.1 [927 kB]
+#7 3.112 Get:73 http://deb.debian.org/debian bookworm/main amd64 libsqlite3-0 amd64 3.40.1-2+deb12u1 [839 kB]
+#7 3.126 Get:74 http://deb.debian.org/debian bookworm/main amd64 gpg amd64 2.2.40-1.1 [949 kB]
+#7 3.143 Get:75 http://deb.debian.org/debian bookworm/main amd64 libncursesw6 amd64 6.4-4 [134 kB]
+#7 3.145 Get:76 http://deb.debian.org/debian bookworm/main amd64 pinentry-curses amd64 1.2.1-1 [77.4 kB]
+#7 3.146 Get:77 http://deb.debian.org/debian bookworm/main amd64 gpg-agent amd64 2.2.40-1.1 [695 kB]
+#7 3.159 Get:78 http://deb.debian.org/debian bookworm/main amd64 gpg-wks-client amd64 2.2.40-1.1 [541 kB]
+#7 3.168 Get:79 http://deb.debian.org/debian bookworm/main amd64 gpg-wks-server amd64 2.2.40-1.1 [531 kB]
+#7 3.177 Get:80 http://deb.debian.org/debian bookworm/main amd64 gpgsm amd64 2.2.40-1.1 [671 kB]
+#7 3.190 Get:81 http://deb.debian.org/debian bookworm/main amd64 gnupg all 2.2.40-1.1 [846 kB]
+#7 3.204 Get:82 http://deb.debian.org/debian bookworm/main amd64 libevent-2.1-7 amd64 2.1.12-stable-8 [180 kB]
+#7 3.207 Get:83 http://deb.debian.org/debian bookworm/main amd64 libevent-core-2.1-7 amd64 2.1.12-stable-8 [131 kB]
+#7 3.209 Get:84 http://deb.debian.org/debian bookworm/main amd64 libevent-extra-2.1-7 amd64 2.1.12-stable-8 [107 kB]
+#7 3.211 Get:85 http://deb.debian.org/debian bookworm/main amd64 libevent-pthreads-2.1-7 amd64 2.1.12-stable-8 [53.6 kB]
+#7 3.212 Get:86 http://deb.debian.org/debian bookworm/main amd64 libevent-openssl-2.1-7 amd64 2.1.12-stable-8 [60.6 kB]
+#7 3.213 Get:87 http://deb.debian.org/debian bookworm/main amd64 libevent-dev amd64 2.1.12-stable-8 [305 kB]
+#7 3.218 Get:88 http://deb.debian.org/debian bookworm/main amd64 libexpat1 amd64 2.5.0-1+deb12u1 [98.9 kB]
+#7 3.219 Get:89 http://deb.debian.org/debian bookworm/main amd64 libexpat1-dev amd64 2.5.0-1+deb12u1 [150 kB]
+#7 3.222 Get:90 http://deb.debian.org/debian bookworm/main amd64 libhiredis0.14 amd64 0.14.1-3 [35.9 kB]
+#7 3.223 Get:91 http://deb.debian.org/debian bookworm/main amd64 libhiredis-dev amd64 0.14.1-3 [55.7 kB]
+#7 3.224 Get:92 http://deb.debian.org/debian bookworm-updates/main amd64 libssl-dev amd64 3.0.17-1~deb12u2 [2441 kB]
+#7 3.313 debconf: delaying package configuration, since apt-utils is not installed
+#7 ...
+
+#8 [stage-1 2/8] RUN apt-get update && apt-get install -y --no-install-recommends     libssl3 libexpat1 libevent-2.1-7 libhiredis0.14 ca-certificates  && rm -rf /var/lib/apt/lists/*
+#8 0.326 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#8 0.355 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#8 0.368 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#8 0.390 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8793 kB]
+#8 0.651 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#8 0.651 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [274 kB]
+#8 1.083 Fetched 9329 kB in 1s (11.6 MB/s)
+#8 1.083 Reading package lists...
+#8 1.290 Reading package lists...
+#8 1.472 Building dependency tree...
+#8 1.506 Reading state information...
+#8 1.554 The following additional packages will be installed:
+#8 1.554   openssl
+#8 1.570 The following NEW packages will be installed:
+#8 1.570   ca-certificates libevent-2.1-7 libexpat1 libhiredis0.14 libssl3 openssl
+#8 1.596 0 upgraded, 6 newly installed, 0 to remove and 0 not upgraded.
+#8 1.596 Need to get 3928 kB of archives.
+#8 1.596 After this operation, 9859 kB of additional disk space will be used.
+#8 1.596 Get:1 http://deb.debian.org/debian bookworm-updates/main amd64 libssl3 amd64 3.0.17-1~deb12u2 [2027 kB]
+#8 1.673 Get:2 http://deb.debian.org/debian bookworm-updates/main amd64 openssl amd64 3.0.17-1~deb12u2 [1430 kB]
+#8 1.696 Get:3 http://deb.debian.org/debian bookworm-updates/main amd64 ca-certificates all 20230311+deb12u1 [155 kB]
+#8 1.698 Get:4 http://deb.debian.org/debian bookworm/main amd64 libevent-2.1-7 amd64 2.1.12-stable-8 [180 kB]
+#8 1.700 Get:5 http://deb.debian.org/debian bookworm/main amd64 libexpat1 amd64 2.5.0-1+deb12u1 [98.9 kB]
+#8 1.702 Get:6 http://deb.debian.org/debian bookworm/main amd64 libhiredis0.14 amd64 0.14.1-3 [35.9 kB]
+#8 1.772 debconf: delaying package configuration, since apt-utils is not installed
+#8 1.781 Fetched 3928 kB in 0s (30.2 MB/s)
+#8 1.791 Selecting previously unselected package libssl3:amd64.
+#8 1.791 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6089 files and directories currently installed.)
+#8 1.805 Preparing to unpack .../0-libssl3_3.0.17-1~deb12u2_amd64.deb ...
+#8 1.808 Unpacking libssl3:amd64 (3.0.17-1~deb12u2) ...
+#8 1.887 Selecting previously unselected package openssl.
+#8 1.887 Preparing to unpack .../1-openssl_3.0.17-1~deb12u2_amd64.deb ...
+#8 1.889 Unpacking openssl (3.0.17-1~deb12u2) ...
+#8 1.956 Selecting previously unselected package ca-certificates.
+#8 1.957 Preparing to unpack .../2-ca-certificates_20230311+deb12u1_all.deb ...
+#8 1.958 Unpacking ca-certificates (20230311+deb12u1) ...
+#8 2.009 Selecting previously unselected package libevent-2.1-7:amd64.
+#8 2.010 Preparing to unpack .../3-libevent-2.1-7_2.1.12-stable-8_amd64.deb ...
+#8 2.011 Unpacking libevent-2.1-7:amd64 (2.1.12-stable-8) ...
+#8 2.034 Selecting previously unselected package libexpat1:amd64.
+#8 2.034 Preparing to unpack .../4-libexpat1_2.5.0-1+deb12u1_amd64.deb ...
+#8 2.036 Unpacking libexpat1:amd64 (2.5.0-1+deb12u1) ...
+#8 2.055 Selecting previously unselected package libhiredis0.14:amd64.
+#8 2.055 Preparing to unpack .../5-libhiredis0.14_0.14.1-3_amd64.deb ...
+#8 2.057 Unpacking libhiredis0.14:amd64 (0.14.1-3) ...
+#8 2.072 Setting up libexpat1:amd64 (2.5.0-1+deb12u1) ...
+#8 2.077 Setting up libssl3:amd64 (3.0.17-1~deb12u2) ...
+#8 2.081 Setting up libevent-2.1-7:amd64 (2.1.12-stable-8) ...
+#8 2.085 Setting up openssl (3.0.17-1~deb12u2) ...
+#8 2.091 Setting up libhiredis0.14:amd64 (0.14.1-3) ...
+#8 2.095 Setting up ca-certificates (20230311+deb12u1) ...
+#8 2.144 debconf: unable to initialize frontend: Dialog
+#8 2.144 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#8 2.144 debconf: falling back to frontend: Readline
+#8 2.145 debconf: unable to initialize frontend: Readline
+#8 2.145 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#8 2.145 debconf: falling back to frontend: Teletype
+#8 2.457 Updating certificates in /etc/ssl/certs...
+#8 2.888 142 added, 0 removed; done.
+#8 2.901 Processing triggers for libc-bin (2.36-9+deb12u10) ...
+#8 2.918 Processing triggers for ca-certificates (20230311+deb12u1) ...
+#8 2.922 Updating certificates in /etc/ssl/certs...
+#8 3.263 0 added, 0 removed; done.
+#8 3.263 Running hooks in /etc/ca-certificates/update.d...
+#8 3.265 done.
+#8 DONE 3.3s
+
+#7 [builder 2/7] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential libssl-dev libexpat1-dev libevent-dev     libhiredis-dev wget gnupg dirmngr ca-certificates  && rm -rf /var/lib/apt/lists/*
+#7 3.323 Fetched 92.0 MB in 2s (60.1 MB/s)
+#7 3.330 Selecting previously unselected package perl-modules-5.36.
+#7 3.330 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6089 files and directories currently installed.)
+#7 3.333 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u2_all.deb ...
+#7 3.334 Unpacking perl-modules-5.36 (5.36.0-7+deb12u2) ...
+#7 3.542 Selecting previously unselected package libgdbm6:amd64.
+#7 ...
+
+#9 [stage-1 3/8] RUN groupadd -r unbound && useradd -r -g unbound -s /usr/sbin/nologin -d /var/lib/unbound -M unbound  && mkdir -p /var/lib/unbound /var/run/unbound /etc/unbound  && chown -R unbound:unbound /var/lib/unbound /var/run/unbound /etc/unbound
+#9 DONE 0.3s
+
+#7 [builder 2/7] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential libssl-dev libexpat1-dev libevent-dev     libhiredis-dev wget gnupg dirmngr ca-certificates  && rm -rf /var/lib/apt/lists/*
+#7 3.543 Preparing to unpack .../01-libgdbm6_1.23-3_amd64.deb ...
+#7 3.545 Unpacking libgdbm6:amd64 (1.23-3) ...
+#7 3.561 Selecting previously unselected package libgdbm-compat4:amd64.
+#7 3.561 Preparing to unpack .../02-libgdbm-compat4_1.23-3_amd64.deb ...
+#7 3.563 Unpacking libgdbm-compat4:amd64 (1.23-3) ...
+#7 3.577 Selecting previously unselected package libperl5.36:amd64.
+#7 3.577 Preparing to unpack .../03-libperl5.36_5.36.0-7+deb12u2_amd64.deb ...
+#7 3.578 Unpacking libperl5.36:amd64 (5.36.0-7+deb12u2) ...
+#7 3.756 Selecting previously unselected package perl.
+#7 3.757 Preparing to unpack .../04-perl_5.36.0-7+deb12u2_amd64.deb ...
+#7 3.761 Unpacking perl (5.36.0-7+deb12u2) ...
+#7 3.782 Selecting previously unselected package readline-common.
+#7 3.783 Preparing to unpack .../05-readline-common_8.2-1.3_all.deb ...
+#7 3.784 Unpacking readline-common (8.2-1.3) ...
+#7 3.797 Selecting previously unselected package bzip2.
+#7 3.797 Preparing to unpack .../06-bzip2_1.0.8-5+b1_amd64.deb ...
+#7 3.798 Unpacking bzip2 (1.0.8-5+b1) ...
+#7 3.813 Selecting previously unselected package libssl3:amd64.
+#7 3.814 Preparing to unpack .../07-libssl3_3.0.17-1~deb12u2_amd64.deb ...
+#7 3.815 Unpacking libssl3:amd64 (3.0.17-1~deb12u2) ...
+#7 3.886 Selecting previously unselected package openssl.
+#7 3.887 Preparing to unpack .../08-openssl_3.0.17-1~deb12u2_amd64.deb ...
+#7 3.888 Unpacking openssl (3.0.17-1~deb12u2) ...
+#7 3.947 Selecting previously unselected package ca-certificates.
+#7 3.948 Preparing to unpack .../09-ca-certificates_20230311+deb12u1_all.deb ...
+#7 3.949 Unpacking ca-certificates (20230311+deb12u1) ...
+#7 3.983 Selecting previously unselected package libpsl5:amd64.
+#7 3.983 Preparing to unpack .../10-libpsl5_0.21.2-1_amd64.deb ...
+#7 3.984 Unpacking libpsl5:amd64 (0.21.2-1) ...
+#7 3.997 Selecting previously unselected package wget.
+#7 3.998 Preparing to unpack .../11-wget_1.21.3-1+deb12u1_amd64.deb ...
+#7 3.999 Unpacking wget (1.21.3-1+deb12u1) ...
+#7 4.038 Selecting previously unselected package xz-utils.
+#7 4.039 Preparing to unpack .../12-xz-utils_5.4.1-1_amd64.deb ...
+#7 4.040 Unpacking xz-utils (5.4.1-1) ...
+#7 4.069 Selecting previously unselected package binutils-common:amd64.
+#7 4.069 Preparing to unpack .../13-binutils-common_2.40-2_amd64.deb ...
+#7 4.070 Unpacking binutils-common:amd64 (2.40-2) ...
+#7 4.170 Selecting previously unselected package libbinutils:amd64.
+#7 4.171 Preparing to unpack .../14-libbinutils_2.40-2_amd64.deb ...
+#7 4.172 Unpacking libbinutils:amd64 (2.40-2) ...
+#7 4.205 Selecting previously unselected package libctf-nobfd0:amd64.
+#7 4.205 Preparing to unpack .../15-libctf-nobfd0_2.40-2_amd64.deb ...
+#7 4.206 Unpacking libctf-nobfd0:amd64 (2.40-2) ...
+#7 4.225 Selecting previously unselected package libctf0:amd64.
+#7 4.225 Preparing to unpack .../16-libctf0_2.40-2_amd64.deb ...
+#7 4.227 Unpacking libctf0:amd64 (2.40-2) ...
+#7 4.242 Selecting previously unselected package libgprofng0:amd64.
+#7 4.243 Preparing to unpack .../17-libgprofng0_2.40-2_amd64.deb ...
+#7 4.244 Unpacking libgprofng0:amd64 (2.40-2) ...
+#7 4.285 Selecting previously unselected package libjansson4:amd64.
+#7 4.285 Preparing to unpack .../18-libjansson4_2.14-2_amd64.deb ...
+#7 4.286 Unpacking libjansson4:amd64 (2.14-2) ...
+#7 4.297 Selecting previously unselected package binutils-x86-64-linux-gnu.
+#7 4.298 Preparing to unpack .../19-binutils-x86-64-linux-gnu_2.40-2_amd64.deb ...
+#7 4.299 Unpacking binutils-x86-64-linux-gnu (2.40-2) ...
+#7 4.408 Selecting previously unselected package binutils.
+#7 4.409 Preparing to unpack .../20-binutils_2.40-2_amd64.deb ...
+#7 4.410 Unpacking binutils (2.40-2) ...
+#7 4.423 Selecting previously unselected package libc-dev-bin.
+#7 4.423 Preparing to unpack .../21-libc-dev-bin_2.36-9+deb12u10_amd64.deb ...
+#7 4.425 Unpacking libc-dev-bin (2.36-9+deb12u10) ...
+#7 4.437 Selecting previously unselected package linux-libc-dev:amd64.
+#7 4.437 Preparing to unpack .../22-linux-libc-dev_6.1.147-1_amd64.deb ...
+#7 4.439 Unpacking linux-libc-dev:amd64 (6.1.147-1) ...
+#7 4.577 Selecting previously unselected package libcrypt-dev:amd64.
+#7 4.577 Preparing to unpack .../23-libcrypt-dev_1%3a4.4.33-2_amd64.deb ...
+#7 4.581 Unpacking libcrypt-dev:amd64 (1:4.4.33-2) ...
+#7 4.598 Selecting previously unselected package libkrb5support0:amd64.
+#7 4.598 Preparing to unpack .../24-libkrb5support0_1.20.1-2+deb12u3_amd64.deb ...
+#7 4.600 Unpacking libkrb5support0:amd64 (1.20.1-2+deb12u3) ...
+#7 4.613 Selecting previously unselected package libk5crypto3:amd64.
+#7 4.614 Preparing to unpack .../25-libk5crypto3_1.20.1-2+deb12u3_amd64.deb ...
+#7 4.615 Unpacking libk5crypto3:amd64 (1.20.1-2+deb12u3) ...
+#7 4.630 Selecting previously unselected package libkeyutils1:amd64.
+#7 4.631 Preparing to unpack .../26-libkeyutils1_1.6.3-2_amd64.deb ...
+#7 4.632 Unpacking libkeyutils1:amd64 (1.6.3-2) ...
+#7 4.644 Selecting previously unselected package libkrb5-3:amd64.
+#7 4.645 Preparing to unpack .../27-libkrb5-3_1.20.1-2+deb12u3_amd64.deb ...
+#7 4.646 Unpacking libkrb5-3:amd64 (1.20.1-2+deb12u3) ...
+#7 4.671 Selecting previously unselected package libgssapi-krb5-2:amd64.
+#7 4.671 Preparing to unpack .../28-libgssapi-krb5-2_1.20.1-2+deb12u3_amd64.deb ...
+#7 4.673 Unpacking libgssapi-krb5-2:amd64 (1.20.1-2+deb12u3) ...
+#7 4.689 Selecting previously unselected package libtirpc-common.
+#7 4.689 Preparing to unpack .../29-libtirpc-common_1.3.3+ds-1_all.deb ...
+#7 4.691 Unpacking libtirpc-common (1.3.3+ds-1) ...
+#7 4.703 Selecting previously unselected package libtirpc3:amd64.
+#7 4.703 Preparing to unpack .../30-libtirpc3_1.3.3+ds-1_amd64.deb ...
+#7 4.704 Unpacking libtirpc3:amd64 (1.3.3+ds-1) ...
+#7 4.719 Selecting previously unselected package libnsl2:amd64.
+#7 4.719 Preparing to unpack .../31-libnsl2_1.3.0-2_amd64.deb ...
+#7 4.721 Unpacking libnsl2:amd64 (1.3.0-2) ...
+#7 4.732 Selecting previously unselected package libtirpc-dev:amd64.
+#7 4.732 Preparing to unpack .../32-libtirpc-dev_1.3.3+ds-1_amd64.deb ...
+#7 4.733 Unpacking libtirpc-dev:amd64 (1.3.3+ds-1) ...
+#7 4.751 Selecting previously unselected package libnsl-dev:amd64.
+#7 4.751 Preparing to unpack .../33-libnsl-dev_1.3.0-2_amd64.deb ...
+#7 4.752 Unpacking libnsl-dev:amd64 (1.3.0-2) ...
+#7 4.765 Selecting previously unselected package rpcsvc-proto.
+#7 4.765 Preparing to unpack .../34-rpcsvc-proto_1.4.3-1_amd64.deb ...
+#7 4.766 Unpacking rpcsvc-proto (1.4.3-1) ...
+#7 4.780 Selecting previously unselected package libc6-dev:amd64.
+#7 4.781 Preparing to unpack .../35-libc6-dev_2.36-9+deb12u10_amd64.deb ...
+#7 4.782 Unpacking libc6-dev:amd64 (2.36-9+deb12u10) ...
+#7 4.881 Selecting previously unselected package libisl23:amd64.
+#7 4.881 Preparing to unpack .../36-libisl23_0.25-1.1_amd64.deb ...
+#7 4.883 Unpacking libisl23:amd64 (0.25-1.1) ...
+#7 4.917 Selecting previously unselected package libmpfr6:amd64.
+#7 4.918 Preparing to unpack .../37-libmpfr6_4.2.0-1_amd64.deb ...
+#7 4.919 Unpacking libmpfr6:amd64 (4.2.0-1) ...
+#7 4.946 Selecting previously unselected package libmpc3:amd64.
+#7 4.946 Preparing to unpack .../38-libmpc3_1.3.1-1_amd64.deb ...
+#7 4.948 Unpacking libmpc3:amd64 (1.3.1-1) ...
+#7 4.959 Selecting previously unselected package cpp-12.
+#7 4.960 Preparing to unpack .../39-cpp-12_12.2.0-14+deb12u1_amd64.deb ...
+#7 4.961 Unpacking cpp-12 (12.2.0-14+deb12u1) ...
+#7 5.270 Selecting previously unselected package cpp.
+#7 5.271 Preparing to unpack .../40-cpp_4%3a12.2.0-3_amd64.deb ...
+#7 5.272 Unpacking cpp (4:12.2.0-3) ...
+#7 5.285 Selecting previously unselected package libcc1-0:amd64.
+#7 5.285 Preparing to unpack .../41-libcc1-0_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.287 Unpacking libcc1-0:amd64 (12.2.0-14+deb12u1) ...
+#7 5.300 Selecting previously unselected package libgomp1:amd64.
+#7 5.300 Preparing to unpack .../42-libgomp1_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.301 Unpacking libgomp1:amd64 (12.2.0-14+deb12u1) ...
+#7 5.318 Selecting previously unselected package libitm1:amd64.
+#7 5.319 Preparing to unpack .../43-libitm1_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.320 Unpacking libitm1:amd64 (12.2.0-14+deb12u1) ...
+#7 5.333 Selecting previously unselected package libatomic1:amd64.
+#7 5.334 Preparing to unpack .../44-libatomic1_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.335 Unpacking libatomic1:amd64 (12.2.0-14+deb12u1) ...
+#7 5.346 Selecting previously unselected package libasan8:amd64.
+#7 5.347 Preparing to unpack .../45-libasan8_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.348 Unpacking libasan8:amd64 (12.2.0-14+deb12u1) ...
+#7 5.439 Selecting previously unselected package liblsan0:amd64.
+#7 5.440 Preparing to unpack .../46-liblsan0_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.441 Unpacking liblsan0:amd64 (12.2.0-14+deb12u1) ...
+#7 5.487 Selecting previously unselected package libtsan2:amd64.
+#7 5.487 Preparing to unpack .../47-libtsan2_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.488 Unpacking libtsan2:amd64 (12.2.0-14+deb12u1) ...
+#7 5.580 Selecting previously unselected package libubsan1:amd64.
+#7 5.581 Preparing to unpack .../48-libubsan1_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.582 Unpacking libubsan1:amd64 (12.2.0-14+deb12u1) ...
+#7 5.626 Selecting previously unselected package libquadmath0:amd64.
+#7 5.626 Preparing to unpack .../49-libquadmath0_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.628 Unpacking libquadmath0:amd64 (12.2.0-14+deb12u1) ...
+#7 5.644 Selecting previously unselected package libgcc-12-dev:amd64.
+#7 5.645 Preparing to unpack .../50-libgcc-12-dev_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.646 Unpacking libgcc-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#7 5.735 Selecting previously unselected package gcc-12.
+#7 5.736 Preparing to unpack .../51-gcc-12_12.2.0-14+deb12u1_amd64.deb ...
+#7 5.737 Unpacking gcc-12 (12.2.0-14+deb12u1) ...
+#7 6.111 Selecting previously unselected package gcc.
+#7 6.112 Preparing to unpack .../52-gcc_4%3a12.2.0-3_amd64.deb ...
+#7 6.113 Unpacking gcc (4:12.2.0-3) ...
+#7 6.125 Selecting previously unselected package libstdc++-12-dev:amd64.
+#7 6.125 Preparing to unpack .../53-libstdc++-12-dev_12.2.0-14+deb12u1_amd64.deb ...
+#7 6.126 Unpacking libstdc++-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#7 6.268 Selecting previously unselected package g++-12.
+#7 6.268 Preparing to unpack .../54-g++-12_12.2.0-14+deb12u1_amd64.deb ...
+#7 6.270 Unpacking g++-12 (12.2.0-14+deb12u1) ...
+#7 6.584 Selecting previously unselected package g++.
+#7 6.584 Preparing to unpack .../55-g++_4%3a12.2.0-3_amd64.deb ...
+#7 6.586 Unpacking g++ (4:12.2.0-3) ...
+#7 6.596 Selecting previously unselected package make.
+#7 6.597 Preparing to unpack .../56-make_4.3-4.1_amd64.deb ...
+#7 6.598 Unpacking make (4.3-4.1) ...
+#7 6.623 Selecting previously unselected package libdpkg-perl.
+#7 6.623 Preparing to unpack .../57-libdpkg-perl_1.21.22_all.deb ...
+#7 6.625 Unpacking libdpkg-perl (1.21.22) ...
+#7 6.661 Selecting previously unselected package patch.
+#7 6.661 Preparing to unpack .../58-patch_2.7.6-7_amd64.deb ...
+#7 6.662 Unpacking patch (2.7.6-7) ...
+#7 6.678 Selecting previously unselected package dpkg-dev.
+#7 6.678 Preparing to unpack .../59-dpkg-dev_1.21.22_all.deb ...
+#7 6.679 Unpacking dpkg-dev (1.21.22) ...
+#7 6.732 Selecting previously unselected package build-essential.
+#7 6.733 Preparing to unpack .../60-build-essential_12.9_amd64.deb ...
+#7 6.734 Unpacking build-essential (12.9) ...
+#7 6.747 Selecting previously unselected package libassuan0:amd64.
+#7 6.747 Preparing to unpack .../61-libassuan0_2.5.5-5_amd64.deb ...
+#7 6.748 Unpacking libassuan0:amd64 (2.5.5-5) ...
+#7 6.762 Selecting previously unselected package libreadline8:amd64.
+#7 6.763 Preparing to unpack .../62-libreadline8_8.2-1.3_amd64.deb ...
+#7 6.764 Unpacking libreadline8:amd64 (8.2-1.3) ...
+#7 6.780 Selecting previously unselected package gpgconf.
+#7 6.780 Preparing to unpack .../63-gpgconf_2.2.40-1.1_amd64.deb ...
+#7 6.781 Unpacking gpgconf (2.2.40-1.1) ...
+#7 6.801 Selecting previously unselected package libksba8:amd64.
+#7 6.801 Preparing to unpack .../64-libksba8_1.6.3-2_amd64.deb ...
+#7 6.803 Unpacking libksba8:amd64 (1.6.3-2) ...
+#7 6.817 Selecting previously unselected package libsasl2-modules-db:amd64.
+#7 6.818 Preparing to unpack .../65-libsasl2-modules-db_2.1.28+dfsg-10_amd64.deb ...
+#7 6.819 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#7 6.831 Selecting previously unselected package libsasl2-2:amd64.
+#7 6.832 Preparing to unpack .../66-libsasl2-2_2.1.28+dfsg-10_amd64.deb ...
+#7 6.833 Unpacking libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#7 6.847 Selecting previously unselected package libldap-2.5-0:amd64.
+#7 6.847 Preparing to unpack .../67-libldap-2.5-0_2.5.13+dfsg-5_amd64.deb ...
+#7 6.849 Unpacking libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#7 6.867 Selecting previously unselected package libnpth0:amd64.
+#7 6.868 Preparing to unpack .../68-libnpth0_1.6-3_amd64.deb ...
+#7 6.869 Unpacking libnpth0:amd64 (1.6-3) ...
+#7 6.882 Selecting previously unselected package dirmngr.
+#7 6.882 Preparing to unpack .../69-dirmngr_2.2.40-1.1_amd64.deb ...
+#7 6.890 Unpacking dirmngr (2.2.40-1.1) ...
+#7 6.915 Selecting previously unselected package gnupg-l10n.
+#7 6.916 Preparing to unpack .../70-gnupg-l10n_2.2.40-1.1_all.deb ...
+#7 6.917 Unpacking gnupg-l10n (2.2.40-1.1) ...
+#7 6.954 Selecting previously unselected package gnupg-utils.
+#7 6.954 Preparing to unpack .../71-gnupg-utils_2.2.40-1.1_amd64.deb ...
+#7 6.956 Unpacking gnupg-utils (2.2.40-1.1) ...
+#7 6.987 Selecting previously unselected package libsqlite3-0:amd64.
+#7 6.987 Preparing to unpack .../72-libsqlite3-0_3.40.1-2+deb12u1_amd64.deb ...
+#7 6.989 Unpacking libsqlite3-0:amd64 (3.40.1-2+deb12u1) ...
+#7 7.021 Selecting previously unselected package gpg.
+#7 7.021 Preparing to unpack .../73-gpg_2.2.40-1.1_amd64.deb ...
+#7 7.023 Unpacking gpg (2.2.40-1.1) ...
+#7 7.058 Selecting previously unselected package libncursesw6:amd64.
+#7 7.059 Preparing to unpack .../74-libncursesw6_6.4-4_amd64.deb ...
+#7 7.060 Unpacking libncursesw6:amd64 (6.4-4) ...
+#7 7.077 Selecting previously unselected package pinentry-curses.
+#7 7.077 Preparing to unpack .../75-pinentry-curses_1.2.1-1_amd64.deb ...
+#7 7.078 Unpacking pinentry-curses (1.2.1-1) ...
+#7 7.093 Selecting previously unselected package gpg-agent.
+#7 7.094 Preparing to unpack .../76-gpg-agent_2.2.40-1.1_amd64.deb ...
+#7 7.095 Unpacking gpg-agent (2.2.40-1.1) ...
+#7 7.117 Selecting previously unselected package gpg-wks-client.
+#7 7.117 Preparing to unpack .../77-gpg-wks-client_2.2.40-1.1_amd64.deb ...
+#7 7.119 Unpacking gpg-wks-client (2.2.40-1.1) ...
+#7 7.137 Selecting previously unselected package gpg-wks-server.
+#7 7.137 Preparing to unpack .../78-gpg-wks-server_2.2.40-1.1_amd64.deb ...
+#7 7.138 Unpacking gpg-wks-server (2.2.40-1.1) ...
+#7 7.154 Selecting previously unselected package gpgsm.
+#7 7.154 Preparing to unpack .../79-gpgsm_2.2.40-1.1_amd64.deb ...
+#7 7.156 Unpacking gpgsm (2.2.40-1.1) ...
+#7 7.177 Selecting previously unselected package gnupg.
+#7 7.178 Preparing to unpack .../80-gnupg_2.2.40-1.1_all.deb ...
+#7 7.179 Unpacking gnupg (2.2.40-1.1) ...
+#7 7.207 Selecting previously unselected package libevent-2.1-7:amd64.
+#7 7.207 Preparing to unpack .../81-libevent-2.1-7_2.1.12-stable-8_amd64.deb ...
+#7 7.209 Unpacking libevent-2.1-7:amd64 (2.1.12-stable-8) ...
+#7 7.227 Selecting previously unselected package libevent-core-2.1-7:amd64.
+#7 7.228 Preparing to unpack .../82-libevent-core-2.1-7_2.1.12-stable-8_amd64.deb ...
+#7 7.229 Unpacking libevent-core-2.1-7:amd64 (2.1.12-stable-8) ...
+#7 7.248 Selecting previously unselected package libevent-extra-2.1-7:amd64.
+#7 7.249 Preparing to unpack .../83-libevent-extra-2.1-7_2.1.12-stable-8_amd64.deb ...
+#7 7.256 Unpacking libevent-extra-2.1-7:amd64 (2.1.12-stable-8) ...
+#7 7.273 Selecting previously unselected package libevent-pthreads-2.1-7:amd64.
+#7 7.274 Preparing to unpack .../84-libevent-pthreads-2.1-7_2.1.12-stable-8_amd64.deb ...
+#7 7.275 Unpacking libevent-pthreads-2.1-7:amd64 (2.1.12-stable-8) ...
+#7 7.291 Selecting previously unselected package libevent-openssl-2.1-7:amd64.
+#7 7.292 Preparing to unpack .../85-libevent-openssl-2.1-7_2.1.12-stable-8_amd64.deb ...
+#7 7.293 Unpacking libevent-openssl-2.1-7:amd64 (2.1.12-stable-8) ...
+#7 7.306 Selecting previously unselected package libevent-dev.
+#7 7.307 Preparing to unpack .../86-libevent-dev_2.1.12-stable-8_amd64.deb ...
+#7 7.308 Unpacking libevent-dev (2.1.12-stable-8) ...
+#7 7.333 Selecting previously unselected package libexpat1:amd64.
+#7 7.334 Preparing to unpack .../87-libexpat1_2.5.0-1+deb12u1_amd64.deb ...
+#7 7.335 Unpacking libexpat1:amd64 (2.5.0-1+deb12u1) ...
+#7 7.350 Selecting previously unselected package libexpat1-dev:amd64.
+#7 7.351 Preparing to unpack .../88-libexpat1-dev_2.5.0-1+deb12u1_amd64.deb ...
+#7 7.352 Unpacking libexpat1-dev:amd64 (2.5.0-1+deb12u1) ...
+#7 7.371 Selecting previously unselected package libhiredis0.14:amd64.
+#7 7.372 Preparing to unpack .../89-libhiredis0.14_0.14.1-3_amd64.deb ...
+#7 7.373 Unpacking libhiredis0.14:amd64 (0.14.1-3) ...
+#7 7.385 Selecting previously unselected package libhiredis-dev:amd64.
+#7 7.386 Preparing to unpack .../90-libhiredis-dev_0.14.1-3_amd64.deb ...
+#7 7.387 Unpacking libhiredis-dev:amd64 (0.14.1-3) ...
+#7 7.401 Selecting previously unselected package libssl-dev:amd64.
+#7 7.401 Preparing to unpack .../91-libssl-dev_3.0.17-1~deb12u2_amd64.deb ...
+#7 7.403 Unpacking libssl-dev:amd64 (3.0.17-1~deb12u2) ...
+#7 7.493 Setting up libksba8:amd64 (1.6.3-2) ...
+#7 7.497 Setting up libexpat1:amd64 (2.5.0-1+deb12u1) ...
+#7 7.501 Setting up libkeyutils1:amd64 (1.6.3-2) ...
+#7 7.505 Setting up libpsl5:amd64 (0.21.2-1) ...
+#7 7.509 Setting up wget (1.21.3-1+deb12u1) ...
+#7 7.514 Setting up libtirpc-common (1.3.3+ds-1) ...
+#7 7.519 Setting up libsqlite3-0:amd64 (3.40.1-2+deb12u1) ...
+#7 7.523 Setting up binutils-common:amd64 (2.40-2) ...
+#7 7.528 Setting up libssl3:amd64 (3.0.17-1~deb12u2) ...
+#7 7.531 Setting up linux-libc-dev:amd64 (6.1.147-1) ...
+#7 7.535 Setting up libctf-nobfd0:amd64 (2.40-2) ...
+#7 7.539 Setting up libnpth0:amd64 (1.6-3) ...
+#7 7.543 Setting up libassuan0:amd64 (2.5.5-5) ...
+#7 7.546 Setting up libgomp1:amd64 (12.2.0-14+deb12u1) ...
+#7 7.550 Setting up bzip2 (1.0.8-5+b1) ...
+#7 7.554 Setting up libjansson4:amd64 (2.14-2) ...
+#7 7.558 Setting up libkrb5support0:amd64 (1.20.1-2+deb12u3) ...
+#7 7.561 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#7 7.565 Setting up perl-modules-5.36 (5.36.0-7+deb12u2) ...
+#7 7.569 Setting up rpcsvc-proto (1.4.3-1) ...
+#7 7.573 Setting up make (4.3-4.1) ...
+#7 7.576 Setting up libmpfr6:amd64 (4.2.0-1) ...
+#7 7.580 Setting up gnupg-l10n (2.2.40-1.1) ...
+#7 7.584 Setting up xz-utils (5.4.1-1) ...
+#7 7.589 update-alternatives: using /usr/bin/xz to provide /usr/bin/lzma (lzma) in auto mode
+#7 7.589 update-alternatives: warning: skip creation of /usr/share/man/man1/lzma.1.gz because associated file /usr/share/man/man1/xz.1.gz (of link group lzma) doesn't exist
+#7 7.589 update-alternatives: warning: skip creation of /usr/share/man/man1/unlzma.1.gz because associated file /usr/share/man/man1/unxz.1.gz (of link group lzma) doesn't exist
+#7 7.589 update-alternatives: warning: skip creation of /usr/share/man/man1/lzcat.1.gz because associated file /usr/share/man/man1/xzcat.1.gz (of link group lzma) doesn't exist
+#7 7.589 update-alternatives: warning: skip creation of /usr/share/man/man1/lzmore.1.gz because associated file /usr/share/man/man1/xzmore.1.gz (of link group lzma) doesn't exist
+#7 7.589 update-alternatives: warning: skip creation of /usr/share/man/man1/lzless.1.gz because associated file /usr/share/man/man1/xzless.1.gz (of link group lzma) doesn't exist
+#7 7.590 update-alternatives: warning: skip creation of /usr/share/man/man1/lzdiff.1.gz because associated file /usr/share/man/man1/xzdiff.1.gz (of link group lzma) doesn't exist
+#7 7.590 update-alternatives: warning: skip creation of /usr/share/man/man1/lzcmp.1.gz because associated file /usr/share/man/man1/xzcmp.1.gz (of link group lzma) doesn't exist
+#7 7.590 update-alternatives: warning: skip creation of /usr/share/man/man1/lzgrep.1.gz because associated file /usr/share/man/man1/xzgrep.1.gz (of link group lzma) doesn't exist
+#7 7.590 update-alternatives: warning: skip creation of /usr/share/man/man1/lzegrep.1.gz because associated file /usr/share/man/man1/xzegrep.1.gz (of link group lzma) doesn't exist
+#7 7.590 update-alternatives: warning: skip creation of /usr/share/man/man1/lzfgrep.1.gz because associated file /usr/share/man/man1/xzfgrep.1.gz (of link group lzma) doesn't exist
+#7 7.592 Setting up libquadmath0:amd64 (12.2.0-14+deb12u1) ...
+#7 7.596 Setting up libssl-dev:amd64 (3.0.17-1~deb12u2) ...
+#7 7.600 Setting up libmpc3:amd64 (1.3.1-1) ...
+#7 7.604 Setting up libevent-core-2.1-7:amd64 (2.1.12-stable-8) ...
+#7 7.607 Setting up libatomic1:amd64 (12.2.0-14+deb12u1) ...
+#7 7.611 Setting up libevent-2.1-7:amd64 (2.1.12-stable-8) ...
+#7 7.615 Setting up patch (2.7.6-7) ...
+#7 7.619 Setting up libncursesw6:amd64 (6.4-4) ...
+#7 7.623 Setting up libk5crypto3:amd64 (1.20.1-2+deb12u3) ...
+#7 7.627 Setting up libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#7 7.631 Setting up libubsan1:amd64 (12.2.0-14+deb12u1) ...
+#7 7.634 Setting up libcrypt-dev:amd64 (1:4.4.33-2) ...
+#7 7.641 Setting up libasan8:amd64 (12.2.0-14+deb12u1) ...
+#7 7.644 Setting up libkrb5-3:amd64 (1.20.1-2+deb12u3) ...
+#7 7.648 Setting up libtsan2:amd64 (12.2.0-14+deb12u1) ...
+#7 7.652 Setting up libbinutils:amd64 (2.40-2) ...
+#7 7.656 Setting up libisl23:amd64 (0.25-1.1) ...
+#7 7.659 Setting up libc-dev-bin (2.36-9+deb12u10) ...
+#7 7.663 Setting up openssl (3.0.17-1~deb12u2) ...
+#7 7.669 Setting up readline-common (8.2-1.3) ...
+#7 7.674 Setting up libcc1-0:amd64 (12.2.0-14+deb12u1) ...
+#7 7.678 Setting up liblsan0:amd64 (12.2.0-14+deb12u1) ...
+#7 7.682 Setting up libitm1:amd64 (12.2.0-14+deb12u1) ...
+#7 7.685 Setting up libgdbm6:amd64 (1.23-3) ...
+#7 7.689 Setting up libevent-pthreads-2.1-7:amd64 (2.1.12-stable-8) ...
+#7 7.693 Setting up libhiredis0.14:amd64 (0.14.1-3) ...
+#7 7.697 Setting up libctf0:amd64 (2.40-2) ...
+#7 7.700 Setting up pinentry-curses (1.2.1-1) ...
+#7 7.706 Setting up libevent-extra-2.1-7:amd64 (2.1.12-stable-8) ...
+#7 7.709 Setting up cpp-12 (12.2.0-14+deb12u1) ...
+#7 7.713 Setting up libhiredis-dev:amd64 (0.14.1-3) ...
+#7 7.717 Setting up libreadline8:amd64 (8.2-1.3) ...
+#7 7.721 Setting up libevent-openssl-2.1-7:amd64 (2.1.12-stable-8) ...
+#7 7.724 Setting up libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#7 7.728 Setting up ca-certificates (20230311+deb12u1) ...
+#7 7.759 debconf: unable to initialize frontend: Dialog
+#7 7.759 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#7 7.759 debconf: falling back to frontend: Readline
+#7 7.762 debconf: unable to initialize frontend: Readline
+#7 7.762 debconf: (This frontend requires a controlling tty.)
+#7 7.762 debconf: falling back to frontend: Teletype
+#7 8.015 Updating certificates in /etc/ssl/certs...
+#7 8.377 142 added, 0 removed; done.
+#7 8.388 Setting up libgprofng0:amd64 (2.40-2) ...
+#7 8.392 Setting up libgcc-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#7 8.396 Setting up libevent-dev (2.1.12-stable-8) ...
+#7 8.399 Setting up libgssapi-krb5-2:amd64 (1.20.1-2+deb12u3) ...
+#7 8.404 Setting up libgdbm-compat4:amd64 (1.23-3) ...
+#7 8.408 Setting up cpp (4:12.2.0-3) ...
+#7 8.413 Setting up gpgconf (2.2.40-1.1) ...
+#7 8.417 Setting up libperl5.36:amd64 (5.36.0-7+deb12u2) ...
+#7 8.421 Setting up gpg (2.2.40-1.1) ...
+#7 8.424 Setting up gnupg-utils (2.2.40-1.1) ...
+#7 8.428 Setting up binutils-x86-64-linux-gnu (2.40-2) ...
+#7 8.432 Setting up libtirpc3:amd64 (1.3.3+ds-1) ...
+#7 8.436 Setting up gpg-agent (2.2.40-1.1) ...
+#7 8.612 Setting up gpgsm (2.2.40-1.1) ...
+#7 8.616 Setting up binutils (2.40-2) ...
+#7 8.620 Setting up dirmngr (2.2.40-1.1) ...
+#7 8.672 Setting up perl (5.36.0-7+deb12u2) ...
+#7 8.680 Setting up libtirpc-dev:amd64 (1.3.3+ds-1) ...
+#7 8.683 Setting up gcc-12 (12.2.0-14+deb12u1) ...
+#7 8.687 Setting up libdpkg-perl (1.21.22) ...
+#7 8.691 Setting up gpg-wks-server (2.2.40-1.1) ...
+#7 8.694 Setting up libnsl2:amd64 (1.3.0-2) ...
+#7 8.703 Setting up gpg-wks-client (2.2.40-1.1) ...
+#7 8.706 Setting up gcc (4:12.2.0-3) ...
+#7 8.714 Setting up dpkg-dev (1.21.22) ...
+#7 8.720 Setting up libnsl-dev:amd64 (1.3.0-2) ...
+#7 8.724 Setting up gnupg (2.2.40-1.1) ...
+#7 8.727 Setting up libc6-dev:amd64 (2.36-9+deb12u10) ...
+#7 8.731 Setting up libstdc++-12-dev:amd64 (12.2.0-14+deb12u1) ...
+#7 8.734 Setting up libexpat1-dev:amd64 (2.5.0-1+deb12u1) ...
+#7 8.738 Setting up g++-12 (12.2.0-14+deb12u1) ...
+#7 8.742 Setting up g++ (4:12.2.0-3) ...
+#7 8.745 update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+#7 8.747 Setting up build-essential (12.9) ...
+#7 8.751 Processing triggers for libc-bin (2.36-9+deb12u10) ...
+#7 8.758 Processing triggers for ca-certificates (20230311+deb12u1) ...
+#7 8.761 Updating certificates in /etc/ssl/certs...
+#7 9.041 0 added, 0 removed; done.
+#7 9.041 Running hooks in /etc/ca-certificates/update.d...
+#7 9.042 done.
+#7 DONE 9.1s
+
+#10 [builder 3/7] WORKDIR /tmp
+#10 DONE 0.0s
+
+#11 [builder 4/7] RUN set -eux; base="https://nlnetlabs.nl/downloads/unbound";   wget -O "unbound-1.19.3.tar.gz"        "${base}/unbound-1.19.3.tar.gz";   wget -O "unbound-1.19.3.tar.gz.sha256" "${base}/unbound-1.19.3.tar.gz.sha256";   wget -O "unbound-1.19.3.tar.gz.asc"    "${base}/unbound-1.19.3.tar.gz.asc"
+#11 0.244 + base=https://nlnetlabs.nl/downloads/unbound
+#11 0.244 + wget -O unbound-1.19.3.tar.gz https://nlnetlabs.nl/downloads/unbound/unbound-1.19.3.tar.gz
+#11 0.245 --2025-08-21 15:00:13--  https://nlnetlabs.nl/downloads/unbound/unbound-1.19.3.tar.gz
+#11 0.250 Resolving nlnetlabs.nl (nlnetlabs.nl)... 128.140.76.106
+#11 0.447 Connecting to nlnetlabs.nl (nlnetlabs.nl)|128.140.76.106|:443... connected.
+#11 0.913 HTTP request sent, awaiting response... 200 OK
+#11 1.256 Length: 6338685 (6.0M) [application/octet-stream]
+#11 1.256 Saving to: 'unbound-1.19.3.tar.gz'
+#11 1.256 
+#11 1.256      0K .......... .......... .......... .......... ..........  0%  191K 32s
+#11 1.518     50K .......... .......... .......... .......... ..........  1%  357K 24s
+#11 1.658    100K .......... .......... .......... .......... ..........  2%  807K 19s
+#11 1.720    150K .......... .......... .......... .......... ..........  3%  359K 18s
+#11 1.859    200K .......... .......... .......... .......... ..........  4%  813K 16s
+#11 1.920    250K .......... .......... .......... .......... ..........  4% 57.7M 13s
+#11 1.921    300K .......... .......... .......... .......... ..........  5% 43.7M 11s
+#11 1.922    350K .......... .......... .......... .......... ..........  6%  364K 12s
+#11 2.060    400K .......... .......... .......... .......... ..........  7% 40.7M 10s
+#11 2.061    450K .......... .......... .......... .......... ..........  8%  827K 10s
+#11 2.121    500K .......... .......... .......... .......... ..........  8% 52.8M 9s
+#11 2.122    550K .......... .......... .......... .......... ..........  9% 53.0M 8s
+#11 2.123    600K .......... .......... .......... .......... .......... 10% 37.0M 7s
+#11 2.124    650K .......... .......... .......... .......... .......... 11% 74.0M 7s
+#11 2.125    700K .......... .......... .......... .......... .......... 12% 61.6M 6s
+#11 2.126    750K .......... .......... .......... .......... .......... 12% 50.5M 6s
+#11 2.127    800K .......... .......... .......... .......... .......... 13%  372K 6s
+#11 2.261    850K .......... .......... .......... .......... .......... 14% 33.9M 6s
+#11 2.263    900K .......... .......... .......... .......... .......... 15% 91.1M 6s
+#11 2.263    950K .......... .......... .......... .......... .......... 16%  838K 6s
+#11 2.323   1000K .......... .......... .......... .......... .......... 16% 56.8M 5s
+#11 2.324   1050K .......... .......... .......... .......... .......... 17% 55.5M 5s
+#11 2.325   1100K .......... .......... .......... .......... .......... 18% 35.6M 5s
+#11 2.326   1150K .......... .......... .......... .......... .......... 19% 40.5M 4s
+#11 2.327   1200K .......... .......... .......... .......... .......... 20%  158M 4s
+#11 2.328   1250K .......... .......... .......... .......... .......... 21%  171M 4s
+#11 2.328   1300K .......... .......... .......... .......... .......... 21% 53.5M 4s
+#11 2.329   1350K .......... .......... .......... .......... .......... 22% 48.8M 4s
+#11 2.330   1400K .......... .......... .......... .......... .......... 23% 62.4M 4s
+#11 2.331   1450K .......... .......... .......... .......... .......... 24% 40.1M 3s
+#11 2.332   1500K .......... .......... .......... .......... .......... 25% 85.4M 3s
+#11 2.332   1550K .......... .......... .......... .......... .......... 25% 48.8M 3s
+#11 2.333   1600K .......... .......... .......... .......... .......... 26% 25.8M 3s
+#11 2.335   1650K .......... .......... .......... .......... .......... 27%  394K 3s
+#11 2.462   1700K .......... .......... .......... .......... .......... 28% 51.1M 3s
+#11 2.463   1750K .......... .......... .......... .......... .......... 29% 40.3M 3s
+#11 2.464   1800K .......... .......... .......... .......... .......... 29% 79.9M 3s
+#11 2.465   1850K .......... .......... .......... .......... .......... 30% 52.4M 3s
+#11 2.466   1900K .......... .......... .......... .......... .......... 31%  874K 3s
+#11 2.523   1950K .......... .......... .......... .......... .......... 32% 50.2M 3s
+#11 2.524   2000K .......... .......... .......... .......... .......... 33% 44.0M 3s
+#11 2.525   2050K .......... .......... .......... .......... .......... 33% 43.3M 2s
+#11 2.526   2100K .......... .......... .......... .......... .......... 34% 49.5M 2s
+#11 2.527   2150K .......... .......... .......... .......... .......... 35% 55.6M 2s
+#11 2.528   2200K .......... .......... .......... .......... .......... 36%  166M 2s
+#11 2.528   2250K .......... .......... .......... .......... .......... 37% 70.8M 2s
+#11 2.529   2300K .......... .......... .......... .......... .......... 37% 34.4M 2s
+#11 2.530   2350K .......... .......... .......... .......... .......... 38% 23.8M 2s
+#11 2.533   2400K .......... .......... .......... .......... .......... 39% 71.2M 2s
+#11 2.533   2450K .......... .......... .......... .......... .......... 40% 43.8M 2s
+#11 2.534   2500K .......... .......... .......... .......... .......... 41% 72.3M 2s
+#11 2.535   2550K .......... .......... .......... .......... .......... 42%  182M 2s
+#11 2.535   2600K .......... .......... .......... .......... .......... 42%  263M 2s
+#11 2.535   2650K .......... .......... .......... .......... .......... 43%  391K 2s
+#11 2.663   2700K .......... .......... .......... .......... .......... 44% 56.2M 2s
+#11 2.664   2750K .......... .......... .......... .......... .......... 45% 41.4M 2s
+#11 2.665   2800K .......... .......... .......... .......... .......... 46% 51.8M 2s
+#11 2.666   2850K .......... .......... .......... .......... .......... 46% 64.4M 2s
+#11 2.667   2900K .......... .......... .......... .......... .......... 47% 52.7M 2s
+#11 2.668   2950K .......... .......... .......... .......... .......... 48%  874K 2s
+#11 2.725   3000K .......... .......... .......... .......... .......... 49% 47.5M 2s
+#11 2.726   3050K .......... .......... .......... .......... .......... 50% 67.1M 1s
+#11 2.727   3100K .......... .......... .......... .......... .......... 50% 31.6M 1s
+#11 2.728   3150K .......... .......... .......... .......... .......... 51% 79.9M 1s
+#11 2.729   3200K .......... .......... .......... .......... .......... 52%  102M 1s
+#11 2.729   3250K .......... .......... .......... .......... .......... 53% 56.5M 1s
+#11 2.730   3300K .......... .......... .......... .......... .......... 54% 62.3M 1s
+#11 2.731   3350K .......... .......... .......... .......... .......... 54% 54.1M 1s
+#11 2.732   3400K .......... .......... .......... .......... .......... 55% 49.4M 1s
+#11 2.733   3450K .......... .......... .......... .......... .......... 56% 73.9M 1s
+#11 2.734   3500K .......... .......... .......... .......... .......... 57% 52.4M 1s
+#11 2.734   3550K .......... .......... .......... .......... .......... 58% 48.8M 1s
+#11 2.736   3600K .......... .......... .......... .......... .......... 58% 60.4M 1s
+#11 2.736   3650K .......... .......... .......... .......... .......... 59%  392K 1s
+#11 2.864   3700K .......... .......... .......... .......... .......... 60% 38.1M 1s
+#11 2.865   3750K .......... .......... .......... .......... .......... 61% 52.3M 1s
+#11 2.866   3800K .......... .......... .......... .......... .......... 62% 60.1M 1s
+#11 2.867   3850K .......... .......... .......... .......... .......... 63% 45.0M 1s
+#11 2.868   3900K .......... .......... .......... .......... .......... 63% 48.5M 1s
+#11 2.869   3950K .......... .......... .......... .......... .......... 64%  881K 1s
+#11 2.926   4000K .......... .......... .......... .......... .......... 65% 42.5M 1s
+#11 2.927   4050K .......... .......... .......... .......... .......... 66% 53.8M 1s
+#11 2.928   4100K .......... .......... .......... .......... .......... 67% 45.8M 1s
+#11 2.929   4150K .......... .......... .......... .......... .......... 67% 49.9M 1s
+#11 2.930   4200K .......... .......... .......... .......... .......... 68% 68.0M 1s
+#11 2.931   4250K .......... .......... .......... .......... .......... 69% 55.1M 1s
+#11 2.932   4300K .......... .......... .......... .......... .......... 70% 83.6M 1s
+#11 2.932   4350K .......... .......... .......... .......... .......... 71% 28.7M 1s
+#11 2.934   4400K .......... .......... .......... .......... .......... 71%  182M 1s
+#11 2.934   4450K .......... .......... .......... .......... .......... 72% 35.1M 1s
+#11 2.935   4500K .......... .......... .......... .......... .......... 73%  131M 1s
+#11 2.936   4550K .......... .......... .......... .......... .......... 74%  143M 1s
+#11 2.936   4600K .......... .......... .......... .......... .......... 75% 56.1M 1s
+#11 2.937   4650K .......... .......... .......... .......... .......... 75% 57.3M 1s
+#11 2.938   4700K .......... .......... .......... .......... .......... 76%  390K 1s
+#11 3.066   4750K .......... .......... .......... .......... .......... 77% 43.3M 1s
+#11 3.067   4800K .......... .......... .......... .......... .......... 78% 49.4M 1s
+#11 3.068   4850K .......... .......... .......... .......... .......... 79% 54.3M 0s
+#11 3.069   4900K .......... .......... .......... .......... .......... 79% 51.9M 0s
+#11 3.070   4950K .......... .......... .......... .......... .......... 80%  884K 0s
+#11 3.127   5000K .......... .......... .......... .......... .......... 81% 43.4M 0s
+#11 3.128   5050K .......... .......... .......... .......... .......... 82% 54.2M 0s
+#11 3.129   5100K .......... .......... .......... .......... .......... 83% 47.5M 0s
+#11 3.130   5150K .......... .......... .......... .......... .......... 84% 35.0M 0s
+#11 3.131   5200K .......... .......... .......... .......... .......... 84% 62.2M 0s
+#11 3.132   5250K .......... .......... .......... .......... .......... 85% 44.0M 0s
+#11 3.133   5300K .......... .......... .......... .......... .......... 86% 48.8M 0s
+#11 3.134   5350K .......... .......... .......... .......... .......... 87% 65.9M 0s
+#11 3.135   5400K .......... .......... .......... .......... .......... 88% 38.5M 0s
+#11 3.136   5450K .......... .......... .......... .......... .......... 88% 63.7M 0s
+#11 3.137   5500K .......... .......... .......... .......... .......... 89% 47.7M 0s
+#11 3.138   5550K .......... .......... .......... .......... .......... 90% 42.6M 0s
+#11 3.139   5600K .......... .......... .......... .......... .......... 91% 49.6M 0s
+#11 3.140   5650K .......... .......... .......... .......... .......... 92% 68.6M 0s
+#11 3.141   5700K .......... .......... .......... .......... .......... 92%  396K 0s
+#11 3.267   5750K .......... .......... .......... .......... .......... 93% 41.5M 0s
+#11 3.268   5800K .......... .......... .......... .......... .......... 94% 54.8M 0s
+#11 3.269   5850K .......... .......... .......... .......... .......... 95% 36.0M 0s
+#11 3.270   5900K .......... .......... .......... .......... .......... 96% 41.2M 0s
+#11 3.271   5950K .......... .......... .......... .......... .......... 96%  893K 0s
+#11 3.327   6000K .......... .......... .......... .......... .......... 97% 36.9M 0s
+#11 3.329   6050K .......... .......... .......... .......... .......... 98% 44.9M 0s
+#11 3.330   6100K .......... .......... .......... .......... .......... 99% 61.9M 0s
+#11 3.330   6150K .......... .......... .......... ..........           100% 72.9M=2.1s
+#11 3.331 
+#11 3.331 2025-08-21 15:00:16 (2.91 MB/s) - 'unbound-1.19.3.tar.gz' saved [6338685/6338685]
+#11 3.331 
+#11 3.332 + wget -O unbound-1.19.3.tar.gz.sha256 https://nlnetlabs.nl/downloads/unbound/unbound-1.19.3.tar.gz.sha256
+#11 3.334 --2025-08-21 15:00:16--  https://nlnetlabs.nl/downloads/unbound/unbound-1.19.3.tar.gz.sha256
+#11 3.337 Resolving nlnetlabs.nl (nlnetlabs.nl)... 128.140.76.106
+#11 3.339 Connecting to nlnetlabs.nl (nlnetlabs.nl)|128.140.76.106|:443... connected.
+#11 3.809 HTTP request sent, awaiting response... 200 OK
+#11 4.013 Length: 65 [application/octet-stream]
+#11 4.013 Saving to: 'unbound-1.19.3.tar.gz.sha256'
+#11 4.014 
+#11 4.014      0K                                                       100%  241M=0s
+#11 4.014 
+#11 4.014 2025-08-21 15:00:17 (241 MB/s) - 'unbound-1.19.3.tar.gz.sha256' saved [65/65]
+#11 4.014 
+#11 4.014 + wget -O unbound-1.19.3.tar.gz.asc https://nlnetlabs.nl/downloads/unbound/unbound-1.19.3.tar.gz.asc
+#11 4.016 --2025-08-21 15:00:17--  https://nlnetlabs.nl/downloads/unbound/unbound-1.19.3.tar.gz.asc
+#11 4.020 Resolving nlnetlabs.nl (nlnetlabs.nl)... 128.140.76.106
+#11 4.022 Connecting to nlnetlabs.nl (nlnetlabs.nl)|128.140.76.106|:443... connected.
+#11 4.489 HTTP request sent, awaiting response... 200 OK
+#11 4.692 Length: 833 [application/octet-stream]
+#11 4.692 Saving to: 'unbound-1.19.3.tar.gz.asc'
+#11 4.692 
+#11 4.692      0K                                                       100% 36.7M=0s
+#11 4.692 
+#11 4.692 2025-08-21 15:00:18 (36.7 MB/s) - 'unbound-1.19.3.tar.gz.asc' saved [833/833]
+#11 4.692 
+#11 DONE 4.7s
+
+#12 [builder 5/7] RUN set -eux; echo "$(cat unbound-1.19.3.tar.gz.sha256)  unbound-1.19.3.tar.gz" | sha256sum -c -
+#12 0.222 + + catsha256sum -c -
+#12 0.222  unbound-1.19.3.tar.gz.sha256
+#12 0.223 + echo 3ae322be7dc2f831603e4b0391435533ad5861c2322e34a76006a9fb65eb56b9  unbound-1.19.3.tar.gz
+#12 0.232 unbound-1.19.3.tar.gz: OK
+#12 DONE 0.2s
+
+#13 [builder 6/7] RUN set -eux;   for ks in hkps://keys.openpgp.org hkps://keyserver.ubuntu.com hkps://pgp.surfnet.nl; do     gpg --keyserver "$ks" --recv-keys 9F6F1C2D7E045F8D && break;   done;   gpg --batch --verify "unbound-1.19.3.tar.gz.asc" "unbound-1.19.3.tar.gz"
+#13 0.312 + gpg --keyserver hkps://keys.openpgp.org --recv-keys 9F6F1C2D7E045F8D
+#13 0.314 gpg: directory '/root/.gnupg' created
+#13 0.314 gpg: keybox '/root/.gnupg/pubring.kbx' created
+#13 4.859 gpg: /root/.gnupg/trustdb.gpg: trustdb created
+#13 4.859 gpg: key 9F6F1C2D7E045F8D: public key "W.C.A. Wijngaards <wouter@nlnetlabs.nl>" imported
+#13 4.862 gpg: Total number processed: 1
+#13 4.862 gpg:               imported: 1
+#13 4.863 + break
+#13 4.863 + gpg --batch --verify unbound-1.19.3.tar.gz.asc unbound-1.19.3.tar.gz
+#13 4.870 gpg: Signature made Thu Mar 14 08:14:43 2024 UTC
+#13 4.870 gpg:                using RSA key EDFAA3F2CA4E6EB05681AF8E9F6F1C2D7E045F8D
+#13 4.870 gpg: Good signature from "W.C.A. Wijngaards <wouter@nlnetlabs.nl>" [unknown]
+#13 4.871 gpg: WARNING: This key is not certified with a trusted signature!
+#13 4.871 gpg:          There is no indication that the signature belongs to the owner.
+#13 4.871 Primary key fingerprint: EDFA A3F2 CA4E 6EB0 5681  AF8E 9F6F 1C2D 7E04 5F8D
+#13 DONE 4.9s
+
+#14 [builder 7/7] RUN tar xzf "unbound-1.19.3.tar.gz"  && cd "unbound-1.19.3"  && ./configure --prefix=/usr --sysconfdir=/etc --disable-static --with-libevent  && make -j"$(nproc)"  && make install
+#14 0.410 checking for gcc... gcc
+#14 0.422 checking whether the C compiler works... yes
+#14 0.438 checking for C compiler default output file name... a.out
+#14 0.439 checking for suffix of executables... 
+#14 0.455 checking whether we are cross compiling... no
+#14 0.473 checking for suffix of object files... o
+#14 0.482 checking whether we are using the GNU C compiler... yes
+#14 0.490 checking whether gcc accepts -g... yes
+#14 0.498 checking for gcc option to accept ISO C89... none needed
+#14 0.510 checking how to run the C preprocessor... gcc -E
+#14 0.533 checking for grep that handles long lines and -e... /usr/bin/grep
+#14 0.534 checking for egrep... /usr/bin/grep -E
+#14 0.535 checking for ANSI C header files... yes
+#14 0.575 checking for sys/types.h... yes
+#14 0.587 checking for sys/stat.h... yes
+#14 0.599 checking for stdlib.h... yes
+#14 0.611 checking for string.h... yes
+#14 0.624 checking for memory.h... yes
+#14 0.636 checking for strings.h... yes
+#14 0.649 checking for inttypes.h... yes
+#14 0.662 checking for stdint.h... yes
+#14 0.675 checking for unistd.h... yes
+#14 0.687 checking minix/config.h usability... no
+#14 0.698 checking minix/config.h presence... no
+#14 0.705 checking for minix/config.h... no
+#14 0.705 checking whether it is safe to define __EXTENSIONS__... yes
+#14 0.734 checking for an ANSI C-conforming const... yes
+#14 0.743 checking whether gcc supports -g... yes
+#14 0.751 checking whether gcc supports -O2... yes
+#14 0.760 checking for gcc option to accept ISO C99... none needed
+#14 0.779 checking for gcc option to accept ISO Standard C... (cached) none needed
+#14 0.779 checking gcc dependency flag... -MM
+#14 0.783 checking whether gcc supports -Werror... yes
+#14 0.791 checking whether gcc supports -Wall... yes
+#14 0.799 checking whether gcc supports -std=c99... yes
+#14 0.807 checking whether gcc supports -xc99... no
+#14 0.812 checking for getopt.h... yes
+#14 0.826 checking for time.h... yes
+#14 0.841 checking whether we need -std=c99 -D__EXTENSIONS__ -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_XOPEN_SOURCE_EXTENDED=1 -D_ALL_SOURCE as a flag for gcc... failed
+#14 0.869 checking whether we need -std=c99 -D__EXTENSIONS__ -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE=200112 -D_XOPEN_SOURCE=600 -D_ALL_SOURCE as a flag for gcc... failed
+#14 0.895 checking whether we need -std=c99 as a flag for gcc... no
+#14 0.906 checking whether we need -D_BSD_SOURCE -D_DEFAULT_SOURCE as a flag for gcc... no
+#14 0.915 checking whether we need -D_GNU_SOURCE as a flag for gcc... yes
+#14 0.931 checking whether we need -D_GNU_SOURCE -D_FRSRESGID as a flag for gcc... no
+#14 0.941 checking whether we need -D_POSIX_C_SOURCE=200112 as a flag for gcc... no
+#14 0.953 checking whether we need -D__EXTENSIONS__ as a flag for gcc... failed
+#14 0.974 checking if gcc supports -flto... yes
+#14 1.027 checking for inline... inline
+#14 1.034 checking whether the C compiler (gcc) accepts the "format" attribute... yes
+#14 1.042 checking whether the C compiler (gcc) accepts the "unused" attribute... yes
+#14 1.051 checking whether the C compiler (gcc) accepts the "weak" attribute... yes
+#14 1.059 checking whether the C compiler (gcc) accepts the "noreturn" attribute... yes
+#14 1.070 checking for flex... no
+#14 1.070 checking for lex... no
+#14 1.071 checking for bison... no
+#14 1.071 checking for byacc... no
+#14 1.071 checking for doxygen... no
+#14 1.071 checking for strip... strip
+#14 1.074 checking build system type... x86_64-pc-linux-gnu
+#14 1.096 checking host system type... x86_64-pc-linux-gnu
+#14 1.097 checking for ar... /usr/bin/ar
+#14 1.098 checking how to print strings... printf
+#14 1.099 checking for a sed that does not truncate output... /usr/bin/sed
+#14 1.101 checking for fgrep... /usr/bin/grep -F
+#14 1.102 checking for ld used by gcc... /usr/bin/ld
+#14 1.105 checking if the linker (/usr/bin/ld) is GNU ld... yes
+#14 1.106 checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+#14 1.107 checking the name lister (/usr/bin/nm -B) interface... BSD nm
+#14 1.116 checking whether ln -s works... yes
+#14 1.116 checking the maximum length of command line arguments... 1572864
+#14 1.121 checking how to convert x86_64-pc-linux-gnu file names to x86_64-pc-linux-gnu format... func_convert_file_noop
+#14 1.121 checking how to convert x86_64-pc-linux-gnu file names to toolchain format... func_convert_file_noop
+#14 1.121 checking for /usr/bin/ld option to reload object files... -r
+#14 1.121 checking for objdump... objdump
+#14 1.121 checking how to recognize dependent libraries... pass_all
+#14 1.121 checking for dlltool... no
+#14 1.122 checking how to associate runtime and link libraries... printf %s\n
+#14 1.122 checking for archiver @FILE support... @
+#14 1.132 checking for strip... (cached) strip
+#14 1.132 checking for ranlib... ranlib
+#14 1.132 checking for gawk... no
+#14 1.133 checking for mawk... mawk
+#14 1.133 checking command to parse /usr/bin/nm -B output from gcc object... ok
+#14 1.174 checking for sysroot... no
+#14 1.174 checking for a working dd... /usr/bin/dd
+#14 1.177 checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
+#14 1.185 ./configure: line 9188: /usr/bin/file: No such file or directory
+#14 1.186 checking for mt... no
+#14 1.186 checking if : is a manifest tool... no
+#14 1.188 checking for dlfcn.h... yes
+#14 1.201 checking for objdir... .libs
+#14 1.237 checking if gcc supports -fno-rtti -fno-exceptions... no
+#14 1.247 checking for gcc option to produce PIC... -fPIC -DPIC
+#14 1.247 checking if gcc PIC flag -fPIC -DPIC works... yes
+#14 1.255 checking if gcc static flag -static works... yes
+#14 1.287 checking if gcc supports -c -o file.o... yes
+#14 1.301 checking if gcc supports -c -o file.o... (cached) yes
+#14 1.301 checking whether the gcc linker (/usr/bin/ld) supports shared libraries... yes
+#14 1.306 checking whether -lc should be explicitly linked in... no
+#14 1.327 checking dynamic linker characteristics... GNU/Linux ld.so
+#14 1.362 checking how to hardcode library paths into programs... immediate
+#14 1.362 checking whether stripping libraries is possible... yes
+#14 1.363 checking if libtool supports shared libraries... yes
+#14 1.363 checking whether to build shared libraries... yes
+#14 1.363 checking whether to build static libraries... no
+#14 1.365 checking for stdarg.h... yes
+#14 1.381 checking for stdbool.h... yes
+#14 1.396 checking for netinet/in.h... yes
+#14 1.413 checking for netinet/tcp.h... yes
+#14 1.429 checking for sys/param.h... yes
+#14 1.446 checking for sys/select.h... yes
+#14 1.461 checking for sys/socket.h... yes
+#14 1.478 checking for sys/un.h... yes
+#14 1.494 checking for sys/uio.h... yes
+#14 1.509 checking for sys/resource.h... yes
+#14 1.525 checking for arpa/inet.h... yes
+#14 1.541 checking for syslog.h... yes
+#14 1.556 checking for netdb.h... yes
+#14 1.572 checking for sys/wait.h... yes
+#14 1.588 checking for pwd.h... yes
+#14 1.603 checking for glob.h... yes
+#14 1.619 checking for grp.h... yes
+#14 1.634 checking for login_cap.h... no
+#14 1.649 checking for winsock2.h... no
+#14 1.665 checking for ws2tcpip.h... no
+#14 1.679 checking for endian.h... yes
+#14 1.694 checking for sys/endian.h... no
+#14 1.709 checking for libkern/OSByteOrder.h... no
+#14 1.723 checking for sys/ipc.h... yes
+#14 1.738 checking for sys/shm.h... yes
+#14 1.753 checking for ifaddrs.h... yes
+#14 1.769 checking for poll.h... yes
+#14 1.783 checking for net/if.h... yes
+#14 1.795 checking for TargetConditionals.h... no
+#14 1.808 checking for netioapi.h... no
+#14 1.824 checking for linux/net_tstamp.h... yes
+#14 1.837 checking for int8_t... yes
+#14 1.863 checking for int16_t... yes
+#14 1.888 checking for int32_t... yes
+#14 1.913 checking for int64_t... yes
+#14 1.939 checking for uint8_t... yes
+#14 1.964 checking for uint16_t... yes
+#14 1.989 checking for uint32_t... yes
+#14 2.013 checking for uint64_t... yes
+#14 2.038 checking for size_t... yes
+#14 2.062 checking for ssize_t... yes
+#14 2.087 checking for uid_t in sys/types.h... yes
+#14 2.092 checking for pid_t... yes
+#14 2.116 checking for off_t... yes
+#14 2.142 checking for u_char... yes
+#14 2.167 checking for rlim_t... yes
+#14 2.191 checking for socklen_t... yes
+#14 2.217 checking for in_addr_t... yes
+#14 2.246 checking for in_port_t... yes
+#14 2.273 checking if memcmp compares unsigned... yes
+#14 2.304 checking size of time_t... 8
+#14 2.343 checking size of size_t... 8
+#14 2.382 checking for library containing inet_pton... none required
+#14 2.409 checking for library containing socket... none required
+#14 2.436 checking for unistd.h... (cached) yes
+#14 2.437 checking for working chown... yes
+#14 2.473 checking vfork.h usability... no
+#14 2.487 checking vfork.h presence... no
+#14 2.494 checking for vfork.h... no
+#14 2.496 checking for fork... yes
+#14 2.528 checking for vfork... yes
+#14 2.558 checking for working fork... yes
+#14 2.592 checking for working vfork... (cached) yes
+#14 2.592 checking for _LARGEFILE_SOURCE value needed for large files... no
+#14 2.622 checking for special C compiler options needed for large files... no
+#14 2.622 checking for _FILE_OFFSET_BITS value needed for large files... no
+#14 2.630 checking whether we need -D_LARGEFILE_SOURCE=1 as a flag for gcc... no
+#14 2.638 checking if nonblocking sockets work... yes
+#14 2.683 checking whether mkdir has one arg... no
+#14 2.694 checking for strptime... yes
+#14 2.721 checking whether strptime works... yes
+#14 2.753 checking for GNU libc compatible malloc... yes
+#14 2.782 checking if compiler needs -Werror to reject unknown flags... no
+#14 2.793 checking for the pthreads library -lpthreads... no
+#14 2.808 checking whether pthreads work without any flags... yes
+#14 2.841 checking for joinable pthread attribute... PTHREAD_CREATE_JOINABLE
+#14 2.869 checking if more special flags are required for pthreads... no
+#14 2.869 checking for PTHREAD_PRIO_INHERIT... yes
+#14 2.898 checking for pthread_spinlock_t... yes
+#14 2.917 checking for pthread_rwlock_t... yes
+#14 2.936 checking size of unsigned long... 8
+#14 2.971 checking size of pthread_t... 8
+#14 3.011 checking for SSL... found in /usr
+#14 3.012 checking for EVP_sha256 in -lcrypto... yes
+#14 3.048 checking for openssl/ssl.h... yes
+#14 3.080 checking for openssl/err.h... yes
+#14 3.097 checking for openssl/rand.h... yes
+#14 3.120 checking if libssl needs libdl... no
+#14 3.158 checking if libssl needs -lcrypt32... no
+#14 3.195 checking for LibreSSL... no
+#14 3.198 checking for openssl/conf.h... yes
+#14 3.217 checking for openssl/engine.h... yes
+#14 3.251 checking for openssl/bn.h... yes
+#14 3.270 checking for openssl/dh.h... yes
+#14 3.290 checking for openssl/dsa.h... yes
+#14 3.311 checking for openssl/rsa.h... yes
+#14 3.331 checking for openssl/core_names.h... yes
+#14 3.347 checking for openssl/param_build.h... yes
+#14 3.365 checking for OPENSSL_config... yes
+#14 3.407 checking for EVP_sha1... yes
+#14 3.447 checking for EVP_sha256... yes
+#14 3.488 checking for EVP_sha512... yes
+#14 3.529 checking for FIPS_mode... no
+#14 3.564 checking for EVP_default_properties_is_fips_enabled... yes
+#14 3.605 checking for EVP_MD_CTX_new... yes
+#14 3.647 checking for OpenSSL_add_all_digests... no
+#14 3.682 checking for OPENSSL_init_crypto... yes
+#14 3.722 checking for EVP_cleanup... no
+#14 3.758 checking for ENGINE_cleanup... no
+#14 3.793 checking for ERR_load_crypto_strings... no
+#14 3.829 checking for CRYPTO_cleanup_all_ex_data... no
+#14 3.864 checking for ERR_free_strings... no
+#14 3.900 checking for RAND_cleanup... no
+#14 3.935 checking for DSA_SIG_set0... yes
+#14 3.975 checking for EVP_dss1... no
+#14 4.010 checking for EVP_DigestVerify... yes
+#14 4.050 checking for EVP_aes_256_cbc... yes
+#14 4.090 checking for EVP_EncryptInit_ex... yes
+#14 4.131 checking for HMAC_Init_ex... yes
+#14 4.171 checking for CRYPTO_THREADID_set_callback... no
+#14 4.206 checking for EVP_MAC_CTX_set_params... yes
+#14 4.247 checking for OSSL_PARAM_BLD_new... yes
+#14 4.287 checking for BIO_set_callback_ex... yes
+#14 4.327 checking for OPENSSL_init_ssl... yes
+#14 4.369 checking for SSL_CTX_set_security_level... yes
+#14 4.413 checking for SSL_set1_host... yes
+#14 4.456 checking for SSL_get0_peername... yes
+#14 4.498 checking for X509_VERIFY_PARAM_set1_host... yes
+#14 4.539 checking for SSL_CTX_set_ciphersuites... yes
+#14 4.581 checking for SSL_CTX_set_tlsext_ticket_key_evp_cb... yes
+#14 4.624 checking for SSL_CTX_set_alpn_select_cb... yes
+#14 4.667 checking for SSL_get0_alpn_selected... yes
+#14 4.710 checking for SSL_CTX_set_alpn_protos... yes
+#14 4.752 checking for SSL_get1_peer_certificate... yes
+#14 4.796 checking whether SSL_COMP_get_compression_methods is declared... yes
+#14 4.832 checking whether sk_SSL_COMP_pop_free is declared... yes
+#14 4.868 checking whether SSL_CTX_set_ecdh_auto is declared... yes
+#14 4.902 checking the return type of HMAC_Init_ex... int
+#14 4.936 checking for EVP_PKEY_set_type_str... yes
+#14 4.973 checking for EC_KEY_new... yes
+#14 5.012 checking if GOST works... no
+#14 5.085 checking for ECDSA_sign... yes
+#14 5.124 checking for SHA384_Init... yes
+#14 5.166 checking whether NID_X9_62_prime256v1 is declared... yes
+#14 5.191 checking whether NID_secp384r1 is declared... yes
+#14 5.214 checking if openssl supports SHA2 and ECDSA with EVP... yes
+#14 5.218 checking whether NID_ED25519 is declared... yes
+#14 5.244 checking whether NID_ED448 is declared... yes
+#14 5.268 checking for libevent... found in /usr
+#14 5.268 checking for library containing clock_gettime... none required
+#14 5.301 checking for event.h... yes
+#14 5.319 checking whether EV_VERSION_MAJOR is declared... no
+#14 5.337 checking for library containing event_set... -levent
+#14 5.403 checking for event_base_free... yes
+#14 5.437 checking for event_base_once... yes
+#14 5.469 checking for event_base_new... yes
+#14 5.502 checking for event_base_get_method... yes
+#14 5.535 checking for ev_loop... no
+#14 5.569 checking for ev_default_loop... no
+#14 5.604 checking for event_assign... yes
+#14 5.639 checking whether evsignal_assign is declared... yes
+#14 5.656 checking for libexpat... found in /usr
+#14 5.656 checking for expat.h... yes
+#14 5.671 checking whether XML_StopParser is declared... yes
+#14 5.684 checking for getaddrinfo... yes
+#14 5.715 checking for ioctlsocket... no
+#14 5.724 checking for daemon... yes
+#14 5.757 checking if daemon is deprecated... no
+#14 5.767 checking for struct sockaddr_un.sun_len... no
+#14 5.793 checking for struct in_pktinfo.ipi_spec_dst... yes
+#14 5.823 checking for htobe64... yes
+#14 5.858 checking for be64toh... yes
+#14 5.891 checking for library containing setusercontext... no
+#14 5.960 checking for tzset... yes
+#14 5.995 checking for sigprocmask... yes
+#14 6.029 checking for fcntl... yes
+#14 6.066 checking for getpwnam... yes
+#14 6.101 checking for endpwent... yes
+#14 6.136 checking for getrlimit... yes
+#14 6.173 checking for setrlimit... yes
+#14 6.209 checking for setsid... yes
+#14 6.245 checking for chroot... yes
+#14 6.280 checking for kill... yes
+#14 6.316 checking for chown... yes
+#14 6.352 checking for sleep... yes
+#14 6.389 checking for usleep... yes
+#14 6.425 checking for random... yes
+#14 6.461 checking for srandom... yes
+#14 6.497 checking for recvmsg... yes
+#14 6.533 checking for sendmsg... yes
+#14 6.568 checking for writev... yes
+#14 6.604 checking for socketpair... yes
+#14 6.638 checking for glob... yes
+#14 6.674 checking for initgroups... yes
+#14 6.709 checking for strftime... yes
+#14 6.747 checking for localtime_r... yes
+#14 6.782 checking for setusercontext... no
+#14 6.818 checking for _beginthreadex... no
+#14 6.855 checking for endservent... yes
+#14 6.890 checking for endprotoent... yes
+#14 6.925 checking for fsync... yes
+#14 6.961 checking for shmget... yes
+#14 6.996 checking for accept4... yes
+#14 7.032 checking for getifaddrs... yes
+#14 7.067 checking for if_nametoindex... yes
+#14 7.102 checking for poll... yes
+#14 7.137 checking for gettid... yes
+#14 7.172 checking for setresuid... yes
+#14 7.204 checking for setresgid... yes
+#14 7.240 checking whether inet_pton is declared... yes
+#14 7.256 checking whether inet_ntop is declared... yes
+#14 7.270 checking for inet_aton... yes
+#14 7.301 checking for inet_pton... yes
+#14 7.333 checking for inet_ntop... yes
+#14 7.365 checking for snprintf... yes
+#14 7.399 checking for correct snprintf return value... yes
+#14 7.437 checking for strlcat... no
+#14 7.471 checking for strlcpy... no
+#14 7.506 checking for memmove... yes
+#14 7.541 checking for gmtime_r... yes
+#14 7.574 checking for isblank... yes
+#14 7.608 checking for explicit_bzero... yes
+#14 7.640 checking for reallocarray... yes
+#14 7.680 checking whether reallocarray is declared... yes
+#14 7.692 checking for arc4random... yes
+#14 7.724 checking for arc4random_uniform... yes
+#14 7.756 checking for ctime_r... yes
+#14 7.788 checking for strsep... yes
+#14 7.822 checking if make supports $< with implicit rule in scope... yes
+#14 7.828 configure: Stripping extension flags...
+#14 7.853 configure: creating ./config.status
+#14 8.099 config.status: creating Makefile
+#14 8.104 config.status: creating doc/example.conf
+#14 8.113 config.status: creating doc/libunbound.3
+#14 8.122 config.status: creating doc/unbound.8
+#14 8.131 config.status: creating doc/unbound-anchor.8
+#14 8.139 config.status: creating doc/unbound-checkconf.8
+#14 8.148 config.status: creating doc/unbound.conf.5
+#14 8.157 config.status: creating doc/unbound-control.8
+#14 8.166 config.status: creating doc/unbound-host.1
+#14 8.175 config.status: creating smallapp/unbound-control-setup.sh
+#14 8.184 config.status: creating dnstap/dnstap_config.h
+#14 8.192 config.status: creating dnscrypt/dnscrypt_config.h
+#14 8.201 config.status: creating contrib/libunbound.pc
+#14 8.209 config.status: creating contrib/unbound.socket
+#14 8.218 config.status: creating contrib/unbound.service
+#14 8.226 config.status: creating contrib/unbound_portable.service
+#14 8.235 config.status: creating config.h
+#14 8.239 config.status: executing libtool commands
+#14 8.264 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o dns.lo -c services/cache/dns.c
+#14 8.264 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o infra.lo -c services/cache/infra.c
+#14 8.264 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o rrset.lo -c services/cache/rrset.c
+#14 8.265 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o dname.lo -c util/data/dname.c
+#14 8.265 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o msgencode.lo -c util/data/msgencode.c
+#14 8.266 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o as112.lo -c util/as112.c
+#14 8.266 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o msgparse.lo -c util/data/msgparse.c
+#14 8.266 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o msgreply.lo -c util/data/msgreply.c
+#14 8.267 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o packed_rrset.lo -c util/data/packed_rrset.c
+#14 8.267 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o iterator.lo -c iterator/iterator.c
+#14 8.267 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o iter_delegpt.lo -c iterator/iter_delegpt.c
+#14 8.268 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o iter_donotq.lo -c iterator/iter_donotq.c
+#14 8.268 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o iter_fwd.lo -c iterator/iter_fwd.c
+#14 8.268 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o iter_hints.lo -c iterator/iter_hints.c
+#14 8.269 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o iter_priv.lo -c iterator/iter_priv.c
+#14 8.269 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o iter_resptype.lo -c iterator/iter_resptype.c
+#14 8.279 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/cache/dns.c  -fPIC -DPIC -o .libs/dns.o
+#14 8.280 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/data/dname.c  -fPIC -DPIC -o .libs/dname.o
+#14 8.280 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/cache/infra.c  -fPIC -DPIC -o .libs/infra.o
+#14 8.281 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/data/msgreply.c  -fPIC -DPIC -o .libs/msgreply.o
+#14 8.281 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/as112.c  -fPIC -DPIC -o .libs/as112.o
+#14 8.281 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/data/packed_rrset.c  -fPIC -DPIC -o .libs/packed_rrset.o
+#14 8.282 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/data/msgencode.c  -fPIC -DPIC -o .libs/msgencode.o
+#14 8.282 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c iterator/iter_donotq.c  -fPIC -DPIC -o .libs/iter_donotq.o
+#14 8.282 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c iterator/iter_delegpt.c  -fPIC -DPIC -o .libs/iter_delegpt.o
+#14 8.282 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/data/msgparse.c  -fPIC -DPIC -o .libs/msgparse.o
+#14 8.283 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c iterator/iterator.c  -fPIC -DPIC -o .libs/iterator.o
+#14 8.283 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/cache/rrset.c  -fPIC -DPIC -o .libs/rrset.o
+#14 8.284 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c iterator/iter_hints.c  -fPIC -DPIC -o .libs/iter_hints.o
+#14 8.284 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c iterator/iter_fwd.c  -fPIC -DPIC -o .libs/iter_fwd.o
+#14 8.286 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c iterator/iter_resptype.c  -fPIC -DPIC -o .libs/iter_resptype.o
+#14 8.288 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c iterator/iter_priv.c  -fPIC -DPIC -o .libs/iter_priv.o
+#14 8.291 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o iter_scrub.lo -c iterator/iter_scrub.c
+#14 8.306 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c iterator/iter_scrub.c  -fPIC -DPIC -o .libs/iter_scrub.o
+#14 8.318 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o iter_utils.lo -c iterator/iter_utils.c
+#14 8.330 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o localzone.lo -c services/localzone.c
+#14 8.332 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o mesh.lo -c services/mesh.c
+#14 8.333 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o modstack.lo -c services/modstack.c
+#14 8.334 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o view.lo -c services/view.c
+#14 8.335 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o outbound_list.lo -c services/outbound_list.c
+#14 8.336 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o alloc.lo -c util/alloc.c
+#14 8.338 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o config_file.lo -c util/config_file.c
+#14 8.341 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c iterator/iter_utils.c  -fPIC -DPIC -o .libs/iter_utils.o
+#14 8.348 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/modstack.c  -fPIC -DPIC -o .libs/modstack.o
+#14 8.348 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o configlexer.lo -c util/configlexer.c
+#14 8.350 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/localzone.c  -fPIC -DPIC -o .libs/localzone.o
+#14 8.351 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o configparser.lo -c util/configparser.c
+#14 8.351 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/alloc.c  -fPIC -DPIC -o .libs/alloc.o
+#14 8.352 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/mesh.c  -fPIC -DPIC -o .libs/mesh.o
+#14 8.353 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/outbound_list.c  -fPIC -DPIC -o .libs/outbound_list.o
+#14 8.353 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/view.c  -fPIC -DPIC -o .libs/view.o
+#14 8.355 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o fptr_wlist.lo -c util/fptr_wlist.c
+#14 8.358 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o siphash.lo -c util/siphash.c
+#14 8.358 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/config_file.c  -fPIC -DPIC -o .libs/config_file.o
+#14 8.363 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/configlexer.c  -fPIC -DPIC -o .libs/configlexer.o
+#14 8.364 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o edns.lo -c util/edns.c
+#14 8.366 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o locks.lo -c util/locks.c
+#14 8.367 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/configparser.c  -fPIC -DPIC -o .libs/configparser.o
+#14 8.373 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o log.lo -c util/log.c
+#14 8.373 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/fptr_wlist.c  -fPIC -DPIC -o .libs/fptr_wlist.o
+#14 8.375 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/siphash.c  -fPIC -DPIC -o .libs/siphash.o
+#14 8.379 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/edns.c  -fPIC -DPIC -o .libs/edns.o
+#14 8.383 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o mini_event.lo -c util/mini_event.c
+#14 8.384 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/locks.c  -fPIC -DPIC -o .libs/locks.o
+#14 8.390 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o module.lo -c util/module.c
+#14 8.391 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o net_help.lo -c util/net_help.c
+#14 8.392 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/log.c  -fPIC -DPIC -o .libs/log.o
+#14 8.393 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o random.lo -c util/random.c
+#14 8.400 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o rbtree.lo -c util/rbtree.c
+#14 8.401 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/mini_event.c  -fPIC -DPIC -o .libs/mini_event.o
+#14 8.405 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/module.c  -fPIC -DPIC -o .libs/module.o
+#14 8.407 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/net_help.c  -fPIC -DPIC -o .libs/net_help.o
+#14 8.409 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/random.c  -fPIC -DPIC -o .libs/random.o
+#14 8.409 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o regional.lo -c util/regional.c
+#14 8.414 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/rbtree.c  -fPIC -DPIC -o .libs/rbtree.o
+#14 8.415 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o rtt.lo -c util/rtt.c
+#14 8.426 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o dnstree.lo -c util/storage/dnstree.c
+#14 8.427 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/regional.c  -fPIC -DPIC -o .libs/regional.o
+#14 8.428 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o lookup3.lo -c util/storage/lookup3.c
+#14 8.428 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o lruhash.lo -c util/storage/lruhash.c
+#14 8.428 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o slabhash.lo -c util/storage/slabhash.c
+#14 8.433 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o tcp_conn_limit.lo -c util/tcp_conn_limit.c
+#14 8.435 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o timehist.lo -c util/timehist.c
+#14 8.440 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/rtt.c  -fPIC -DPIC -o .libs/rtt.o
+#14 8.444 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/storage/lruhash.c  -fPIC -DPIC -o .libs/lruhash.o
+#14 8.444 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/storage/lookup3.c  -fPIC -DPIC -o .libs/lookup3.o
+#14 8.445 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o tube.lo -c util/tube.c
+#14 8.445 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/storage/dnstree.c  -fPIC -DPIC -o .libs/dnstree.o
+#14 8.445 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/storage/slabhash.c  -fPIC -DPIC -o .libs/slabhash.o
+#14 8.455 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/timehist.c  -fPIC -DPIC -o .libs/timehist.o
+#14 8.455 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o winsock_event.lo -c util/winsock_event.c
+#14 8.455 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o autotrust.lo -c validator/autotrust.c
+#14 8.455 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/tcp_conn_limit.c  -fPIC -DPIC -o .libs/tcp_conn_limit.o
+#14 8.459 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o val_anchor.lo -c validator/val_anchor.c
+#14 8.459 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o rpz.lo -c services/rpz.c
+#14 8.463 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/tube.c  -fPIC -DPIC -o .libs/tube.o
+#14 8.468 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/winsock_event.c  -fPIC -DPIC -o .libs/winsock_event.o
+#14 8.468 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/autotrust.c  -fPIC -DPIC -o .libs/autotrust.o
+#14 8.472 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o rfc_1982.lo -c util/rfc_1982.c
+#14 8.473 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o proxy_protocol.lo -c util/proxy_protocol.c
+#14 8.475 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/val_anchor.c  -fPIC -DPIC -o .libs/val_anchor.o
+#14 8.475 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o validator.lo -c validator/validator.c
+#14 8.479 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o val_kcache.lo -c validator/val_kcache.c
+#14 8.480 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/rpz.c  -fPIC -DPIC -o .libs/rpz.o
+#14 8.481 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o val_kentry.lo -c validator/val_kentry.c
+#14 8.482 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o val_neg.lo -c validator/val_neg.c
+#14 8.488 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o val_nsec3.lo -c validator/val_nsec3.c
+#14 8.490 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/rfc_1982.c  -fPIC -DPIC -o .libs/rfc_1982.o
+#14 8.491 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/proxy_protocol.c  -fPIC -DPIC -o .libs/proxy_protocol.o
+#14 8.492 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o val_nsec.lo -c validator/val_nsec.c
+#14 8.493 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/validator.c  -fPIC -DPIC -o .libs/validator.o
+#14 8.493 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o val_secalgo.lo -c validator/val_secalgo.c
+#14 8.497 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/val_kcache.c  -fPIC -DPIC -o .libs/val_kcache.o
+#14 8.499 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/val_kentry.c  -fPIC -DPIC -o .libs/val_kentry.o
+#14 8.503 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/val_nsec3.c  -fPIC -DPIC -o .libs/val_nsec3.o
+#14 8.505 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/val_neg.c  -fPIC -DPIC -o .libs/val_neg.o
+#14 8.506 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o val_sigcrypt.lo -c validator/val_sigcrypt.c
+#14 8.512 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/val_nsec.c  -fPIC -DPIC -o .libs/val_nsec.o
+#14 8.513 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/val_secalgo.c  -fPIC -DPIC -o .libs/val_secalgo.o
+#14 8.514 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o val_utils.lo -c validator/val_utils.c
+#14 8.515 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o dns64.lo -c dns64/dns64.c
+#14 8.517 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o authzone.lo -c services/authzone.c
+#14 8.520 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o respip.lo -c respip/respip.c
+#14 8.521 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o timeval_func.lo -c util/timeval_func.c
+#14 8.527 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/val_sigcrypt.c  -fPIC -DPIC -o .libs/val_sigcrypt.o
+#14 8.529 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c dns64/dns64.c  -fPIC -DPIC -o .libs/dns64.o
+#14 8.530 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c validator/val_utils.c  -fPIC -DPIC -o .libs/val_utils.o
+#14 8.535 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c respip/respip.c  -fPIC -DPIC -o .libs/respip.o
+#14 8.536 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o netevent.lo -c util/netevent.c
+#14 8.540 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/authzone.c  -fPIC -DPIC -o .libs/authzone.o
+#14 8.541 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/timeval_func.c  -fPIC -DPIC -o .libs/timeval_func.o
+#14 8.552 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o listen_dnsport.lo -c services/listen_dnsport.c
+#14 8.553 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/netevent.c  -fPIC -DPIC -o .libs/netevent.o
+#14 8.555 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o outside_network.lo -c services/outside_network.c
+#14 8.569 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/listen_dnsport.c  -fPIC -DPIC -o .libs/listen_dnsport.o
+#14 8.571 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o ub_event.lo -c util/ub_event.c
+#14 8.573 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c services/outside_network.c  -fPIC -DPIC -o .libs/outside_network.o
+#14 8.575 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o acl_list.lo -c daemon/acl_list.c
+#14 8.585 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o cachedump.lo -c daemon/cachedump.c
+#14 8.589 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o daemon.lo -c daemon/daemon.c
+#14 8.591 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c daemon/acl_list.c  -fPIC -DPIC -o .libs/acl_list.o
+#14 8.591 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/ub_event.c  -fPIC -DPIC -o .libs/ub_event.o
+#14 8.597 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o shm_main.lo -c util/shm_side/shm_main.c
+#14 8.600 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o remote.lo -c daemon/remote.c
+#14 8.603 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o stats.lo -c daemon/stats.c
+#14 8.604 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c daemon/cachedump.c  -fPIC -DPIC -o .libs/cachedump.o
+#14 8.606 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c daemon/daemon.c  -fPIC -DPIC -o .libs/daemon.o
+#14 8.609 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o unbound.lo -c daemon/unbound.c
+#14 8.616 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c daemon/remote.c  -fPIC -DPIC -o .libs/remote.o
+#14 8.617 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/shm_side/shm_main.c  -fPIC -DPIC -o .libs/shm_main.o
+#14 8.618 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o worker.lo -c daemon/worker.c
+#14 8.624 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o keyraw.lo -c sldns/keyraw.c
+#14 8.626 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o sbuffer.lo -c sldns/sbuffer.c
+#14 8.626 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c daemon/stats.c  -fPIC -DPIC -o .libs/stats.o
+#14 8.628 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c daemon/unbound.c  -fPIC -DPIC -o .libs/unbound.o
+#14 8.632 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o wire2str.lo -c sldns/wire2str.c
+#14 8.644 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c daemon/worker.c  -fPIC -DPIC -o .libs/worker.o
+#14 8.646 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o parse.lo -c sldns/parse.c
+#14 8.647 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c sldns/keyraw.c  -fPIC -DPIC -o .libs/keyraw.o
+#14 8.652 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c sldns/sbuffer.c  -fPIC -DPIC -o .libs/sbuffer.o
+#14 8.655 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c sldns/wire2str.c  -fPIC -DPIC -o .libs/wire2str.o
+#14 8.656 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o parseutil.lo -c sldns/parseutil.c
+#14 8.659 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o rrdef.lo -c sldns/rrdef.c
+#14 8.660 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o str2wire.lo -c sldns/str2wire.c
+#14 8.665 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c sldns/parse.c  -fPIC -DPIC -o .libs/parse.o
+#14 8.673 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c sldns/parseutil.c  -fPIC -DPIC -o .libs/parseutil.o
+#14 8.674 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c sldns/rrdef.c  -fPIC -DPIC -o .libs/rrdef.o
+#14 8.685 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c sldns/str2wire.c  -fPIC -DPIC -o .libs/str2wire.o
+#14 8.685 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o strlcat.lo -c compat/strlcat.c
+#14 8.703 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c compat/strlcat.c  -fPIC -DPIC -o .libs/strlcat.o
+#14 8.709 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o strlcpy.lo -c compat/strlcpy.c
+#14 8.711 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o context.lo -c libunbound/context.c
+#14 8.715 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o libunbound.lo -c libunbound/libunbound.c
+#14 8.723 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o libworker.lo -c libunbound/libworker.c
+#14 8.725 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o ub_event_pluggable.lo -c util/ub_event_pluggable.c
+#14 8.725 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c compat/strlcpy.c  -fPIC -DPIC -o .libs/strlcpy.o
+#14 8.726 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c libunbound/context.c  -fPIC -DPIC -o .libs/context.o
+#14 8.731 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c libunbound/libunbound.c  -fPIC -DPIC -o .libs/libunbound.o
+#14 8.731 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o unbound-checkconf.lo -c smallapp/unbound-checkconf.c
+#14 8.733 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o worker_cb.lo -c smallapp/worker_cb.c
+#14 8.735 sed -e 's/@''UNBOUND_VERSION_MAJOR@/1/' -e 's/@''UNBOUND_VERSION_MINOR@/19/' -e 's/@''UNBOUND_VERSION_MICRO@/3/' < ./libunbound/unbound.h > unbound.h
+#14 8.735 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o unbound-host.lo -c smallapp/unbound-host.c
+#14 8.737 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o unbound-control.lo -c smallapp/unbound-control.c
+#14 8.740 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c util/ub_event_pluggable.c  -fPIC -DPIC -o .libs/ub_event_pluggable.o
+#14 8.743 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c libunbound/libworker.c  -fPIC -DPIC -o .libs/libworker.o
+#14 8.746 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c smallapp/unbound-checkconf.c  -fPIC -DPIC -o .libs/unbound-checkconf.o
+#14 8.746 ./libtool --tag=CC --mode=compile gcc -I.  -DSRCDIR=. -g -O2 -flto  -o unbound-anchor.lo -c smallapp/unbound-anchor.c
+#14 8.748 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c smallapp/worker_cb.c  -fPIC -DPIC -o .libs/worker_cb.o
+#14 8.748 cp smallapp/unbound-control-setup.sh unbound-control-setup
+#14 8.749 chmod +x unbound-control-setup
+#14 8.752 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c smallapp/unbound-control.c  -fPIC -DPIC -o .libs/unbound-control.o
+#14 8.759 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c smallapp/unbound-host.c  -fPIC -DPIC -o .libs/unbound-host.o
+#14 8.764 libtool: compile:  gcc -I. -DSRCDIR=. -g -O2 -flto -c smallapp/unbound-anchor.c  -fPIC -DPIC -o .libs/unbound-anchor.o
+#14 8.858 ./libtool --tag=CC --mode=link gcc  -I.  -DSRCDIR=. -g -O2 -flto  -version-info 9:26:1 -no-undefined -export-symbols ./libunbound/ubsyms.def -o libunbound.la context.lo libunbound.lo libworker.lo ub_event_pluggable.lo dns.lo infra.lo rrset.lo dname.lo msgencode.lo as112.lo msgparse.lo msgreply.lo packed_rrset.lo iterator.lo iter_delegpt.lo iter_donotq.lo iter_fwd.lo iter_hints.lo iter_priv.lo iter_resptype.lo iter_scrub.lo iter_utils.lo localzone.lo mesh.lo modstack.lo view.lo outbound_list.lo alloc.lo config_file.lo configlexer.lo configparser.lo fptr_wlist.lo siphash.lo edns.lo locks.lo log.lo mini_event.lo module.lo net_help.lo random.lo rbtree.lo regional.lo rtt.lo dnstree.lo lookup3.lo lruhash.lo slabhash.lo tcp_conn_limit.lo timehist.lo tube.lo winsock_event.lo autotrust.lo val_anchor.lo rpz.lo rfc_1982.lo proxy_protocol.lo validator.lo val_kcache.lo val_kentry.lo val_neg.lo val_nsec3.lo val_nsec.lo val_secalgo.lo val_sigcrypt.lo val_utils.lo dns64.lo  authzone.lo         respip.lo timeval_func.lo netevent.lo listen_dnsport.lo outside_network.lo keyraw.lo sbuffer.lo wire2str.lo parse.lo parseutil.lo rrdef.lo str2wire.lo strlcat.lo strlcpy.lo -rpath /usr/lib -lssl -levent  -lcrypto
+#14 8.907 libtool: link: echo "{ global:" > .libs/libunbound.ver
+#14 8.909 libtool: link:  cat ./libunbound/ubsyms.def | sed -e "s/\(.*\)/\1;/" >> .libs/libunbound.ver
+#14 8.911 libtool: link:  echo "local: *; };" >> .libs/libunbound.ver
+#14 8.911 libtool: link:  gcc -shared  -fPIC -DPIC  .libs/context.o .libs/libunbound.o .libs/libworker.o .libs/ub_event_pluggable.o .libs/dns.o .libs/infra.o .libs/rrset.o .libs/dname.o .libs/msgencode.o .libs/as112.o .libs/msgparse.o .libs/msgreply.o .libs/packed_rrset.o .libs/iterator.o .libs/iter_delegpt.o .libs/iter_donotq.o .libs/iter_fwd.o .libs/iter_hints.o .libs/iter_priv.o .libs/iter_resptype.o .libs/iter_scrub.o .libs/iter_utils.o .libs/localzone.o .libs/mesh.o .libs/modstack.o .libs/view.o .libs/outbound_list.o .libs/alloc.o .libs/config_file.o .libs/configlexer.o .libs/configparser.o .libs/fptr_wlist.o .libs/siphash.o .libs/edns.o .libs/locks.o .libs/log.o .libs/mini_event.o .libs/module.o .libs/net_help.o .libs/random.o .libs/rbtree.o .libs/regional.o .libs/rtt.o .libs/dnstree.o .libs/lookup3.o .libs/lruhash.o .libs/slabhash.o .libs/tcp_conn_limit.o .libs/timehist.o .libs/tube.o .libs/winsock_event.o .libs/autotrust.o .libs/val_anchor.o .libs/rpz.o .libs/rfc_1982.o .libs/proxy_protocol.o .libs/validator.o .libs/val_kcache.o .libs/val_kentry.o .libs/val_neg.o .libs/val_nsec3.o .libs/val_nsec.o .libs/val_secalgo.o .libs/val_sigcrypt.o .libs/val_utils.o .libs/dns64.o .libs/authzone.o .libs/respip.o .libs/timeval_func.o .libs/netevent.o .libs/listen_dnsport.o .libs/outside_network.o .libs/keyraw.o .libs/sbuffer.o .libs/wire2str.o .libs/parse.o .libs/parseutil.o .libs/rrdef.o .libs/str2wire.o .libs/strlcat.o .libs/strlcpy.o   -lssl -levent -lcrypto  -g -O2 -flto   -Wl,-soname -Wl,libunbound.so.8 -Wl,-version-script -Wl,.libs/libunbound.ver -o .libs/libunbound.so.8.1.26
+#14 9.082 lto-wrapper: warning: using serial compilation of 15 LTRANS jobs
+#14 9.082 lto-wrapper: note: see the '-flto' option documentation for more information
+#14 17.39 libtool: link: (cd ".libs" && rm -f "libunbound.so.8" && ln -s "libunbound.so.8.1.26" "libunbound.so.8")
+#14 17.39 libtool: link: (cd ".libs" && rm -f "libunbound.so" && ln -s "libunbound.so.8.1.26" "libunbound.so")
+#14 17.40 libtool: link: ( cd ".libs" && rm -f "libunbound.la" && ln -s "../libunbound.la" "libunbound.la" )
+#14 17.40 ./libtool --tag=CC --mode=link gcc   -I.  -DSRCDIR=. -g -O2 -flto  -o unbound acl_list.lo cachedump.lo daemon.lo shm_main.lo remote.lo stats.lo unbound.lo worker.lo  dns.lo infra.lo rrset.lo dname.lo msgencode.lo as112.lo msgparse.lo msgreply.lo packed_rrset.lo iterator.lo iter_delegpt.lo iter_donotq.lo iter_fwd.lo iter_hints.lo iter_priv.lo iter_resptype.lo iter_scrub.lo iter_utils.lo localzone.lo mesh.lo modstack.lo view.lo outbound_list.lo alloc.lo config_file.lo configlexer.lo configparser.lo fptr_wlist.lo siphash.lo edns.lo locks.lo log.lo mini_event.lo module.lo net_help.lo random.lo rbtree.lo regional.lo rtt.lo dnstree.lo lookup3.lo lruhash.lo slabhash.lo tcp_conn_limit.lo timehist.lo tube.lo winsock_event.lo autotrust.lo val_anchor.lo rpz.lo rfc_1982.lo proxy_protocol.lo validator.lo val_kcache.lo val_kentry.lo val_neg.lo val_nsec3.lo val_nsec.lo val_secalgo.lo val_sigcrypt.lo val_utils.lo dns64.lo  authzone.lo         respip.lo timeval_func.lo netevent.lo listen_dnsport.lo outside_network.lo ub_event.lo keyraw.lo sbuffer.lo wire2str.lo parse.lo parseutil.lo rrdef.lo str2wire.lo strlcat.lo strlcpy.lo   -lssl -levent  -lcrypto 
+#14 17.40 ./libtool --tag=CC --mode=link gcc   -I.  -DSRCDIR=. -g -O2 -flto  -o unbound-checkconf unbound-checkconf.lo worker_cb.lo dns.lo infra.lo rrset.lo dname.lo msgencode.lo as112.lo msgparse.lo msgreply.lo packed_rrset.lo iterator.lo iter_delegpt.lo iter_donotq.lo iter_fwd.lo iter_hints.lo iter_priv.lo iter_resptype.lo iter_scrub.lo iter_utils.lo localzone.lo mesh.lo modstack.lo view.lo outbound_list.lo alloc.lo config_file.lo configlexer.lo configparser.lo fptr_wlist.lo siphash.lo edns.lo locks.lo log.lo mini_event.lo module.lo net_help.lo random.lo rbtree.lo regional.lo rtt.lo dnstree.lo lookup3.lo lruhash.lo slabhash.lo tcp_conn_limit.lo timehist.lo tube.lo winsock_event.lo autotrust.lo val_anchor.lo rpz.lo rfc_1982.lo proxy_protocol.lo validator.lo val_kcache.lo val_kentry.lo val_neg.lo val_nsec3.lo val_nsec.lo val_secalgo.lo val_sigcrypt.lo val_utils.lo dns64.lo  authzone.lo         respip.lo timeval_func.lo netevent.lo listen_dnsport.lo outside_network.lo ub_event.lo keyraw.lo sbuffer.lo wire2str.lo parse.lo parseutil.lo rrdef.lo str2wire.lo strlcat.lo strlcpy.lo   -lssl -levent  -lcrypto
+#14 17.40 ./libtool --tag=CC --mode=link gcc   -I.  -DSRCDIR=. -g -O2 -flto  -o unbound-host unbound-host.lo keyraw.lo sbuffer.lo wire2str.lo parse.lo parseutil.lo rrdef.lo str2wire.lo strlcat.lo strlcpy.lo   libunbound.la -lssl -levent  -lcrypto
+#14 17.40 ./libtool --tag=CC --mode=link gcc   -I.  -DSRCDIR=. -g -O2 -flto  -o unbound-control unbound-control.lo worker_cb.lo dns.lo infra.lo rrset.lo dname.lo msgencode.lo as112.lo msgparse.lo msgreply.lo packed_rrset.lo iterator.lo iter_delegpt.lo iter_donotq.lo iter_fwd.lo iter_hints.lo iter_priv.lo iter_resptype.lo iter_scrub.lo iter_utils.lo localzone.lo mesh.lo modstack.lo view.lo outbound_list.lo alloc.lo config_file.lo configlexer.lo configparser.lo fptr_wlist.lo siphash.lo edns.lo locks.lo log.lo mini_event.lo module.lo net_help.lo random.lo rbtree.lo regional.lo rtt.lo dnstree.lo lookup3.lo lruhash.lo slabhash.lo tcp_conn_limit.lo timehist.lo tube.lo winsock_event.lo autotrust.lo val_anchor.lo rpz.lo rfc_1982.lo proxy_protocol.lo validator.lo val_kcache.lo val_kentry.lo val_neg.lo val_nsec3.lo val_nsec.lo val_secalgo.lo val_sigcrypt.lo val_utils.lo dns64.lo  authzone.lo         respip.lo timeval_func.lo netevent.lo listen_dnsport.lo outside_network.lo ub_event.lo keyraw.lo sbuffer.lo wire2str.lo parse.lo parseutil.lo rrdef.lo str2wire.lo strlcat.lo strlcpy.lo   -lssl -levent  -lcrypto
+#14 17.40 ./libtool --tag=CC --mode=link gcc   -I.  -DSRCDIR=. -g -O2 -flto  -o unbound-anchor unbound-anchor.lo parseutil.lo strlcat.lo strlcpy.lo   libunbound.la -lexpat -lssl -levent  -lcrypto
+#14 17.43 libtool: link: gcc -I. -DSRCDIR=. -g -O2 -flto -o .libs/unbound-anchor .libs/unbound-anchor.o .libs/parseutil.o .libs/strlcat.o .libs/strlcpy.o  ./.libs/libunbound.so -lexpat -lssl -levent -lcrypto
+#14 17.43 libtool: link: gcc -I. -DSRCDIR=. -g -O2 -flto -o .libs/unbound-host .libs/unbound-host.o .libs/keyraw.o .libs/sbuffer.o .libs/wire2str.o .libs/parse.o .libs/parseutil.o .libs/rrdef.o .libs/str2wire.o .libs/strlcat.o .libs/strlcpy.o  ./.libs/libunbound.so -lssl -levent -lcrypto
+#14 17.45 libtool: link: gcc -I. -DSRCDIR=. -g -O2 -flto -o unbound-checkconf .libs/unbound-checkconf.o .libs/worker_cb.o .libs/dns.o .libs/infra.o .libs/rrset.o .libs/dname.o .libs/msgencode.o .libs/as112.o .libs/msgparse.o .libs/msgreply.o .libs/packed_rrset.o .libs/iterator.o .libs/iter_delegpt.o .libs/iter_donotq.o .libs/iter_fwd.o .libs/iter_hints.o .libs/iter_priv.o .libs/iter_resptype.o .libs/iter_scrub.o .libs/iter_utils.o .libs/localzone.o .libs/mesh.o .libs/modstack.o .libs/view.o .libs/outbound_list.o .libs/alloc.o .libs/config_file.o .libs/configlexer.o .libs/configparser.o .libs/fptr_wlist.o .libs/siphash.o .libs/edns.o .libs/locks.o .libs/log.o .libs/mini_event.o .libs/module.o .libs/net_help.o .libs/random.o .libs/rbtree.o .libs/regional.o .libs/rtt.o .libs/dnstree.o .libs/lookup3.o .libs/lruhash.o .libs/slabhash.o .libs/tcp_conn_limit.o .libs/timehist.o .libs/tube.o .libs/winsock_event.o .libs/autotrust.o .libs/val_anchor.o .libs/rpz.o .libs/rfc_1982.o .libs/proxy_protocol.o .libs/validator.o .libs/val_kcache.o .libs/val_kentry.o .libs/val_neg.o .libs/val_nsec3.o .libs/val_nsec.o .libs/val_secalgo.o .libs/val_sigcrypt.o .libs/val_utils.o .libs/dns64.o .libs/authzone.o .libs/respip.o .libs/timeval_func.o .libs/netevent.o .libs/listen_dnsport.o .libs/outside_network.o .libs/ub_event.o .libs/keyraw.o .libs/sbuffer.o .libs/wire2str.o .libs/parse.o .libs/parseutil.o .libs/rrdef.o .libs/str2wire.o .libs/strlcat.o .libs/strlcpy.o  -lssl -levent -lcrypto
+#14 17.45 libtool: link: gcc -I. -DSRCDIR=. -g -O2 -flto -o unbound .libs/acl_list.o .libs/cachedump.o .libs/daemon.o .libs/shm_main.o .libs/remote.o .libs/stats.o .libs/unbound.o .libs/worker.o .libs/dns.o .libs/infra.o .libs/rrset.o .libs/dname.o .libs/msgencode.o .libs/as112.o .libs/msgparse.o .libs/msgreply.o .libs/packed_rrset.o .libs/iterator.o .libs/iter_delegpt.o .libs/iter_donotq.o .libs/iter_fwd.o .libs/iter_hints.o .libs/iter_priv.o .libs/iter_resptype.o .libs/iter_scrub.o .libs/iter_utils.o .libs/localzone.o .libs/mesh.o .libs/modstack.o .libs/view.o .libs/outbound_list.o .libs/alloc.o .libs/config_file.o .libs/configlexer.o .libs/configparser.o .libs/fptr_wlist.o .libs/siphash.o .libs/edns.o .libs/locks.o .libs/log.o .libs/mini_event.o .libs/module.o .libs/net_help.o .libs/random.o .libs/rbtree.o .libs/regional.o .libs/rtt.o .libs/dnstree.o .libs/lookup3.o .libs/lruhash.o .libs/slabhash.o .libs/tcp_conn_limit.o .libs/timehist.o .libs/tube.o .libs/winsock_event.o .libs/autotrust.o .libs/val_anchor.o .libs/rpz.o .libs/rfc_1982.o .libs/proxy_protocol.o .libs/validator.o .libs/val_kcache.o .libs/val_kentry.o .libs/val_neg.o .libs/val_nsec3.o .libs/val_nsec.o .libs/val_secalgo.o .libs/val_sigcrypt.o .libs/val_utils.o .libs/dns64.o .libs/authzone.o .libs/respip.o .libs/timeval_func.o .libs/netevent.o .libs/listen_dnsport.o .libs/outside_network.o .libs/ub_event.o .libs/keyraw.o .libs/sbuffer.o .libs/wire2str.o .libs/parse.o .libs/parseutil.o .libs/rrdef.o .libs/str2wire.o .libs/strlcat.o .libs/strlcpy.o  -lssl -levent -lcrypto
+#14 17.45 libtool: link: gcc -I. -DSRCDIR=. -g -O2 -flto -o unbound-control .libs/unbound-control.o .libs/worker_cb.o .libs/dns.o .libs/infra.o .libs/rrset.o .libs/dname.o .libs/msgencode.o .libs/as112.o .libs/msgparse.o .libs/msgreply.o .libs/packed_rrset.o .libs/iterator.o .libs/iter_delegpt.o .libs/iter_donotq.o .libs/iter_fwd.o .libs/iter_hints.o .libs/iter_priv.o .libs/iter_resptype.o .libs/iter_scrub.o .libs/iter_utils.o .libs/localzone.o .libs/mesh.o .libs/modstack.o .libs/view.o .libs/outbound_list.o .libs/alloc.o .libs/config_file.o .libs/configlexer.o .libs/configparser.o .libs/fptr_wlist.o .libs/siphash.o .libs/edns.o .libs/locks.o .libs/log.o .libs/mini_event.o .libs/module.o .libs/net_help.o .libs/random.o .libs/rbtree.o .libs/regional.o .libs/rtt.o .libs/dnstree.o .libs/lookup3.o .libs/lruhash.o .libs/slabhash.o .libs/tcp_conn_limit.o .libs/timehist.o .libs/tube.o .libs/winsock_event.o .libs/autotrust.o .libs/val_anchor.o .libs/rpz.o .libs/rfc_1982.o .libs/proxy_protocol.o .libs/validator.o .libs/val_kcache.o .libs/val_kentry.o .libs/val_neg.o .libs/val_nsec3.o .libs/val_nsec.o .libs/val_secalgo.o .libs/val_sigcrypt.o .libs/val_utils.o .libs/dns64.o .libs/authzone.o .libs/respip.o .libs/timeval_func.o .libs/netevent.o .libs/listen_dnsport.o .libs/outside_network.o .libs/ub_event.o .libs/keyraw.o .libs/sbuffer.o .libs/wire2str.o .libs/parse.o .libs/parseutil.o .libs/rrdef.o .libs/str2wire.o .libs/strlcat.o .libs/strlcpy.o  -lssl -levent -lcrypto
+#14 17.61 lto-wrapper: warning: using serial compilation of 14 LTRANS jobs
+#14 17.61 lto-wrapper: note: see the '-flto' option documentation for more information
+#14 17.65 lto-wrapper: warning: using serial compilation of 19 LTRANS jobs
+#14 17.65 lto-wrapper: note: see the '-flto' option documentation for more information
+#14 27.19 /bin/bash ./install-sh -m 755 -d /usr/lib
+#14 27.19 /bin/bash ./install-sh -m 755 -d /usr/include
+#14 27.19 /bin/bash ./install-sh -m 755 -d /usr/share/man
+#14 27.19 /bin/bash ./install-sh -m 755 -d /usr/share/man/man3
+#14 27.20 /bin/bash ./install-sh -c -m 644 doc/libunbound.3 /usr/share/man/man3
+#14 27.20 for mpage in ub_ctx ub_result ub_ctx_create ub_ctx_delete \
+#14 27.20 	ub_ctx_set_option ub_ctx_get_option ub_ctx_config ub_ctx_set_fwd \
+#14 27.20 	ub_ctx_resolvconf ub_ctx_hosts ub_ctx_add_ta ub_ctx_add_ta_file \
+#14 27.20 	ub_ctx_trustedkeys ub_ctx_debugout ub_ctx_debuglevel ub_ctx_async \
+#14 27.20 	ub_poll ub_wait ub_fd ub_process ub_resolve ub_resolve_async ub_cancel \
+#14 27.20 	ub_resolve_free ub_strerror ub_ctx_print_local_zones ub_ctx_zone_add \
+#14 27.20 	ub_ctx_zone_remove ub_ctx_data_add ub_ctx_data_remove; \
+#14 27.20 do \
+#14 27.20 	echo ".so man3/libunbound.3" > /usr/share/man/man3/$mpage.3 ; \
+#14 27.20 done
+#14 27.21 ./libtool --mode=install cp unbound.h /usr/include/unbound.h
+#14 27.21 libtool: install: cp unbound.h /usr/include/unbound.h
+#14 27.22 /bin/bash ./install-sh -m 755 -d /usr/lib/pkgconfig
+#14 27.22 /bin/bash ./install-sh -m 644 contrib/libunbound.pc /usr/lib/pkgconfig
+#14 27.23 ./libtool --mode=install cp libunbound.la /usr/lib
+#14 27.23 libtool: install: cp .libs/libunbound.so.8.1.26 /usr/lib/libunbound.so.8.1.26
+#14 27.24 libtool: install: (cd /usr/lib && { ln -s -f libunbound.so.8.1.26 libunbound.so.8 || { rm -f libunbound.so.8 && ln -s libunbound.so.8.1.26 libunbound.so.8; }; })
+#14 27.24 libtool: install: (cd /usr/lib && { ln -s -f libunbound.so.8.1.26 libunbound.so || { rm -f libunbound.so && ln -s libunbound.so.8.1.26 libunbound.so; }; })
+#14 27.24 libtool: install: cp .libs/libunbound.lai /usr/lib/libunbound.la
+#14 27.25 libtool: finish: PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/sbin" ldconfig -n /usr/lib
+#14 27.25 ----------------------------------------------------------------------
+#14 27.25 Libraries have been installed in:
+#14 27.25    /usr/lib
+#14 27.25 
+#14 27.25 If you ever happen to want to link against installed libraries
+#14 27.25 in a given directory, LIBDIR, you must either use libtool, and
+#14 27.25 specify the full pathname of the library, or use the '-LLIBDIR'
+#14 27.25 flag during linking and do at least one of the following:
+#14 27.25    - add LIBDIR to the 'LD_LIBRARY_PATH' environment variable
+#14 27.25      during execution
+#14 27.25    - add LIBDIR to the 'LD_RUN_PATH' environment variable
+#14 27.25      during linking
+#14 27.25    - use the '-Wl,-rpath -Wl,LIBDIR' linker flag
+#14 27.25    - have your system administrator add LIBDIR to '/etc/ld.so.conf'
+#14 27.25 
+#14 27.25 See any operating system documentation about shared libraries for
+#14 27.25 more information, such as the ld(1) and ld.so(8) manual pages.
+#14 27.25 ----------------------------------------------------------------------
+#14 27.25 ./libtool --mode=finish /usr/lib
+#14 27.26 libtool: finish: PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/sbin" ldconfig -n /usr/lib
+#14 27.26 ----------------------------------------------------------------------
+#14 27.26 Libraries have been installed in:
+#14 27.26    /usr/lib
+#14 27.26 
+#14 27.26 If you ever happen to want to link against installed libraries
+#14 27.26 in a given directory, LIBDIR, you must either use libtool, and
+#14 27.26 specify the full pathname of the library, or use the '-LLIBDIR'
+#14 27.26 flag during linking and do at least one of the following:
+#14 27.26    - add LIBDIR to the 'LD_LIBRARY_PATH' environment variable
+#14 27.26      during execution
+#14 27.26    - add LIBDIR to the 'LD_RUN_PATH' environment variable
+#14 27.26      during linking
+#14 27.26    - use the '-Wl,-rpath -Wl,LIBDIR' linker flag
+#14 27.26    - have your system administrator add LIBDIR to '/etc/ld.so.conf'
+#14 27.26 
+#14 27.26 See any operating system documentation about shared libraries for
+#14 27.26 more information, such as the ld(1) and ld.so(8) manual pages.
+#14 27.26 ----------------------------------------------------------------------
+#14 27.26 /bin/bash ./install-sh -m 755 -d /usr/sbin
+#14 27.26 /bin/bash ./install-sh -m 755 -d /usr/share/man
+#14 27.26 /bin/bash ./install-sh -m 755 -d /usr/share/man/man8
+#14 27.26 /bin/bash ./install-sh -m 755 -d /usr/share/man/man5
+#14 27.26 /bin/bash ./install-sh -m 755 -d /usr/share/man/man1
+#14 27.27 ./libtool --mode=install cp -f unbound /usr/sbin/unbound
+#14 27.27 libtool: install: cp -f unbound /usr/sbin/unbound
+#14 27.28 ./libtool --mode=install cp -f unbound-checkconf /usr/sbin/unbound-checkconf
+#14 27.29 libtool: install: cp -f unbound-checkconf /usr/sbin/unbound-checkconf
+#14 27.29 ./libtool --mode=install cp -f unbound-control /usr/sbin/unbound-control
+#14 27.30 libtool: install: cp -f unbound-control /usr/sbin/unbound-control
+#14 27.30 ./libtool --mode=install cp -f unbound-host /usr/sbin/unbound-host
+#14 27.31 libtool: install: cp -f .libs/unbound-host /usr/sbin/unbound-host
+#14 27.31 ./libtool --mode=install cp -f unbound-anchor /usr/sbin/unbound-anchor
+#14 27.33 libtool: install: cp -f .libs/unbound-anchor /usr/sbin/unbound-anchor
+#14 27.33 /bin/bash ./install-sh -c -m 644 doc/unbound.8 /usr/share/man/man8
+#14 27.33 /bin/bash ./install-sh -c -m 644 doc/unbound-checkconf.8 /usr/share/man/man8
+#14 27.34 /bin/bash ./install-sh -c -m 644 doc/unbound-control.8 /usr/share/man/man8
+#14 27.34 /bin/bash ./install-sh -c -m 644 doc/unbound-control.8 /usr/share/man/man8/unbound-control-setup.8
+#14 27.34 /bin/bash ./install-sh -c -m 644 doc/unbound-anchor.8 /usr/share/man/man8
+#14 27.35 /bin/bash ./install-sh -c -m 644 doc/unbound.conf.5 /usr/share/man/man5
+#14 27.35 /bin/bash ./install-sh -c -m 644 doc/unbound-host.1 /usr/share/man/man1
+#14 27.35 /bin/bash ./install-sh -c -m 755 unbound-control-setup /usr/sbin/unbound-control-setup
+#14 27.36 if test ! -e "/etc/unbound/unbound.conf"; then /bin/bash ./install-sh -d `dirname "/etc/unbound/unbound.conf"`; /bin/bash ./install-sh -c -m 644 doc/example.conf "/etc/unbound/unbound.conf"; fi
+#14 DONE 27.4s
+
+#15 [stage-1 4/8] COPY --from=builder /usr/sbin/unbound /usr/sbin/unbound
+#15 DONE 0.0s
+
+#16 [stage-1 5/8] COPY --from=builder /usr/sbin/unbound-anchor /usr/sbin/unbound-anchor
+#16 DONE 0.0s
+
+#17 [stage-1 6/8] COPY --from=builder /usr/sbin/unbound-host /usr/sbin/unbound-host
+#17 DONE 0.0s
+
+#18 [stage-1 7/8] COPY --from=builder /usr/lib/libunbound.so* /usr/lib/
+#18 DONE 0.0s
+
+#19 [stage-1 8/8] RUN printf '%s\n' '#!/bin/sh' 'set -e'   'mkdir -p /var/lib/unbound /var/run/unbound /etc/unbound'   'chown -R unbound:unbound /var/lib/unbound /var/run/unbound /etc/unbound'   'if [ ! -s /var/lib/unbound/root.key ]; then echo "Initializing root trust anchor..."; unbound-anchor -a /var/lib/unbound/root.key -v || true; chown unbound:unbound /var/lib/unbound/root.key || true; fi'   'exec /usr/sbin/unbound -d -c /etc/unbound/unbound.conf' > /usr/local/bin/entrypoint.sh  && chmod +x /usr/local/bin/entrypoint.sh
+#19 DONE 0.2s
+
+#20 exporting to image
+#20 exporting layers
+#20 exporting layers 0.4s done
+#20 exporting manifest sha256:9e5a19ad5f24eb1c64674fccd42761e42c0dc4833ec0d6bfe89a849023cc6c6f done
+#20 exporting config sha256:dc73780f81cfeb1b9df9c8e5813d40670babbdfab8bd55d1bea940b57e2bd6e6 done
+#20 exporting attestation manifest sha256:ed34b0174d8da92922a15c2da5d48b218cd9a701c7b42d72113c8d62bdfaaf9a done
+#20 exporting manifest list sha256:62776bb9686acfadc0bca33fede9f6f897732b2607d8d13952bc979e315e9d0c done
+#20 naming to docker.io/library/hecate-nautilus-unbound:latest done
+#20 unpacking to docker.io/library/hecate-nautilus-unbound:latest
+#20 unpacking to docker.io/library/hecate-nautilus-unbound:latest 0.2s done
+#20 DONE 0.6s
+
+#21 resolving provenance for metadata file
+#21 DONE 0.0s
+ hecate-nautilus-unbound  Built
+ Container hecate-unbound  Recreate
+ Container hecate-unbound  Recreated
+ Container hecate-unbound  Starting
+ Container hecate-unbound  Started
+== nslookup via 127.0.0.1:5335 ==
+[OK] example.com
+[FAIL] dnssec-failed.org respondeu (era pra falhar)
+== unbound-host dentro do container ==
+Error response from daemon: Container d823b1147004305fca542bc91bafd6eeb36c4f77c482fe6f5a6a781f3a675841 is restarting, wait until the container is running
+Error response from daemon: Container d823b1147004305fca542bc91bafd6eeb36c4f77c482fe6f5a6a781f3a675841 is restarting, wait until the container is running
+== Últimos logs do Unbound ==
+chown: changing ownership of '/etc/unbound/root.hints': Read-only file system
+chown: changing ownership of '/etc/unbound/unbound.conf': Read-only file system
+chown: changing ownership of '/etc/unbound/root.hints': Read-only file system
+chown: changing ownership of '/etc/unbound/unbound.conf': Read-only file system
+chown: changing ownership of '/etc/unbound/root.hints': Read-only file system
+chown: changing ownership of '/etc/unbound/unbound.conf': Read-only file system
+[12:00:52] DNSSEC FIX concluído
