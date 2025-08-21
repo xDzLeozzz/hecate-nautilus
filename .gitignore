@@ -1,0 +1,7 @@
+# Ignorar dados locais
+adguard/work/
+adguard/config/
+redis/data/
+
+# Ignorar arquivos de build do Docker
+.dockerignore
