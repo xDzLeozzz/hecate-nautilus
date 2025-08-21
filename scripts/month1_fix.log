@@ -1,0 +1,104 @@
+[11:44:53] [*] Branch main e sync
+Already up to date.
+[11:44:53] [*] Dockerfile do Unbound (build + libevent + SHA256 + GPG + user)
+[11:44:53] [*] unbound.conf (recursivo/validante; 127.0.0.1:5335; trust-anchor gravável)
+[11:44:53] [*] root.hints (se faltar, baixa da IANA)
+[11:44:53] [*] docker-compose (host-net) + volume de estado da trust-anchor
+[11:44:53] [*] hygiene git e push
+warning: in the working copy of '.gitattributes', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.env.example', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'aws', LF will be replaced by CRLF the next time Git touches it
+[11:44:55] [*] subir serviços (tentativa host-net)
+#1 [internal] load local bake definitions
+#1 reading from stdin 558B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 2.00kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 ...
+
+#4 [auth] library/debian:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 1.2s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [builder 1/7] FROM docker.io/library/debian:bookworm-slim@sha256:b1a741487078b369e78119849663d7f1a5341ef2768798f7b7406c4240f86aef
+#6 resolve docker.io/library/debian:bookworm-slim@sha256:b1a741487078b369e78119849663d7f1a5341ef2768798f7b7406c4240f86aef done
+#6 DONE 0.0s
+
+#7 [stage-1 2/5] RUN apt-get update && apt-get install -y --no-install-recommends     libssl3 libexpat1 libevent-2.1-7 libhiredis0.14 ca-certificates  && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [stage-1 3/5] RUN groupadd -r unbound && useradd -r -g unbound -s /usr/sbin/nologin -d /var/lib/unbound -M unbound  && mkdir -p /var/lib/unbound /var/run/unbound /etc/unbound  && chown -R unbound:unbound /var/lib/unbound /var/run/unbound
+#8 CACHED
+
+#9 [builder 2/7] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential libssl-dev libexpat1-dev libevent-dev     libhiredis-dev wget gnupg dirmngr ca-certificates  && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [builder 4/7] RUN set -eux; base="https://nlnetlabs.nl/downloads/unbound";   wget -O "unbound-1.19.3.tar.gz"        "${base}/unbound-1.19.3.tar.gz";   wget -O "unbound-1.19.3.tar.gz.sha256" "${base}/unbound-1.19.3.tar.gz.sha256";   wget -O "unbound-1.19.3.tar.gz.asc"    "${base}/unbound-1.19.3.tar.gz.asc"
+#10 CACHED
+
+#11 [builder 3/7] WORKDIR /tmp
+#11 CACHED
+
+#12 [builder 5/7] RUN set -eux; echo "$(cat unbound-1.19.3.tar.gz.sha256)  unbound-1.19.3.tar.gz" | sha256sum -c -
+#12 CACHED
+
+#13 [builder 6/7] RUN set -eux;   for ks in hkps://keys.openpgp.org hkps://keyserver.ubuntu.com hkps://pgp.surfnet.nl; do     gpg --keyserver "$ks" --recv-keys 9F6F1C2D7E045F8D && break;   done;   gpg --batch --verify "unbound-1.19.3.tar.gz.asc" "unbound-1.19.3.tar.gz"
+#13 CACHED
+
+#14 [builder 7/7] RUN tar xzf "unbound-1.19.3.tar.gz"  && cd "unbound-1.19.3"  && ./configure --prefix=/usr --sysconfdir=/etc --disable-static --with-libevent  && make -j"$(nproc)"  && make install
+#14 CACHED
+
+#15 [stage-1 4/5] COPY --from=builder /usr/sbin/unbound /usr/sbin/unbound
+#15 CACHED
+
+#16 [stage-1 5/5] COPY --from=builder /usr/lib/libunbound.so* /usr/lib/
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:3625ea5932ced58436e337b977ac1936bca4ac7c9301ce8d4843622bb22858ce done
+#17 exporting config sha256:92494a4571f90d8e0271e0a5aa1439eda2edd3d72f86717627d10fa71a9d123c done
+#17 exporting attestation manifest sha256:9f4b728e6b343250b726c2bb9698ac5fd6a9a0ff84907aa15e9a6490b71a77cf done
+#17 exporting manifest list sha256:ccc00b6e9275be7b6db8a038b98499da719bbda8c1c8af189792bc7d7a8aeec7 done
+#17 naming to docker.io/library/hecate-nautilus-unbound:latest done
+#17 unpacking to docker.io/library/hecate-nautilus-unbound:latest
+#17 unpacking to docker.io/library/hecate-nautilus-unbound:latest 0.2s done
+#17 DONE 0.2s
+
+#18 resolving provenance for metadata file
+#18 DONE 0.0s
+ hecate-nautilus-unbound  Built
+ Volume "hecate-nautilus_unbound_state"  Creating
+ Volume "hecate-nautilus_unbound_state"  Created
+ Container hecate-adguard  Recreate
+ Container hecate-redis  Recreate
+ Container hecate-unbound  Recreate
+ Container hecate-unbound  Recreated
+ Container hecate-adguard  Recreated
+ Container hecate-redis  Recreated
+ Container hecate-unbound  Starting
+ Container hecate-redis  Starting
+ Container hecate-adguard  Starting
+ Container hecate-adguard  Started
+ Container hecate-unbound  Started
+ Container hecate-redis  Started
+[11:44:57] [*] checando config dentro do container
+FailedPrecondition: container f8800d814c6e9f7e455bace315dbca6a189cd6beb27632c3954cdea66a42ae3e init process is not running: failed precondition
+[11:44:58] [*] healthcheck
+[11:44:58] [OK] Unbound resolveu example.com (127.0.0.1:5335)
+[11:44:58] [WARN] dnssec-failed.org respondeu (DNSSEC?)
+[11:44:58] [OK] Redis PONG
+[11:44:58] [*] logs recentes do Unbound
+[11:44:58] [*] month1_fix concluído.
