@@ -1,23 +1,41 @@
-# Hecate-Nautilus: Manifesto de Orquestração v2.1 (Privileged Mode)
+# Hecate-Nautilus: Manifesto de Orquestração v3.1 (Modo Brutal)
 services:
   unbound:
     build:
       context: ./unbound
       dockerfile: Dockerfile
+      args:
+        - UNBOUND_VERSION=${UNBOUND_VERSION}
     container_name: hecate-unbound
     restart: unless-stopped
     network_mode: "host"
-    # Diretriz para conceder permissões de Kernel ao contêiner,
-    # resolvendo os avisos de buffer e file descriptors.
+    # --- MODO BRUTAL ATIVADO ---
+    # Concede privilégio total para garantir funcionalidade máxima e performance.
     privileged: true
     volumes:
       - ./unbound/config/unbound.conf:/etc/unbound/unbound.conf:ro
-      - ./unbound/config/root.key:/etc/unbound/root.key:ro
-    # !! IMPORTANTE: Ajuste o cpuset para os núcleos do seu CPU Xeon !!
-    cpuset: "2-13"
-    mem_limit: 10g
+    # Healthcheck valida se o serviço Unbound está respondendo corretamente.
+    healthcheck:
+      test: ["CMD-SHELL", "unbound-control status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    # --- Gerenciamento de Recursos (via .env) ---
+    cpuset: ${UNBOUND_CPUSET}
+    mem_limit: ${UNBOUND_MEM_LIMIT}
     cap_add:
       - NET_ADMIN
+    # --- Gerenciamento de Logs ---
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # --- Organização ---
+    labels:
+      - "project=hecate-nautilus"
+      - "service=dns-resolver"
 
   adguard:
     image: adguard/adguardhome:latest
@@ -27,20 +45,45 @@ services:
     volumes:
       - ./adguard/work:/opt/adguardhome/work
       - ./adguard/config:/opt/adguardhome/conf
-    # !! IMPORTANTE: Ajuste o cpuset !!
-    cpuset: "0-1"
-    mem_limit: 2g
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -ltn | grep ':53 ' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    cpuset: ${ADGUARD_CPUSET}
+    mem_limit: ${ADGUARD_MEM_LIMIT}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - "project=hecate-nautilus"
+      - "service=dns-filter"
 
   redis:
     image: redis:7-alpine
     container_name: hecate-redis
     restart: unless-stopped
-    # Exposto apenas localmente para os outros contêineres
     ports:
       - "127.0.0.1:6379:6379"
     volumes:
       - ./redis/data:/data
       - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf:ro
-    # !! IMPORTANTE: Ajuste o cpuset !!
-    cpuset: "14"
-    mem_limit: 2g
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    cpuset: ${REDIS_CPUSET}
+    mem_limit: ${REDIS_MEM_LIMIT}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+    labels:
+      - "project=hecate-nautilus"
+      - "service=cache"
