@@ -4,13 +4,14 @@ services:
       context: ./unbound
     container_name: hecate-unbound
     restart: unless-stopped
-    network_mode: "host"           # em Windows, override muda isso
+    # Em Linux, host é ok. No Windows, use o override com ports.
+    network_mode: "host"
     volumes:
       - ./unbound/config:/config:ro
-    ulimits:
-      nofile: 262144
-    security_opt:
-      - no-new-privileges:true
+      - unbound_etc:/etc/unbound
     read_only: false
     tmpfs:
       - /var/run/unbound:size=8m,mode=755
+
+volumes:
+  unbound_etc:

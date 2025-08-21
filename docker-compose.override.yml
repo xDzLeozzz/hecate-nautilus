@@ -1,6 +1,6 @@
 services:
   unbound:
-    network_mode: ""   # desativa host-mode no Windows
+    network_mode: "bridge"   # no Windows use bridge + ports
     ports:
       - "127.0.0.1:5335:5335/udp"
       - "127.0.0.1:5335:5335/tcp"
