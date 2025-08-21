@@ -1,6 +1,8 @@
 services:
   unbound:
-    build: .
+    build:
+      context: .
+      dockerfile: unbound/Dockerfile
     container_name: hecate-nautilus
     restart: unless-stopped
     ports:
