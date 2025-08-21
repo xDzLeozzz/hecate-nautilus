@@ -27,7 +27,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl3 libexpat1 libevent-2.1-7 libhiredis0.14 ca-certificates \
  && rm -rf /var/lib/apt/lists/*
-# cria user/grupo 'unbound' e dirs de runtime
+# user/grupo e diretórios de runtime
 RUN groupadd -r unbound && useradd -r -g unbound -s /usr/sbin/nologin -d /var/lib/unbound -M unbound \
  && mkdir -p /var/lib/unbound /var/run/unbound /etc/unbound \
  && chown -R unbound:unbound /var/lib/unbound /var/run/unbound
