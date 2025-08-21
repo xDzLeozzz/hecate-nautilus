@@ -1,4 +1,4 @@
-# Hecate-Nautilus: Manifesto de Orquestração v3.1 (Modo Brutal)
+# Hecate-Nautilus: Manifesto de Orquestração v3.0 (Produção)
 services:
   unbound:
     build:
@@ -9,12 +9,16 @@ services:
     container_name: hecate-unbound
     restart: unless-stopped
     network_mode: "host"
-    # --- MODO BRUTAL ATIVADO ---
-    # Concede privilégio total para garantir funcionalidade máxima e performance.
-    privileged: true
+    # --- Segurança Aprimorada ---
+    # Concede apenas as permissões de kernel necessárias, em vez de privilégio total.
+    sysctls:
+      - net.core.rmem_max=16777216
+      - net.core.wmem_max=16777216
     volumes:
       - ./unbound/config/unbound.conf:/etc/unbound/unbound.conf:ro
-    # Healthcheck valida se o serviço Unbound está respondendo corretamente.
+      - ./unbound/config/root.key:/etc/unbound/root.key:ro
+    # --- Healthcheck ---
+    # Verifica se o serviço Unbound está respondendo corretamente.
     healthcheck:
       test: ["CMD-SHELL", "unbound-control status || exit 1"]
       interval: 30s
@@ -32,10 +36,6 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    # --- Organização ---
-    labels:
-      - "project=hecate-nautilus"
-      - "service=dns-resolver"
 
   adguard:
     image: adguard/adguardhome:latest
@@ -45,22 +45,23 @@ services:
     volumes:
       - ./adguard/work:/opt/adguardhome/work
       - ./adguard/config:/opt/adguardhome/conf
+    # --- Healthcheck ---
+    # Verifica se a porta DNS (53) está aberta e escutando.
     healthcheck:
-      test: ["CMD-SHELL", "netstat -ltn | grep ':53 ' || exit 1"]
+      test: ["CMD-SHELL", "netstat -ltn | grep -q ':53 ' || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
+    # --- Gerenciamento de Recursos (via .env) ---
     cpuset: ${ADGUARD_CPUSET}
     mem_limit: ${ADGUARD_MEM_LIMIT}
+    # --- Gerenciamento de Logs ---
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
-    labels:
-      - "project=hecate-nautilus"
-      - "service=dns-filter"
 
   redis:
     image: redis:7-alpine
@@ -71,19 +72,20 @@ services:
     volumes:
       - ./redis/data:/data
       - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    # --- Healthcheck ---
+    # Verifica se o Redis está respondendo ao comando PING.
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 5s
+    # --- Gerenciamento de Recursos (via .env) ---
     cpuset: ${REDIS_CPUSET}
     mem_limit: ${REDIS_MEM_LIMIT}
+    # --- Gerenciamento de Logs ---
     logging:
       driver: "json-file"
       options:
         max-size: "5m"
         max-file: "2"
-    labels:
-      - "project=hecate-nautilus"
-      - "service=cache"
