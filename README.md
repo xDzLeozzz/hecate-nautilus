@@ -88,3 +88,7 @@ Manter o Hécate-Nautilus atualizado é crucial para a segurança e performance.
 * **Para alterar uma configuração (ex: `unbound.conf`):**
     1.  Edite o arquivo de configuração.
     2.  Execute `docker-compose restart <nome_do_serviço>`.
+## Configuração Inicial do AdGuard
+Após deploy, acesse http://localhost:3000 e configure o upstream DNS para: 127.0.0.1:5335
+## Configuração Inicial do AdGuard
+Após deploy, acesse http://localhost:3000 e configure o upstream DNS para: 127.0.0.1:5335

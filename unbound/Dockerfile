@@ -1,24 +1,21 @@
-# Hecate-Nautilus: Unbound "WarSpec" Build vFinal
 # ---------- BUILDER ----------
 FROM debian:bookworm-slim AS builder
-
 ARG UNBOUND_VERSION=1.19.3
-
-# Dependências de build
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential libssl-dev libexpat1-dev libevent-dev \
-    wget ca-certificates \
+    libhiredis-dev wget gnupg dirmngr ca-certificates \
  && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /tmp
-
-# Baixa e verifica o código-fonte
+RUN set -eux; base="https://nlnetlabs.nl/downloads/unbound"; \
+  wget -O "unbound-${UNBOUND_VERSION}.tar.gz"        "${base}/unbound-${UNBOUND_VERSION}.tar.gz"; \
+  wget -O "unbound-${UNBOUND_VERSION}.tar.gz.sha256" "${base}/unbound-${UNBOUND_VERSION}.tar.gz.sha256"; \
+  wget -O "unbound-${UNBOUND_VERSION}.tar.gz.asc"    "${base}/unbound-${UNBOUND_VERSION}.tar.gz.asc"
+RUN set -eux; echo "$(cat unbound-${UNBOUND_VERSION}.tar.gz.sha256)  unbound-${UNBOUND_VERSION}.tar.gz" | sha256sum -c -
 RUN set -eux; \
-  wget -O "unbound-${UNBOUND_VERSION}.tar.gz"        "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz"; \
-  wget -O "unbound-${UNBOUND_VERSION}.tar.gz.sha256" "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz.sha256";
-RUN [ "$(sha256sum "unbound-${UNBOUND_VERSION}.tar.gz" | awk '{print $1}')" = "$(cat "unbound-${UNBOUND_VERSION}.tar.gz.sha256")" ]
-
-# Compila e instala
+  for ks in hkps://keys.openpgp.org hkps://keyserver.ubuntu.com hkps://pgp.surfnet.nl; do \
+    gpg --keyserver "$ks" --recv-keys 9F6F1C2D7E045F8D && break; \
+  done; \
+  gpg --batch --verify "unbound-${UNBOUND_VERSION}.tar.gz.asc" "unbound-${UNBOUND_VERSION}.tar.gz"
 RUN tar xzf "unbound-${UNBOUND_VERSION}.tar.gz" \
  && cd "unbound-${UNBOUND_VERSION}" \
  && ./configure --prefix=/usr --sysconfdir=/etc --disable-static --with-libevent \
@@ -27,22 +24,13 @@ RUN tar xzf "unbound-${UNBOUND_VERSION}.tar.gz" \
 
 # ---------- RUNTIME ----------
 FROM debian:bookworm-slim
-
-# Dependências de runtime, incluindo GOSU
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libssl3 libexpat1 libevent-2.1-7 ca-certificates gosu \
+    libssl3 libexpat1 libevent-2.1-7 libhiredis0.14 ca-certificates \
  && rm -rf /var/lib/apt/lists/*
-
-# Cria um usuário não-root
-RUN useradd -r -s /usr/sbin/nologin unbound
-
-# Copia os binários e configurações do builder
-COPY --from=builder /usr/sbin/unbound* /usr/sbin/
-COPY --from=builder /etc/unbound /etc/unbound
-
-# Copia o novo script de entrada e o torna executável
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# Define o script como o comando de inicialização
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+RUN groupadd -r unbound && useradd -r -g unbound -s /usr/sbin/nologin -d /var/lib/unbound -M unbound \
+ && mkdir -p /var/lib/unbound /var/run/unbound /etc/unbound \
+ && chown -R unbound:unbound /var/lib/unbound /var/run/unbound
+COPY --from=builder /usr/sbin/unbound /usr/sbin/unbound
+COPY --from=builder /usr/lib/libunbound.so* /usr/lib/
+EXPOSE 53/udp 53/tcp
+ENTRYPOINT ["unbound", "-d", "-c", "/etc/unbound/unbound.conf"]

@@ -10,7 +10,6 @@ unbound-checkconf /etc/unbound/unbound.conf
 
 # Corrige as permissões da pasta de configuração para o usuário 'unbound'
 echo "Setting ownership for /etc/unbound..."
-chown -R unbound:unbound /etc/unbound
 
 # Entrega o controle para o processo principal do Unbound,
 # rodando como o usuário 'unbound'

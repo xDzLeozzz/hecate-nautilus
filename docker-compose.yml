@@ -1,41 +1,14 @@
-# Hecate-Nautilus: Manifesto de Orquestração v3.0 (Produção)
 services:
   unbound:
     build:
       context: ./unbound
-      dockerfile: Dockerfile
-      args:
-        - UNBOUND_VERSION=${UNBOUND_VERSION}
     container_name: hecate-unbound
     restart: unless-stopped
     network_mode: "host"
-    # --- Segurança Aprimorada ---
-    # Concede apenas as permissões de kernel necessárias, em vez de privilégio total.
-    sysctls:
-      - net.core.rmem_max=16777216
-      - net.core.wmem_max=16777216
     volumes:
       - ./unbound/config/unbound.conf:/etc/unbound/unbound.conf:ro
-      - ./unbound/config/root.key:/etc/unbound/root.key:ro
-    # --- Healthcheck ---
-    # Verifica se o serviço Unbound está respondendo corretamente.
-    healthcheck:
-      test: ["CMD-SHELL", "unbound-control status || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
-    # --- Gerenciamento de Recursos (via .env) ---
-    cpuset: ${UNBOUND_CPUSET}
-    mem_limit: ${UNBOUND_MEM_LIMIT}
-    cap_add:
-      - NET_ADMIN
-    # --- Gerenciamento de Logs ---
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      - ./unbound/config/root.hints:/etc/unbound/root.hints:ro
+      - unbound_state:/var/lib/unbound
 
   adguard:
     image: adguard/adguardhome:latest
@@ -45,23 +18,6 @@ services:
     volumes:
       - ./adguard/work:/opt/adguardhome/work
       - ./adguard/config:/opt/adguardhome/conf
-    # --- Healthcheck ---
-    # Verifica se a porta DNS (53) está aberta e escutando.
-    healthcheck:
-      test: ["CMD-SHELL", "netstat -ltn | grep -q ':53 ' || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    # --- Gerenciamento de Recursos (via .env) ---
-    cpuset: ${ADGUARD_CPUSET}
-    mem_limit: ${ADGUARD_MEM_LIMIT}
-    # --- Gerenciamento de Logs ---
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
 
   redis:
     image: redis:7-alpine
@@ -71,21 +27,7 @@ services:
       - "127.0.0.1:6379:6379"
     volumes:
       - ./redis/data:/data
-      - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf:ro
-    # --- Healthcheck ---
-    # Verifica se o Redis está respondendo ao comando PING.
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 5s
-    # --- Gerenciamento de Recursos (via .env) ---
-    cpuset: ${REDIS_CPUSET}
-    mem_limit: ${REDIS_MEM_LIMIT}
-    # --- Gerenciamento de Logs ---
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "5m"
-        max-file: "2"
+    command: ["redis-server","--appendonly","no"]
+
+volumes:
+  unbound_state:

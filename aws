@@ -1,0 +1,283 @@
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docker-compose.yml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'unbound/Dockerfile', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'unbound/config/unbound.conf', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mindex 4a98395..7f64898 100644[m
+[1m--- a/.gitignore[m
+[1m+++ b/.gitignore[m
+[36m@@ -6,12 +6,4 @@[m [mredis/data/[m
+ # Ignorar arquivos de build do Docker[m
+ .dockerignore[m
+ unbound/config/*.bak[m
+[31m-[m
+[31m-unbound/config/*.bak[m
+[31m-[m
+[31m-unbound/config/*.bak[m
+[31m-[m
+[31m-unbound/config/*.bak[m
+[31m-[m
+[31m-unbound/config/*.bak[m
+[31m-.env[m
+\ No newline at end of file[m
+[32m+[m[32m.env[m
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 5979ffd..1075734 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -88,3 +88,7 @@[m [mManter o Hécate-Nautilus atualizado é crucial para a segurança e performance.[m
+ * **Para alterar uma configuração (ex: `unbound.conf`):**[m
+     1.  Edite o arquivo de configuração.[m
+     2.  Execute `docker-compose restart <nome_do_serviço>`.[m
+[32m+[m[32m## Configuração Inicial do AdGuard[m
+[32m+[m[32mApós deploy, acesse http://localhost:3000 e configure o upstream DNS para: 127.0.0.1:5335[m
+[32m+[m[32m## Configuração Inicial do AdGuard[m
+[32m+[m[32mApós deploy, acesse http://localhost:3000 e configure o upstream DNS para: 127.0.0.1:5335[m
+[1mdiff --git a/docker-compose.yml b/docker-compose.yml[m
+[1mindex 6e9a1dc..be98f66 100644[m
+[1m--- a/docker-compose.yml[m
+[1m+++ b/docker-compose.yml[m
+[36m@@ -1,6 +1,13 @@[m
+ # Hecate-Nautilus: Manifesto de Orquestração v3.0 (Produção)[m
+ services:[m
+   unbound:[m
+[32m+[m[32m    depends_on:[m
+[32m+[m[32m      - redis[m
+[32m+[m[32m    depends_on:[m
+[32m+[m[32m      - redis[m
+[32m+[m[32m  unbound:[m
+[32m+[m[32m    depends_on:[m
+[32m+[m[32m      - redis[m
+     build:[m
+       context: ./unbound[m
+       dockerfile: Dockerfile[m
+[36m@@ -16,7 +23,8 @@[m [mservices:[m
+       - net.core.wmem_max=16777216[m
+     volumes:[m
+       - ./unbound/config/unbound.conf:/etc/unbound/unbound.conf:ro[m
+[31m-      - ./unbound/config/root.key:/etc/unbound/root.key:ro[m
+[32m+[m[32m      - ./unbound/config/root.key:/etc/unbound/root.key[m
+[32m+[m[32m      - ./unbound/config/root.hints:/etc/unbound/root.hints:ro[m
+     # --- Healthcheck ---[m
+     # Verifica se o serviço Unbound está respondendo corretamente.[m
+     healthcheck:[m
+[36m@@ -27,7 +35,10 @@[m [mservices:[m
+       start_period: 20s[m
+     # --- Gerenciamento de Recursos (via .env) ---[m
+     cpuset: ${UNBOUND_CPUSET}[m
+[31m-    mem_limit: ${UNBOUND_MEM_LIMIT}[m
+[32m+[m[32m    deploy:[m
+[32m+[m[32m      resources:[m
+[32m+[m[32m        limits:[m
+[32m+[m[32m          memory: ${UNBOUND_MEM_LIMIT}[m
+     cap_add:[m
+       - NET_ADMIN[m
+     # --- Gerenciamento de Logs ---[m
+[36m@@ -48,14 +59,17 @@[m [mservices:[m
+     # --- Healthcheck ---[m
+     # Verifica se a porta DNS (53) está aberta e escutando.[m
+     healthcheck:[m
+[31m-      test: ["CMD-SHELL", "netstat -ltn | grep -q ':53 ' || exit 1"][m
+[32m+[m[32m      test: ["CMD-SHELL", "wget --quiet --spider --tries=1 http://localhost:80 || exit 1"][m
+       interval: 30s[m
+       timeout: 10s[m
+       retries: 3[m
+       start_period: 10s[m
+     # --- Gerenciamento de Recursos (via .env) ---[m
+     cpuset: ${ADGUARD_CPUSET}[m
+[31m-    mem_limit: ${ADGUARD_MEM_LIMIT}[m
+[32m+[m[32m    deploy:[m
+[32m+[m[32m      resources:[m
+[32m+[m[32m        limits:[m
+[32m+[m[32m          memory: ${ADGUARD_MEM_LIMIT}[m
+     # --- Gerenciamento de Logs ---[m
+     logging:[m
+       driver: "json-file"[m
+[36m@@ -72,6 +86,7 @@[m [mservices:[m
+     volumes:[m
+       - ./redis/data:/data[m
+       - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf:ro[m
+[32m+[m[32m    command: ["redis-server", "/usr/local/etc/redis/redis.conf"][m
+     # --- Healthcheck ---[m
+     # Verifica se o Redis está respondendo ao comando PING.[m
+     healthcheck:[m
+[36m@@ -82,7 +97,10 @@[m [mservices:[m
+       start_period: 5s[m
+     # --- Gerenciamento de Recursos (via .env) ---[m
+     cpuset: ${REDIS_CPUSET}[m
+[31m-    mem_limit: ${REDIS_MEM_LIMIT}[m
+[32m+[m[32m    deploy:[m
+[32m+[m[32m      resources:[m
+[32m+[m[32m        limits:[m
+[32m+[m[32m          memory: ${REDIS_MEM_LIMIT}[m
+     # --- Gerenciamento de Logs ---[m
+     logging:[m
+       driver: "json-file"[m
+[1mdiff --git a/unbound/Dockerfile b/unbound/Dockerfile[m
+[1mindex 7faef5a..c99de5d 100644[m
+[1m--- a/unbound/Dockerfile[m
+[1m+++ b/unbound/Dockerfile[m
+[36m@@ -6,6 +6,7 @@[m [mARG UNBOUND_VERSION=1.19.3[m
+ [m
+ # Dependências de build[m
+ RUN apt-get update && apt-get install -y --no-install-recommends \[m
+[32m+[m[32m    libhiredis-dev[m[41m [m
+     build-essential libssl-dev libexpat1-dev libevent-dev \[m
+     wget ca-certificates \[m
+  && rm -rf /var/lib/apt/lists/*[m
+[36m@@ -21,7 +22,7 @@[m [mRUN [ "$(sha256sum "unbound-${UNBOUND_VERSION}.tar.gz" | awk '{print $1}')" = "$[m
+ # Compila e instala[m
+ RUN tar xzf "unbound-${UNBOUND_VERSION}.tar.gz" \[m
+  && cd "unbound-${UNBOUND_VERSION}" \[m
+[31m- && ./configure --prefix=/usr --sysconfdir=/etc --disable-static --with-libevent \[m
+[32m+[m[32m && ./configure --prefix=/usr --sysconfdir=/etc --disable-static --with-libevent --enable-cachedb --with-libhiredis \[m
+  && make -j"$(nproc)" \[m
+  && make install[m
+ [m
+[36m@@ -30,6 +31,7 @@[m [mFROM debian:bookworm-slim[m
+ [m
+ # Dependências de runtime, incluindo GOSU[m
+ RUN apt-get update && apt-get install -y --no-install-recommends \[m
+[32m+[m[32m    libhiredis-dev[m[41m [m
+     libssl3 libexpat1 libevent-2.1-7 ca-certificates gosu \[m
+  && rm -rf /var/lib/apt/lists/*[m
+ [m
+[1mdiff --git a/unbound/config/unbound.conf b/unbound/config/unbound.conf[m
+[1mindex 45ad92a..621f846 100644[m
+[1m--- a/unbound/config/unbound.conf[m
+[1m+++ b/unbound/config/unbound.conf[m
+[36m@@ -1,66 +1,68 @@[m
+[31m-# Hecate-Nautilus: Unbound Configuration vFinal[m
+ server:[m
+[31m-    # --- Configurações Gerais ---[m
+[31m-    # Roda em primeiro plano, essencial para contêineres Docker[m
+[31m-    do-daemonize: no[m
+[31m-    # Define o usuário para o qual o processo irá dropar privilégios[m
+[31m-    username: "unbound"[m
+[31m-    # Diretório de trabalho dentro do contêiner[m
+[31m-    directory: "/etc/unbound/"[m
+[31m-    # Nível de log (1 é o padrão, aumente para depuração)[m
+[31m-    log-level: 1[m
+[31m-    # Desativa logs de queries e respostas para máxima performance[m
+[31m-    log-queries: no[m
+[31m-    log-replies: no[m
+[31m-    [m
+[31m-    # --- Interface de Rede ---[m
+[31m-    # Ouve apenas em localhost na porta 5335 para ser usado pelo AdGuard[m
+[31m-    interface: 127.0.0.1@5335[m
+[31m-    access-control: 127.0.0.1/32 allow[m
+[32m+[m[32m    # Interface e portas[m
+[32m+[m[32m    interface: 0.0.0.0[m
+[32m+[m[32m    port: 53[m
+[32m+[m[32m    do-ip4: yes[m
+[32m+[m[32m    do-ip6: no  # Desative IPv6 se não necessário para performance[m
+[32m+[m[32m    do-udp: yes[m
+[32m+[m[32m    do-tcp: yes[m
+ [m
+[31m-    # --- Otimizações de Performance Extrema ---[m
+[31m-    # Alinhado com os 14 núcleos físicos do Xeon E5-2v80v4[m
+[31m-    num-threads: 14[m
+[31m-    # Slabs devem ser potência de 2, próximo ao num-threads[m
+[31m-    msg-cache-slabs: 16[m
+[31m-    rrset-cache-slabs: 16[m
+[31m-    infra-cache-slabs: 16[m
+[31m-    key-cache-slabs: 16[m
+[31m-    # Alocação de memória para cache. Com 16GB de RAM, estes valores são seguros.[m
+[31m-    rrset-cache-size: 4g[m
+[31m-    msg-cache-size: 2g[m
+[31m-    # Aumenta os buffers de socket de rede[m
+[31m-    so-rcvbuf: 8m[m
+[31m-    so-sndbuf: 8m[m
+[31m-    # Aumenta o número de queries simultâneas para lidar com picos de tráfego[m
+[31m-    outgoing-range: 8192[m
+[31m-    num-queries-per-thread: 4096[m
+[32m+[m[32m    # Acesso: Apenas local e AdGuard (via rede interna)[m
+[32m+[m[32m    access-control: 127.0.0.0/8 allow[m
+[32m+[m[32m    access-control: 10.0.0.0/8 allow  # Ajuste para sua rede Docker[m
+ [m
+[31m-    # --- Otimizações de Latência ---[m
+[31m-    # Mantém itens populares no cache, atualizando-os antes de expirarem[m
+[32m+[m[32m    # Otimização de performance[m
+[32m+[m[32m    num-threads: 4  # Ajuste para núcleos dedicados[m
+[32m+[m[32m    msg-cache-size: $MSG_CACHE_SIZE  # Usando env var[m
+[32m+[m[32m    rrset-cache-size: $RRSET_CACHE_SIZE[m
+     prefetch: yes[m
+     prefetch-key: yes[m
+[31m-    # Entrega um resultado expirado do cache imediatamente enquanto busca o novo[m
+     serve-expired: yes[m
+[32m+[m[32m    serve-expired-ttl: 3600[m
+ [m
+[31m-    # --- Privacidade e Segurança ---[m
+[31m-    hide-identity: yes[m
+[31m-    hide-version: yes[m
+[32m+[m[32m    # Hardening e Segurança[m
+     harden-glue: yes[m
+     harden-dnssec-stripped: yes[m
+[32m+[m[32m    harden-referral-path: yes[m
+     use-caps-for-id: yes[m
+[31m-    # Envia apenas a parte necessária do domínio para cada servidor DNS[m
+     qname-minimisation: yes[m
+[31m-    # Caminho para o arquivo com as chaves raiz do DNSSEC[m
+[31m-    auto-trust-anchor-file: "/etc/unbound/root.key"[m
+[32m+[m[32m    aggressive-nsec: yes[m
+[32m+[m[32m    val-clean-additional: yes[m
+[32m+[m
+[32m+[m[32m    # DNSSEC[m
+[32m+[m[32m    auto-trust-anchor-file: "/var/lib/unbound/root.key"[m
+[32m+[m[32m    val-override-date: -1  # Validação rigorosa[m
+[32m+[m
+[32m+[m[32m    # Logging mínimo para performance[m
+[32m+[m[32m    verbosity: 1[m
+[32m+[m[32m    log-queries: no[m
+[32m+[m[32m    logfile: "/var/log/unbound.log"[m
+[32m+[m
+[32m+[m[32m    # Integração com Redis como cache backend (opcional, ative se usar)[m
+[32m+[m[32m    # redis-server-host: redis[m
+[32m+[m[32m    # redis-server-port: 6379[m
+[32m+[m[32m    # redis-timeout: 100[m
+ [m
+[31m-    # --- Interface de Estatísticas e Controle ---[m
+[31m-    # Habilita a coleta de métricas a cada 60 segundos[m
+[31m-    statistics-interval: 60[m
+[31m-    # Não acumula as estatísticas a cada intervalo[m
+[31m-    statistics-cumulative: no[m
+[31m-    # Habilita o controle remoto para healthchecks e stats[m
+[32m+[m[32mremote-control:[m
+     control-enable: yes[m
+[31m-    # Permite que o unbound-control (no mesmo host) acesse as estatísticas[m
+     control-interface: 127.0.0.1[m
+[31m-    control-port: 8953[m
+\ No newline at end of file[m
+[32m+[m[32m    control-port: 8953[m
+[32m+[m[32m# --- Cachedb com Redis ---[m
+[32m+[m[32mmodule-config: "cachedb validator iterator"[m
+[32m+[m[32mcachedb:[m
+[32m+[m[32m    backend: redis[m
+[32m+[m[32m    redis-server-host: 127.0.0.1[m
+[32m+[m[32m    redis-server-port: 6379[m
+[32m+[m[32m    redis-timeout: 100[m
+[32m+[m[32m    redis-expire-records: yes[m
+[32m+[m[32m    root-hints: "/etc/unbound/root.hints"[m
+[32m+[m
+[32m+[m[32m# --- Cachedb com Redis ---[m
+[32m+[m[32mmodule-config: "cachedb validator iterator"[m
+[32m+[m[32mcachedb:[m
+[32m+[m[32m    backend: redis[m
+[32m+[m[32m    redis-server-host: 127.0.0.1[m
+[32m+[m[32m    redis-server-port: 6379[m
+[32m+[m[32m    redis-timeout: 100[m
+[32m+[m[32m    redis-expire-records: yes[m
+[32m+[m[32m    root-hints: "/etc/unbound/root.hints"[m
+[1mdiff --git a/unbound/entrypoint.sh b/unbound/entrypoint.sh[m
+[1mindex 6b06dc5..d127dde 100644[m
+[1m--- a/unbound/entrypoint.sh[m
+[1m+++ b/unbound/entrypoint.sh[m
+[36m@@ -10,7 +10,6 @@[m [munbound-checkconf /etc/unbound/unbound.conf[m
+ [m
+ # Corrige as permissões da pasta de configuração para o usuário 'unbound'[m
+ echo "Setting ownership for /etc/unbound..."[m
+[31m-chown -R unbound:unbound /etc/unbound[m
+ [m
+ # Entrega o controle para o processo principal do Unbound,[m
+ # rodando como o usuário 'unbound'[m
