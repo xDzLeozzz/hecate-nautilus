@@ -1,0 +1,53 @@
+server:
+  username: "unbound"
+  directory: "/etc/unbound/"
+  auto-trust-anchor-file: "/var/lib/unbound/root.key"
+  root-hints: "/etc/unbound/root.hints"
+
+  interface: 127.0.0.1
+  port: 5335
+
+  do-daemonize: no
+  verbosity: 2
+  use-syslog: no
+  logfile: ""
+  pidfile: "/var/run/unbound/unbound.pid"
+
+  do-ip4: yes
+  do-ip6: yes
+  prefer-ip6: no
+  edns-buffer-size: 1232
+
+  # cache / performance
+  msg-cache-size: 128m
+  rrset-cache-size: 256m
+  cache-min-ttl: 0
+  cache-max-ttl: 86400
+  prefetch: yes
+  prefetch-key: yes
+
+  # DNSSEC + hardening
+  module-config: "validator iterator"
+  val-permissive-mode: no
+  aggressive-nsec: yes
+  harden-below-nxdomain: yes
+  harden-dnssec-stripped: yes
+  harden-glue: yes
+  qname-minimisation: yes
+  hide-identity: yes
+  hide-version: yes
+
+  # buffers
+  so-reuseport: yes
+  so-rcvbuf: 0
+  so-sndbuf: 0
+
+  # ajuste fino inicial
+  num-threads: 2
+  outgoing-range: 4096
+  num-queries-per-thread: 1024
+  outgoing-num-tcp: 64
+  incoming-num-tcp: 64
+
+remote-control:
+  control-enable: no

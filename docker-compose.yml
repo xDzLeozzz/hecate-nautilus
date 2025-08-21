@@ -1,41 +1,61 @@
 services:
   unbound:
-    build: ./unbound
+    build:
+      context: ./unbound
+    image: hecate-nautilus-unbound:latest
     container_name: hecate-unbound
     restart: unless-stopped
-    networks: [dns]
+    networks: [hecate-dns]
     volumes:
-      - ./unbound/config:/config:ro
-      - unbound_etc:/etc/unbound
+      - ./unbound/config:/config:ro           # onde ficam unbound.conf e root.hints
+      - unbound_etc:/etc/unbound              # estado interno (cache, etc.)
+    read_only: false                          # Windows precisa escrever em /etc/unbound
     healthcheck:
-      test: ["CMD-SHELL", "unbound-host -C /etc/unbound/unbound.conf -t A . >/dev/null 2>&1 || exit 1"]
-      interval: 30s
+      # passa se example.com resolve e dnssec-failed.org *falha* por DNSSEC
+      test: ["CMD-SHELL", "unbound-host -C /etc/unbound/unbound.conf -t A example.com >/dev/null 2>&1 && unbound-host -C /etc/unbound/unbound.conf -t A dnssec-failed.org 2>&1 | grep -qi 'validation failure'"]
+      interval: 15s
       timeout: 5s
-      retries: 3
-    read_only: true
-    cap_drop: [ALL]
+      retries: 5
+      start_period: 5s
+    cap_drop: [ "ALL" ]
+    cap_add: [ "NET_BIND_SERVICE", "NET_RAW" ]
     security_opt:
       - no-new-privileges:true
-    tmpfs:
-      - /var/run/unbound:size=8m,mode=755
-      - /tmp:size=8m,mode=1777
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   adguard:
     image: adguard/adguardhome:latest
     container_name: hecate-adguard
-    restart: unless-stopped
-    networks: [dns]
     depends_on:
       unbound:
         condition: service_healthy
+    restart: unless-stopped
+    networks: [hecate-dns]
+    # portas ???p??blicas??? ficam no override do Windows (ver arquivo abaixo)
     volumes:
       - adguard_conf:/opt/adguardhome/conf
       - adguard_work:/opt/adguardhome/work
-    # upstream DNS ser?? configurado para "unbound:5335" via UI (ver passos)
+    environment:
+      - TZ=UTC
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/ >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
-  dns:
-    name: hecate-dns
+  hecate-dns:
+    driver: bridge
 
 volumes:
   unbound_etc:
