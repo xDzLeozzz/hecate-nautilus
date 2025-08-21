@@ -1,1 +1,5 @@
-unbound/config/root.hints text eol=lf
+* text=auto
+*.sh text eol=lf
+*.conf text eol=lf
+*.yml text eol=lf
+Dockerfile text eol=lf

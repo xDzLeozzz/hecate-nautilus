@@ -1,10 +1,46 @@
+# Hecate-Nautilus: Manifesto de Orquestração v2.0 (sem forwarders)
 services:
   unbound:
     build:
-      context: .
-      dockerfile: unbound/Dockerfile
-    container_name: hecate-nautilus
+      context: ./unbound
+      dockerfile: Dockerfile
+    container_name: hecate-unbound
     restart: unless-stopped
+    # Host networking para latência mínima e sem NAT
+    network_mode: "host"
+    # Usa a tua config e trust-anchor do repo (sem forwarders)
+    volumes:
+      - ./unbound/config/unbound.conf:/etc/unbound/unbound.conf:ro
+      - ./unbound/config/root.key:/etc/unbound/root.key:ro
+      # (opcional) se tiveres root.hints no repo:
+      - ./unbound/config/root.hints:/etc/unbound/root.hints:ro
+    # Performance / isolamento
+    cpuset: "2-13"         # <<< ajusta aos teus núcleos
+    mem_limit: 10g
+    cap_add:
+      - NET_ADMIN          # manter porta 53 e afins
+
+  adguard:
+    image: adguard/adguardhome:latest
+    container_name: hecate-adguard
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - ./adguard/work:/opt/adguardhome/work
+      - ./adguard/config:/opt/adguardhome/conf
+    cpuset: "0-1"          # <<< ajusta
+    mem_limit: 2g
+
+  redis:
+    image: redis:7-alpine
+    container_name: hecate-redis
+    restart: unless-stopped
+    # Exposto apenas localmente
     ports:
-      - "53:53/udp"
-      - "53:53/tcp"
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - ./redis/data:/data
+      - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    cpuset: "14"           # <<< ajusta
+    mem_limit: 2g
