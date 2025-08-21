@@ -1,0 +1,22 @@
+services:
+  unbound:
+    build:
+      context: ./unbound
+    container_name: hecate-unbound
+    restart: unless-stopped
+    ports:
+      - "/udp"
+      - "/tcp"
+    volumes:
+      - ./unbound/config:/config:ro
+      - unbound_etc:/etc/unbound
+    read_only: false
+    healthcheck:
+      test: ["CMD-SHELL", "unbound-host -C /etc/unbound/unbound.conf -t A example.com >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 5s
+
+volumes:
+  unbound_etc:

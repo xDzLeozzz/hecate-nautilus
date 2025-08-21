@@ -1,0 +1,5 @@
+services:
+  unbound:
+    network_mode: host
+  adguard:
+    network_mode: host

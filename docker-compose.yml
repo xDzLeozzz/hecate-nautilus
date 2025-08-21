@@ -1,17 +1,43 @@
 services:
   unbound:
-    build:
-      context: ./unbound
+    build: ./unbound
     container_name: hecate-unbound
     restart: unless-stopped
-    # Em Linux, host é ok. No Windows, use o override com ports.
-    network_mode: "host"
+    networks: [dns]
     volumes:
       - ./unbound/config:/config:ro
       - unbound_etc:/etc/unbound
-    read_only: false
+    healthcheck:
+      test: ["CMD-SHELL", "unbound-host -C /etc/unbound/unbound.conf -t A . >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
     tmpfs:
       - /var/run/unbound:size=8m,mode=755
+      - /tmp:size=8m,mode=1777
+
+  adguard:
+    image: adguard/adguardhome:latest
+    container_name: hecate-adguard
+    restart: unless-stopped
+    networks: [dns]
+    depends_on:
+      unbound:
+        condition: service_healthy
+    volumes:
+      - adguard_conf:/opt/adguardhome/conf
+      - adguard_work:/opt/adguardhome/work
+    # upstream DNS ser?? configurado para "unbound:5335" via UI (ver passos)
+
+networks:
+  dns:
+    name: hecate-dns
 
 volumes:
   unbound_etc:
+  adguard_conf:
+  adguard_work:

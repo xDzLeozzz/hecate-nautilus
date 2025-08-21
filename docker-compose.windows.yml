@@ -1,7 +1,5 @@
-# docker-compose.override.yml (Windows)
 services:
   unbound:
-    network_mode: "bridge"
     ports:
       - "127.0.0.1:5335:5335/udp"
       - "127.0.0.1:5335:5335/tcp"

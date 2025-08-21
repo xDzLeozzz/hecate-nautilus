@@ -11,3 +11,11 @@ unbound/config/*.bak
 unbound/config/*.bak
 
 unbound/config/*.bak
+backups/
+# Backups e artefatos
+*.tar
+*.tgz
+*.log
+# Volumes/estado de runtime
+**/unbound_etc/**
+**/.DS_Store
