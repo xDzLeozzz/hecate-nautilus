@@ -9,3 +9,5 @@ unbound/config/*.bak
 .env
 
 unbound/config/*.bak
+
+unbound/config/*.bak
