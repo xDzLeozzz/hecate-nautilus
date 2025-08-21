@@ -1,28 +1,36 @@
 #!/bin/sh
-# Hécate-Nautilus Unbound Entrypoint (com fallback de anchor)
+# Hécate Nautilus — Entrypoint Unbound com gosu (root.key antes do checkconf)
 set -e
 
-CONF="/etc/unbound/unbound.conf"
-ROOT="/etc/unbound"
-KEY="$ROOT/root.key"
+CONF_SRC="/config/unbound.conf"
+HINTS_SRC="/config/root.hints"
 
-mkdir -p /var/run/unbound "$ROOT"
-chown -R unbound:unbound /var/run/unbound "$ROOT"
+CONF_DST="/etc/unbound/unbound.conf"
+HINTS_DST="/etc/unbound/root.hints"
+ROOTKEY="/etc/unbound/root.key"
 
-# Tenta validar sintaxe já como 'unbound' (ambiente real)
-gosu unbound unbound-checkconf "$CONF"
+mkdir -p /etc/unbound /var/run/unbound
+chown -R unbound:unbound /etc/unbound /var/run/unbound
 
-# Tenta (re)atualizar a âncora como 'unbound'
-echo "Checking/Updating root trust anchor..."
-if ! gosu unbound unbound-anchor -a "$KEY" -R -v; then
-  echo "WARN: unbound-anchor falhou, vou usar DS estático." >&2
+# sync /config (ro) -> /etc/unbound (rw)
+[ -f "$CONF_SRC" ] && cp -f "$CONF_SRC" "$CONF_DST"
+[ -f "$HINTS_SRC" ] && cp -f "$HINTS_SRC" "$HINTS_DST"
+chown -R unbound:unbound /etc/unbound
+
+# 1) root.key primeiro (se não existir, semeia com DS 20326 KSK-2017)
+if [ ! -s "$ROOTKEY" ]; then
+  echo ">> Seed root.key com DS 20326 (KSK-2017)"
+  echo '. IN DS 20326 8 2 E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D' > "$ROOTKEY"
+  chown unbound:unbound "$ROOTKEY"
 fi
 
-# Fallback: se não existir ou ficou pequeno, grava DS estático do root (KSK-2017 id 20326)
-if [ ! -s "$KEY" ] || [ "$(wc -c < "$KEY")" -lt 100 ]; then
-  echo '. IN DS 20326 8 2 E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D' > "$KEY"
-  chown unbound:unbound "$KEY"
-fi
+# 2) refresh/atualiza a âncora (não derruba se falhar)
+echo ">> Refresh root.key"
+gosu unbound unbound-anchor -a "$ROOTKEY" -R -v || true
 
-# Sobe o Unbound como 'unbound'
-exec gosu unbound unbound -d -c "$CONF"
+# 3) agora sim: valida a config
+gosu unbound unbound-checkconf "$CONF_DST"
+
+# 4) inicia
+echo ">> Start unbound"
+exec gosu unbound unbound -d -c "$CONF_DST"
