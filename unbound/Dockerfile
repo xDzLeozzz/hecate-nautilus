@@ -8,7 +8,6 @@ FROM debian:bookworm-slim AS builder
 ARG UNBOUND_VERSION
 ARG DEBIAN_FRONTEND
 
-# CORREÇÃO: Adicionado 'ca-certificates' à lista de instalação
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential libssl-dev libexpat1-dev libevent-dev \
     libhiredis-dev wget gnupg dirmngr ca-certificates && \
@@ -20,8 +19,11 @@ WORKDIR /tmp
 RUN wget -O unbound.tar.gz "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz"
 RUN wget -O unbound.asc "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz.asc"
 
-# CORREÇÃO: Trocado o keyserver para um mais confiável
-RUN gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 0x18242B289DE62956D22A74536A912239719DE6E3
+# --- CORREÇÃO DEFINITIVA ---
+# Baixar a chave GPG diretamente e importar localmente
+RUN wget -O nlnetlabs.asc "https://nlnetlabs.nl/downloads/nlnetlabs-key.asc"
+RUN gpg --import nlnetlabs.asc
+# -------------------------
 
 RUN gpg --verify unbound.asc unbound.tar.gz
 
