@@ -19,9 +19,9 @@ WORKDIR /tmp
 RUN wget -O unbound.tar.gz "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz"
 RUN wget -O unbound.asc "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz.asc"
 
-# --- CORREÇÃO DEFINITIVA ---
-# Baixar a chave GPG diretamente e importar localmente
-RUN wget -O nlnetlabs.asc "https://nlnetlabs.nl/downloads/nlnetlabs-key.asc"
+# --- CORREÇÃO FINAL DA URL ---
+# Baixar a chave GPG diretamente do link correto e importar localmente
+RUN wget -O nlnetlabs.asc "https://www.nlnetlabs.nl/packages/nlnetlabs-key.asc"
 RUN gpg --import nlnetlabs.asc
 # -------------------------
 
