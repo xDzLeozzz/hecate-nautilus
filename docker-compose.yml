@@ -4,28 +4,13 @@ services:
       context: ./unbound
     container_name: hecate-unbound
     restart: unless-stopped
-    network_mode: "host"
+    network_mode: "host"           # em Windows, override muda isso
     volumes:
-      - ./unbound/config/unbound.conf:/etc/unbound/unbound.conf:ro
-      - ./unbound/config/root.hints:/etc/unbound/root.hints:ro
-
-  adguard:
-    image: adguard/adguardhome:latest
-    container_name: hecate-adguard
-    restart: unless-stopped
-    network_mode: "host"
-    volumes:
-      - ./adguard/work:/opt/adguardhome/work
-      - ./adguard/config:/opt/adguardhome/conf
-
-  redis:
-    image: redis:7-alpine
-    container_name: hecate-redis
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:6379:6379"
-    volumes:
-      - ./redis/data:/data
-    command: ["redis-server","--appendonly","no"]
-
-# A seção 'volumes' no nível superior não é mais necessária se nenhum
+      - ./unbound/config:/config:ro
+    ulimits:
+      nofile: 262144
+    security_opt:
+      - no-new-privileges:true
+    read_only: false
+    tmpfs:
+      - /var/run/unbound:size=8m,mode=755

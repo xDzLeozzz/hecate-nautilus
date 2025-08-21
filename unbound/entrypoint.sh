@@ -1,36 +1,31 @@
 #!/bin/sh
-# Hécate Nautilus — Entrypoint Unbound com gosu (root.key antes do checkconf)
 set -e
 
 CONF_SRC="/config/unbound.conf"
 HINTS_SRC="/config/root.hints"
-
 CONF_DST="/etc/unbound/unbound.conf"
 HINTS_DST="/etc/unbound/root.hints"
 ROOTKEY="/etc/unbound/root.key"
 
 mkdir -p /etc/unbound /var/run/unbound
-chown -R unbound:unbound /etc/unbound /var/run/unbound
+chown -R unbound:unbound /var/run/unbound || true
 
-# sync /config (ro) -> /etc/unbound (rw)
-[ -f "$CONF_SRC" ] && cp -f "$CONF_SRC" "$CONF_DST"
-[ -f "$HINTS_SRC" ] && cp -f "$HINTS_SRC" "$HINTS_DST"
-chown -R unbound:unbound /etc/unbound
+# Copia configs do volume somente-leitura /config -> /etc/unbound
+if [ -f "$CONF_SRC" ]; then cp -f "$CONF_SRC" "$CONF_DST"; fi
+if [ -f "$HINTS_SRC" ]; then cp -f "$HINTS_SRC" "$HINTS_DST"; fi
 
-# 1) root.key primeiro (se não existir, semeia com DS 20326 KSK-2017)
+# 1) Garante root.key ANTES do checkconf (semeia DS se necessário)
 if [ ! -s "$ROOTKEY" ]; then
   echo ">> Seed root.key com DS 20326 (KSK-2017)"
-  echo '. IN DS 20326 8 2 E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D' > "$ROOTKEY"
-  chown unbound:unbound "$ROOTKEY"
+  printf '%s\n' '. IN DS 20326 8 2 E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D' > "$ROOTKEY"
 fi
 
-# 2) refresh/atualiza a âncora (não derruba se falhar)
+# 2) Tenta atualizar a âncora (não derruba se falhar, ex.: sem rede/tempo)
 echo ">> Refresh root.key"
-gosu unbound unbound-anchor -a "$ROOTKEY" -R -v || true
+unbound-anchor -a "$ROOTKEY" -R -v || true
 
-# 3) agora sim: valida a config
-gosu unbound unbound-checkconf "$CONF_DST"
+# 3) Valida a config agora que root.key existe
+unbound-checkconf "$CONF_DST"
 
-# 4) inicia
-echo ">> Start unbound"
-exec gosu unbound unbound -d -c "$CONF_DST"
+# 4) Sobe o Unbound
+exec /usr/sbin/unbound -d -c "$CONF_DST"
