@@ -1,4 +1,4 @@
-# Hecate-Nautilus: Unbound "WarSpec" Build
+# Hecate-Nautilus: Unbound "WarSpec" Build v3 (Local Key)
 ARG UNBOUND_VERSION=1.19.3
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -19,11 +19,10 @@ WORKDIR /tmp
 RUN wget -O unbound.tar.gz "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz"
 RUN wget -O unbound.asc "https://nlnetlabs.nl/downloads/unbound/unbound-${UNBOUND_VERSION}.tar.gz.asc"
 
-# --- CORREÇÃO FINAL DA URL ---
-# Baixar a chave GPG diretamente do link correto e importar localmente
-RUN wget -O nlnetlabs.asc "https://www.nlnetlabs.nl/packages/nlnetlabs-key.asc"
-RUN gpg --import nlnetlabs.asc
-# -------------------------
+# --- MÉTODO DEFINITIVO: COPIAR A CHAVE LOCALMENTE ---
+COPY config/nlnetlabs-pubkey.asc /tmp/
+RUN gpg --import /tmp/nlnetlabs-pubkey.asc
+# --------------------------------------------------
 
 RUN gpg --verify unbound.asc unbound.tar.gz
 
